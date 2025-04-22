@@ -26,10 +26,28 @@ function showCreate(){
         }
     });
 }
+
+function showEdit(item_id){
+    $.ajax({
+        type:'POST',
+        url:'{{route("items.showEdit")}}',
+        data:{'_token':'<?php echo csrf_token() ?>',
+            'id':item_id,
+        },
+        success: function(data){
+            $('#itemedit'+item_id).html(data.msg)
+        }
+    });
+}
 </script>
 @endsection
 
 @section('content')
+@if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
  <!-- Content Header (Page header) -->
  <section class="content-header">
     <div class="container-fluid">
@@ -96,7 +114,7 @@ function showCreate(){
             </thead>
             <tbody>
                 @foreach ($data as $d)
-                <tr>
+                <tr id='tr{{$d->id}}'>
                     <td>
                         {{$d->id}}
                     </td>
@@ -136,16 +154,49 @@ function showCreate(){
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-info btn-sm" href="#">
+                        <a class="btn btn-info btn-sm" href="{{url('items/'.$d->id.'/edit')}}"
+                            data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
                             <i class="fas fa-pencil-alt">
                             </i>
                             Edit
                         </a>
-                        <a class="btn btn-danger btn-sm" href="#">
+                        <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content" id="itemedit{{$d->id}}">
+                                    <!-- put animated gif here -->
+                                    <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
+                                </div>
+                            </div>
+                        </div>
+                        <a class="btn btn-danger btn-sm" href="{{url('items/'.$d->id)}}"
+                            data-target="#delete{{$d->id}}" data-toggle='modal'>
                             <i class="fas fa-trash">
                             </i>
                             Delete
                         </a>
+                        <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content" id="itemdelete{{$d->id}}">
+                                    <form method='POST' action="{{route('items.destroy', $d->id)}}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <div class="modal-header bg-danger">
+                                            <h4 class="modal-title">Delete Item</h4>
+                                            <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Close">
+                                              <span aria-hidden="true">×</span>
+                                            </button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <p>Are you sure you want to delete item "{{$d->name}}"?</p>
+                                          </div>
+                                          <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Close</button>
+                                            <button type="submit" class="btn btn-danger">Delete Item</button>
+                                          </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 @endforeach

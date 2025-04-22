@@ -15,9 +15,11 @@ class BrandSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0;$i<3;$i++){
+        $brands = ['Hijabista', 'MuslimWear', 'ModestStyle'];
+
+        foreach ($brands as $brand) {
             DB::table('brands')->insert([
-                'name'=> Str::random(5)
+            'name' => $brand
             ]);
         }
     }

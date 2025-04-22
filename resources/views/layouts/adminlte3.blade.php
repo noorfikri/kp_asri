@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{asset('assets/plugins/fontawesome-free/css/all.min.css')}}">
+  <script src="https://kit.fontawesome.com/a85611667c.js" crossorigin="anonymous"></script>
   <!-- IonIcons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -113,135 +114,135 @@
         </div>
       </div>
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-header">DASHBOARD</li>
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+           with font-awesome or any other icon font library -->
+        <li class="nav-header">DASHBOARD</li>
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fa-solid fa-house"></i>
+          <p>
+            Dashboard
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa-solid fa-landmark"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-header">ITEMS</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa-solid fa-landmark"></i>
-              <p>
-                Items
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Item Category</p>
-                </a>
-                <a href="{{route('items.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Item List</p>
-                </a>
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Brand</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-header">SALES</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa-solid fa-landmark"></i>
-              <p>
-                Selling
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Selling</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa-solid fa-landmark"></i>
-              <p>
-                Buying
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Buying</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-header">SUPPLIERS</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa-solid fa-landmark"></i>
-              <p>
-                Supplier
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Supplier</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-header">ACCOUNT</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa-solid fa-landmark"></i>
-              <p>
-                Account
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Account</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-header">EXIT</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-ellipsis-h"></i>
-              <p>EXIT</p>
+            <a href="./index3.html" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Dashboard v3</p>
             </a>
           </li>
         </ul>
-      </nav>
+        </li>
+        <li class="nav-header">ITEMS</li>
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fa-solid fa-boxes-stacked"></i>
+          <p>
+            Items
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{route('categories.index')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Category</p>
+            </a>
+            <a href="{{route('items.index')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Item List</p>
+            </a>
+            <a href="{{route('brands.index')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Brand</p>
+            </a>
+          </li>
+        </ul>
+        </li>
+        <li class="nav-header">SALES</li>
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fa-solid fa-cart-flatbed"></i>
+          <p>
+            Selling
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="./index3.html" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Selling</p>
+            </a>
+        </li>
+        </ul>
+        </li>
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fa-solid fa-cart-arrow-down"></i>
+          <p>
+            Buying
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="./index3.html" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Buying</p>
+            </a>
+          </li>
+        </ul>
+        </li>
+        <li class="nav-header">SUPPLIERS</li>
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fa-solid fa-truck"></i>
+          <p>
+            Supplier
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{route('suppliers.index')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Supplier</p>
+            </a>
+          </li>
+        </ul>
+        </li>
+        <li class="nav-header">ACCOUNT</li>
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fa-solid fa-user"></i>
+          <p>
+            Account
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="./index3.html" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Account</p>
+            </a>
+          </li>
+        </ul>
+        </li>
+        <li class="nav-header">EXIT</li>
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fa-solid fa-sign-out-alt"></i>
+          <p>EXIT</p>
+        </a>
+        </li>
+      </ul>
+    </nav>
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->

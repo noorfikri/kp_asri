@@ -15,9 +15,11 @@ class SizeSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0;$i<3;$i++){
+        $sizes = ['Small', 'Medium', 'Large', 'X-Large', 'XX-Large'];
+
+        foreach ($sizes as $size) {
             DB::table('sizes')->insert([
-                'name'=> Str::random(5)
+            'name' => $size
             ]);
         }
     }

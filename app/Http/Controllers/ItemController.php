@@ -51,7 +51,19 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Item();
+        $data->name = $request->get('name');
+        $data->category_id = $request->get('category_id');
+        $data->size_id = $request->get('size_id');
+        $data->colour_id = $request->get('colour_id');
+        $data->brand_id = $request->get('brand_id');
+        $data->price = $request->get('price');
+        $data->stock = $request->get('stock');
+        $data->note = $request->get('note');
+
+        $data->save();
+
+        return redirect()->route('items.index')->with('status','Item created '.$data->name.' successfully');
     }
 
     /**
@@ -73,15 +85,18 @@ class ItemController extends Controller
      * @param  \App\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function edit(Item $item)
+    public function edit(Request $request)
     {
-        $data = $item;
+        $item=Item::find($_POST['id']);
         $category = Category::all();
         $size = Size::all();
         $colour = Colour::all();
         $brand = Brand::all();
 
-        return view('item.edit',['category'=>$category,'size'=>$size,'colour'=>$colour,'brand'=>$brand]);
+        return response()->json(array(
+            'status'=>'ok',
+            'msg'=>view('item.edit',['item'=>$item,'category'=>$category,'size'=>$size,'colour'=>$colour,'brand'=>$brand])->render()
+        ),200);
     }
 
     /**
@@ -93,7 +108,18 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        //
+        $item->name = $request->get('name');
+        $item->category_id = $request->get('category_id');
+        $item->size_id = $request->get('size_id');
+        $item->colour_id = $request->get('colour_id');
+        $item->brand_id = $request->get('brand_id');
+        $item->price = $request->get('price');
+        $item->stock = $request->get('stock');
+        $item->note = $request->get('note');
+
+        $item->save();
+
+        return redirect()->route('items.index')->with('status','Item '.$item->name.' updated successfully');
     }
 
     /**
@@ -104,7 +130,12 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        try{
+            $item->delete();
+            return redirect()->route('items.index')->with('status','Item has been deleted');
+        }catch(\Exception $e){
+            return redirect()->route('items.index')->with('error','Item cannot be deleted');
+        }
     }
 
     public function showDetail(Request $request){
@@ -125,5 +156,40 @@ class ItemController extends Controller
             'status'=>'ok',
             'msg'=>view('item.create',['category'=>$category,'size'=>$size,'colour'=>$colour,'brand'=>$brand])->render()
         ),200);
+    }
+
+    public function showEdit(Request $request){
+        $item=Item::find($_POST['id']);
+        $category = Category::all();
+        $size = Size::all();
+        $colour = Colour::all();
+        $brand = Brand::all();
+
+        return response()->json(array(
+            'status'=>'ok',
+            'msg'=>view('item.edit',['item'=>$item,'category'=>$category,'size'=>$size,'colour'=>$colour,'brand'=>$brand])->render()
+        ),200);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->get('query');
+        $items = Item::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('note', 'LIKE', "%{$query}%")
+            ->orWhereHas('category', function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%{$query}%");
+            })
+            ->orWhereHas('size', function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%{$query}%");
+            })
+            ->orWhereHas('colour', function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%{$query}%");
+            })
+            ->orWhereHas('brand', function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%{$query}%");
+            })
+            ->get();
+
+        return view('item.search', ['items' => $items, 'query' => $query]);
     }
 }

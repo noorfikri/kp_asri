@@ -14,7 +14,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        //
+        $queryBuilder = Supplier::all();
+        return view('supplier.index',['data'=>$queryBuilder]);
     }
 
     /**

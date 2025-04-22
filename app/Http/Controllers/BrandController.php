@@ -14,7 +14,8 @@ class BrandController extends Controller
      */
     public function index()
     {
-        //
+        $queryBuilder = Brand::all();
+        return view('brand.index',['data'=>$queryBuilder]);
     }
 
     /**

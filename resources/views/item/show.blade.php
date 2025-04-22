@@ -1,7 +1,7 @@
 
     <div class="modal-header">
         <h3 class="card-title">Detail</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" data-target="show{{$data->id}}" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
     </div>

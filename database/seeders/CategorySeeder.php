@@ -15,9 +15,11 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0;$i<3;$i++){
+        $categories = ['Hijab', 'Koko Shirt', 'Prayer Mat', 'Pecis', 'Abaya', 'Sarong', 'Thobe'];
+
+        foreach ($categories as $category) {
             DB::table('categories')->insert([
-                'name'=> Str::random(5)
+            'name' => $category
             ]);
         }
     }

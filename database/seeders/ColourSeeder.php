@@ -15,9 +15,22 @@ class ColourSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0;$i<3;$i++){
+        $colours = [
+            'Crimson Red',
+            'Ocean Blue',
+            'Forest Green',
+            'Sunflower Yellow',
+            'Charcoal Black',
+            'Ivory White',
+            'Royal Purple',
+            'Peach Pink',
+            'Sky Blue',
+            'Chocolate Brown'
+        ];
+
+        foreach ($colours as $colour) {
             DB::table('colours')->insert([
-                'name'=> Str::random(5)
+            'name' => $colour
             ]);
         }
     }

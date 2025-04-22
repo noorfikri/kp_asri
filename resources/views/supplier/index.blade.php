@@ -1,16 +1,16 @@
 @extends('layouts.adminlte3')
 
 @section('javascript')
-{{-- <<script>
-function showDetails(brand_id){
+{{-- <script>
+function showDetails(supplier_id){
     $.ajax({
         type:'POST',
-        url:'{{route("brands.showDetail")}}',
+        url:'{{route("suppliers.showDetail")}}',
         data:{'_token':'<?php echo csrf_token() ?>',
-            'id':brand_id
+            'id':supplier_id
         },
         success: function(data){
-            $('#branddetail'+brand_id).html(data.msg)
+            $('#supplierdetail'+supplier_id).html(data.msg)
         }
     });
 }
@@ -18,7 +18,7 @@ function showDetails(brand_id){
 function showCreate(){
     $.ajax({
         type:'POST',
-        url:'{{route("brands.showCreate")}}',
+        url:'{{route("suppliers.showCreate")}}',
         data:{'_token':'<?php echo csrf_token() ?>',
         },
         success: function(data){
@@ -27,15 +27,15 @@ function showCreate(){
     });
 }
 
-function showEdit(brand_id){
+function showEdit(supplier_id){
     $.ajax({
         type:'POST',
-        url:'{{route("brands.showEdit")}}',
+        url:'{{route("suppliers.showEdit")}}',
         data:{'_token':'<?php echo csrf_token() ?>',
-            'id':brand_id,
+            'id':supplier_id,
         },
         success: function(data){
-            $('#brandedit'+brand_id).html(data.msg)
+            $('#supplieredit'+supplier_id).html(data.msg)
         }
     });
 }
@@ -53,12 +53,12 @@ function showEdit(brand_id){
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Daftar Brand</h1>
+          <h1>Daftar Supplier</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Daftar Brand</li>
+            <li class="breadcrumb-item active">Daftar Supplier</li>
           </ol>
         </div>
       </div>
@@ -74,7 +74,7 @@ function showEdit(brand_id){
             <div class="card-tools input-group">
                 <input type="search" class="form-control rounded m-auto" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
                 <button type="button" class="btn btn-outline-primary rounded" data-mdb-ripple-init>Cari</button>
-                <a href="{{url('brands/create')}}" class=" btn btn-primary rounded"
+                <a href="{{url('suppliers/create')}}" class=" btn btn-primary rounded"
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
@@ -94,30 +94,37 @@ function showEdit(brand_id){
                         #
                     </th>
                     <th style="width: 20%">
-                        Brand Name
+                        Name
+                    </th>
+                    <th style="width: 30%">
+                        Address
+                    </th>
+                    <th style="width: 20%">
+                        Telephone
                     </th>
                     <th style="width: 20%">
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @if ($data->isEmpty())
-                <tr>
-                    <td colspan="3" class="text-center">
-                        No data available in the brand list.
-                    </td>
-                </tr>
-                @else
                 @foreach ($data as $d)
                 <tr id='tr{{$d->id}}'>
                     <td>
                         {{$d->id}}
                     </td>
                     <td>
-                        {{$d->name}}
+                        <a>
+                            {{$d->name}}
+                        </a>
+                    </td>
+                    <td>
+                        {{$d->address}}
+                    </td>
+                    <td>
+                        {{$d->telephone}}
                     </td>
                     <td class="project-actions text-right">
-                        <a class="btn btn-primary btn-sm" href="{{url('brands/'.$d->id)}}"
+                        <a class="btn btn-primary btn-sm" href="{{url('suppliers/'.$d->id)}}"
                             data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                             <i class="fas fa-folder">
                             </i>
@@ -125,13 +132,13 @@ function showEdit(brand_id){
                         </a>
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content" id="branddetail{{$d->id}}">
+                                <div class="modal-content" id="supplierdetail{{$d->id}}">
                                     <!-- put animated gif here -->
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-info btn-sm" href="{{url('brands/'.$d->id.'/edit')}}"
+                        <a class="btn btn-info btn-sm" href="{{url('suppliers/'.$d->id.'/edit')}}"
                             data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
                             <i class="fas fa-pencil-alt">
                             </i>
@@ -139,13 +146,13 @@ function showEdit(brand_id){
                         </a>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content" id="brandedit{{$d->id}}">
+                                <div class="modal-content" id="supplieredit{{$d->id}}">
                                     <!-- put animated gif here -->
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-danger btn-sm" href="{{url('brands/'.$d->id)}}"
+                        <a class="btn btn-danger btn-sm" href="{{url('suppliers/'.$d->id)}}"
                             data-target="#delete{{$d->id}}" data-toggle='modal'>
                             <i class="fas fa-trash">
                             </i>
@@ -153,22 +160,22 @@ function showEdit(brand_id){
                         </a>
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content" id="branddelete{{$d->id}}">
-                                    <form method='POST' action="{{route('brands.destroy', $d->id)}}">
+                                <div class="modal-content" id="supplierdelete{{$d->id}}">
+                                    <form method='POST' action="{{route('suppliers.destroy', $d->id)}}">
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-header bg-danger">
-                                            <h4 class="modal-title">Delete Brand</h4>
+                                            <h4 class="modal-title">Delete Supplier</h4>
                                             <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Close">
                                               <span aria-hidden="true">×</span>
                                             </button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Are you sure you want to delete brand "{{$d->name}}"?</p>
+                                            <p>Are you sure you want to delete supplier "{{$d->name}}"?</p>
                                           </div>
                                           <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Close</button>
-                                            <button type="submit" class="btn btn-danger">Delete Brand</button>
+                                            <button type="submit" class="btn btn-danger">Delete Supplier</button>
                                           </div>
                                     </form>
                                 </div>
@@ -177,7 +184,6 @@ function showEdit(brand_id){
                     </td>
                 </tr>
                 @endforeach
-                @endif
             </tbody>
         </table>
       </div>

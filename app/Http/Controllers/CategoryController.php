@@ -14,7 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $queryBuilder = Category::all();
+        return view('category.index',['data'=>$queryBuilder]);
     }
 
     /**

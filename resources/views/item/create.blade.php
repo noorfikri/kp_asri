@@ -8,69 +8,72 @@
           </button>
       </div>
     </div>
-    <div class="card-body">
-      <div class="form-group">
-        <label for="inputName">Item Name</label>
-        <input type="text" id="inputName" class="form-control">
-      </div>
+    <form method="POST" action="{{route('items.store')}}">
+        @csrf
+        <div class="card-body">
         <div class="form-group">
-        <label for="inputStatus">Category</label>
-        <select id="inputStatus" class="form-control custom-select">
-            <option selected="" disabled="">Select one</option>
-            @foreach ($category as $cat)
-            <option>{{$cat->name}}</option>
-            @endforeach
-          <option>...</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="inputStatus">Size</label>
-        <select id="inputStatus" class="form-control custom-select">
-          <option selected="" disabled="">Select one</option>
-          @foreach ($size as $s)
-          <option>{{$s->name}}</option>
-          @endforeach
-          <option>...</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="inputStatus">Colour</label>
-        <select id="inputStatus" class="form-control custom-select">
-          <option selected="" disabled="">Select one</option>
-          @foreach ($colour as $co)
-          <option>{{$co->name}}</option>
-          @endforeach
-          <option>...</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="inputStatus">Brand</label>
-        <select id="inputStatus" class="form-control custom-select">
-          <option selected="" disabled="">Select one</option>
-          @foreach ($brand as $b)
-          <option>{{$b->name}}</option>
-          @endforeach
-          <option>...</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="inputName">Item Price</label>
-        <input type="text" id="inputName" class="form-control">
-      </div>
-      <div class="form-group">
-        <label for="inputName">Item Stock</label>
-        <input type="text" id="inputName" class="form-control">
-      </div>
-      <div class="form-group">
-        <label for="inputDescription">Note</label>
-        <textarea id="inputDescription" class="form-control" rows="4"></textarea>
-      </div>
-    </div>
-    <div class="card-footer">
-        <div class="col-12">
-            <a href="#" class="btn btn-secondary" data-target="#showcreatemodal" data-dismiss="modal">Cancel</a>
-            <input type="submit" value="Create" class="btn btn-success float-right">
+            <label for="inputName">Item Name</label>
+            <input type="text" id="inputName" name="name" class="form-control">
+          </div>
+            <div class="form-group">
+            <label for="inputCategory">Category</label>
+            <select id="inputCategory" name="category_id" class="form-control custom-select">
+                <option selected="" disabled="">Select one</option>
+                @foreach ($category as $cat)
+                <option value="{{$cat->id}}">{{$cat->name}}</option>
+                @endforeach
+              <option>...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inputSize">Size</label>
+            <select id="inputSize" name="size_id" class="form-control custom-select">
+              <option selected="" disabled="">Select one</option>
+              @foreach ($size as $s)
+              <option value="{{$s->id}}">{{$s->name}}</option>
+              @endforeach
+              <option>...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inputColour">Colour</label>
+            <select id="inputColour" name="colour_id" class="form-control custom-select">
+              <option selected="" disabled="">Select one</option>
+              @foreach ($colour as $co)
+              <option value="{{$co->id}}">{{$co->name}}</option>
+              @endforeach
+              <option>...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inputBrand">Brand</label>
+            <select id="inputBrand" name="brand_id" class="form-control custom-select">
+              <option selected="" disabled="">Select one</option>
+              @foreach ($brand as $b)
+              <option value="{{$b->id}}">{{$b->name}}</option>
+              @endforeach
+              <option>...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inputPrice">Item Price</label>
+            <input type="text" id="inputPrice" name="price" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="inputStock">Item Stock</label>
+            <input type="text" id="inputStock" name="stock" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="inputNote">Note</label>
+            <textarea id="inputNote" name="note" class="form-control" rows="4"></textarea>
+          </div>
         </div>
-    </div>
+        <div class="card-footer">
+            <div class="col-12">
+                <a href="#" class="btn btn-secondary" data-target="#showcreatemodal" data-dismiss="modal">Cancel</a>
+                <input type="submit" value="Create" class="btn btn-success float-right">
+            </div>
+        </div>
+    </form>
     <!-- /.card-body -->
   </div>
