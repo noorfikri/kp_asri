@@ -6,6 +6,8 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\BuyingTranscationController;
+use App\Http\Controllers\BuyingTranscationItemController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -34,4 +36,8 @@ Route::resource('categories',CategoryController::class);
 Route::resource('sizes',SizeController::class);
 Route::resource('colours',ColourController::class);
 Route::resource('brands',BrandController::class);
+
 Route::resource('suppliers',SupplierController::class);
+
+Route::resource('buyingtransactions',BuyingTranscationController::class);
+Route::resource('buyingtransactionitems',BuyingTranscationItemController::class);
