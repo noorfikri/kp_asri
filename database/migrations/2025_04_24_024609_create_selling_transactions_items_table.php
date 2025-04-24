@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ItemsColoridFk extends Migration
+class CreateSellingTransactionsItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class ItemsColoridFk extends Migration
      */
     public function up()
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->foreignId('colour_id')->constrained('colours');
+        Schema::create('selling_transactions_items', function (Blueprint $table) {
+            $table->id();
+            $table->integer('total_price');
+            $table->integer('total_quantity');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class ItemsColoridFk extends Migration
      */
     public function down()
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->dropForeign(['colour_id']);
-        });
+        Schema::dropIfExists('selling_transactions_items');
     }
 }

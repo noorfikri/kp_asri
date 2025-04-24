@@ -1,4 +1,4 @@
-<div class="card card-primary">
+<div class="card card-primary shadow-lg">
     <div class="card-header">
       <h3 class="card-title">Create Item</h3>
 
@@ -12,6 +12,11 @@
         @csrf
         @method('PUT')
         <div class="card-body">
+        <img class="img-fluid pad" src="https://placehold.co/400x400?text=Placeholder+Image" alt="Photo">
+        <div class="form-group">
+            <label for="inputImage">Image Location</label>
+            <input type="text" id="inputImage" name="image" class="form-control" value="placeholder">
+          </div>
         <div class="form-group">
             <label for="inputName">Item Name</label>
             <input type="text" id="inputName" name="name" class="form-control" value="{{$item->name}}">
@@ -29,7 +34,6 @@
                 @endif
                 @endforeach
               </select>
-              <option>...</option>
             </select>
           </div>
           <div class="form-group">

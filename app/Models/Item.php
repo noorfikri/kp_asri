@@ -39,4 +39,19 @@ class Item extends Model
             'transaction_id'
         )->withPivot('total_quantity', 'total_price')->withTimestamps();
     }
+
+    public function sellingTransactionItems()
+    {
+        return $this->hasMany('App\Models\SellingTransactionItem', 'item_id');
+    }
+
+    public function sellingTransactions()
+    {
+        return $this->belongsToMany(
+            'App\Models\SellingTransaction',
+            'selling_transactions_items',
+            'item_id',
+            'transaction_id'
+        )->withPivot('total_quantity', 'total_price')->withTimestamps();
+    }
 }

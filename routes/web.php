@@ -6,8 +6,14 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\BuyingTranscationController;
 use App\Http\Controllers\BuyingTranscationItemController;
+use App\Http\Controllers\ReportBuyingTransactionController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportSellingTransactionController;
+use App\Http\Controllers\SellingTransactionController;
+use App\Http\Controllers\SellingTransactionItemController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -39,5 +45,15 @@ Route::resource('brands',BrandController::class);
 
 Route::resource('suppliers',SupplierController::class);
 
+Route::resource('users',UserController::class);
+
 Route::resource('buyingtransactions',BuyingTranscationController::class);
 Route::resource('buyingtransactionitems',BuyingTranscationItemController::class);
+
+Route::resource('sellingtransactions',SellingTransactionController::class);
+Route::resource('sellingtransactionitems',SellingTransactionItemController::class);
+
+Route::resource('reports',ReportController::class);
+
+Route::resource('reportbuyingtransactions',ReportBuyingTransactionController::class);
+Route::resource('reportsellingtransactions',ReportSellingTransactionController::class);

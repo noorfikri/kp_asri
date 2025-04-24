@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class BuyingTransactionSeeder extends Seeder
+class SellingTransactionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,11 +14,11 @@ class BuyingTransactionSeeder extends Seeder
      */
     public function run()
     {
-        $suppliers = DB::table('suppliers')->pluck('id')->toArray();
+        $users = DB::table('users')->pluck('id')->toArray();
 
         for ($i = 1; $i <= 10; $i++) {
-            DB::table('buying_transactions')->insert([
-                'supplier_id' => $suppliers[array_rand($suppliers)],
+            DB::table('selling_transactions')->insert([
+                'seller_id' => $users[array_rand($users)],
                 'date' => date('Y-m-d', strtotime('-' . rand(1, 30) . ' days')),
                 'total_amount' => 0,
                 'created_at' => now(),

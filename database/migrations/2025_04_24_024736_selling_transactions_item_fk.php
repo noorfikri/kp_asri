@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class BuyingTransactionItemFk extends Migration
+class SellingTransactionsItemFk extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class BuyingTransactionItemFk extends Migration
      */
     public function up()
     {
-        Schema::table('buying_transactions_items', function (Blueprint $table) {
-            $table->foreignId('transaction_id')->constrained('buying_transactions');
+        Schema::table('selling_transactions_items', function (Blueprint $table) {
+            $table->foreignId('transaction_id')->constrained('selling_transactions');
             $table->foreignId('item_id')->constrained('items');
         });
     }
@@ -26,7 +26,7 @@ class BuyingTransactionItemFk extends Migration
      */
     public function down()
     {
-        Schema::table('buying_transactions_items', function (Blueprint $table) {
+        Schema::table('selling_transactions_items', function (Blueprint $table) {
             $table->dropForeign(['transaction_id']);
             $table->dropForeign(['item_id']);
         });

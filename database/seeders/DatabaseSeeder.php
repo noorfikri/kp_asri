@@ -24,5 +24,10 @@ class DatabaseSeeder extends Seeder
         $this->call(SupplierSeeder::class);
         $this->call(BuyingTransactionSeeder::class);
         $this->call(BuyingTransactionItemSeeder::class);
+        $this->call(SellingTransactionSeeder::class);
+        $this->call(SellingTransactionItemSeeder::class);
+        $this->call(ReportSeeder::class);
+        $this->call(ReportBuyingTransactionSeeder::class);
+        $this->call(ReportSellingTransactionSeeder::class);
     }
 }

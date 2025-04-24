@@ -1,16 +1,16 @@
 @extends('layouts.adminlte3')
 
 @section('javascript')
-<script>
-function showDetails(item_id){
+{{--<script>
+function showDetails(report_id){
     $.ajax({
         type:'POST',
-        url:'{{route("items.showDetail")}}',
+        url:'{{route("reports.showDetail")}}',
         data:{'_token':'<?php echo csrf_token() ?>',
-            'id':item_id
+            'id':report_id
         },
         success: function(data){
-            $('#itemdetail'+item_id).html(data.msg)
+            $('#reportdetail'+report_id).html(data.msg)
         }
     });
 }
@@ -18,7 +18,7 @@ function showDetails(item_id){
 function showCreate(){
     $.ajax({
         type:'POST',
-        url:'{{route("items.showCreate")}}',
+        url:'{{route("reports.showCreate")}}',
         data:{'_token':'<?php echo csrf_token() ?>',
         },
         success: function(data){
@@ -27,19 +27,19 @@ function showCreate(){
     });
 }
 
-function showEdit(item_id){
+function showEdit(report_id){
     $.ajax({
         type:'POST',
-        url:'{{route("items.showEdit")}}',
+        url:'{{route("reports.showEdit")}}',
         data:{'_token':'<?php echo csrf_token() ?>',
-            'id':item_id,
+            'id':report_id,
         },
         success: function(data){
-            $('#itemedit'+item_id).html(data.msg)
+            $('#reportedit'+report_id).html(data.msg)
         }
     });
 }
-</script>
+</script>--}}
 @endsection
 
 @section('content')
@@ -53,12 +53,12 @@ function showEdit(item_id){
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Daftar Barang</h1>
+          <h1>Daftar Laporan</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Daftar Barang</li>
+            <li class="breadcrumb-item active">Daftar Laporan</li>
           </ol>
         </div>
       </div>
@@ -74,7 +74,7 @@ function showEdit(item_id){
             <div class="card-tools input-group">
                 <input type="search" class="form-control rounded m-auto" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
                 <button type="button" class="btn btn-outline-primary rounded" data-mdb-ripple-init>Cari</button>
-                <a href="{{url('items/create')}}" class=" btn btn-primary rounded"
+                <a href="{{url('reports/create')}}" class=" btn btn-primary rounded"
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
@@ -94,19 +94,22 @@ function showEdit(item_id){
                         #
                     </th>
                     <th style="width: 15%">
-                        Name
+                        Report Date
+                    </th>
+                    <th style="width: 15%">
+                        Report Creator
                     </th>
                     <th style="width: 10%">
-                        Category
+                        Type
                     </th>
                     <th style="width: 10%">
-                        Brand
+                        Total Buying
                     </th>
                     <th style="width: 10%">
-                        Price
+                        Total Selling
                     </th>
-                    <th style="width: 10%" class="text-center">
-                        Stock
+                    <th style="width: 10%">
+                        Cash Flow
                     </th>
                     <th style="width: 15%">
                     </th>
@@ -121,39 +124,38 @@ function showEdit(item_id){
                     </td>
                     <td>
                         <a>
-                            {{$d->name}}
+                            {{$d->report_date}}
                         </a>
-                        <br/>
-                        <small>
-                            Size: {{$d->size->name}}, Colour: {{$d->colour->name}}
-                        </small>
                     </td>
                     <td>
-                        {{$d->category->name}}
+                        {{$d->creator->name}}
                     </td>
                     <td>
-                        {{$d->brand->name}}
+                        {{$d->type}}
                     </td>
-                    <td class="project_progress">
-                        {{$d->price}}
+                    <td>
+                        {{$d->total_buying}}
                     </td>
-                    <td class="project-state">
-                        {{$d->stock}}
+                    <td>
+                        {{$d->total_selling}}
+                    </td>
+                    <td>
+                        {{$d->cash_flow}}
                     </td>
                     <td class="project-actions text-right">
-                        <a class="btn btn-primary btn-sm" href="{{url('items/'.$d->id)}}"
+                        <a class="btn btn-primary btn-sm" href="{{url('reports/'.$d->id)}}"
                             data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                             <i class="fas fa-folder">
                             </i>
                             View
                         </a>
-                        <a class="btn btn-info btn-sm" href="{{url('items/'.$d->id.'/edit')}}"
+                        <a class="btn btn-info btn-sm" href="{{url('reports/'.$d->id.'/edit')}}"
                             data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
                             <i class="fas fa-pencil-alt">
                             </i>
                             Edit
                         </a>
-                        <a class="btn btn-danger btn-sm" href="{{url('items/'.$d->id)}}"
+                        <a class="btn btn-danger btn-sm" href="{{url('reports/'.$d->id)}}"
                             data-target="#delete{{$d->id}}" data-toggle='modal'>
                             <i class="fas fa-trash">
                             </i>
@@ -163,7 +165,7 @@ function showEdit(item_id){
                     <td>
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content" id="itemdetail{{$d->id}}">
+                                <div class="modal-content" id="reportdetail{{$d->id}}">
                                     <!-- put animated gif here -->
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
@@ -171,7 +173,7 @@ function showEdit(item_id){
                         </div>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content" id="itemedit{{$d->id}}">
+                                <div class="modal-content" id="reportedit{{$d->id}}">
                                     <!-- put animated gif here -->
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
@@ -179,22 +181,22 @@ function showEdit(item_id){
                         </div>
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content" id="itemdelete{{$d->id}}">
-                                    <form method='POST' action="{{route('items.destroy', $d->id)}}">
+                                <div class="modal-content" id="reportdelete{{$d->id}}">
+                                    <form method='POST' action="{{route('reports.destroy', $d->id)}}">
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-header bg-danger">
-                                            <h4 class="modal-title">Delete Item</h4>
+                                            <h4 class="modal-title">Delete Report</h4>
                                             <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Close">
                                               <span aria-hidden="true">×</span>
                                             </button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Are you sure you want to delete item "{{$d->name}}"?</p>
+                                            <p>Are you sure you want to delete report dated "{{$d->report_date}}"?</p>
                                           </div>
                                           <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Close</button>
-                                            <button type="submit" class="btn btn-danger">Delete Item</button>
+                                            <button type="submit" class="btn btn-danger">Delete Report</button>
                                           </div>
                                     </form>
                                 </div>
@@ -213,4 +215,3 @@ function showEdit(item_id){
   </section>
   <!-- /.content -->
 @endsection
-<!-- Vertically centered scrollable modal -->

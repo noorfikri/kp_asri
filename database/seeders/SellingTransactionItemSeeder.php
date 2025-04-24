@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class BuyingTransactionItemSeeder extends Seeder
+class SellingTransactionItemSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +16,7 @@ class BuyingTransactionItemSeeder extends Seeder
     {
         $items = DB::table('items')->pluck('id')->toArray();
 
-        $transactions = DB::table('buying_transactions')->get();
+        $transactions = DB::table('selling_transactions')->get();
 
         foreach ($transactions as $transaction) {
             $totalAmount = 0;
@@ -30,7 +30,7 @@ class BuyingTransactionItemSeeder extends Seeder
                 $totalAmount += $quantity * $price;
                 $totalCount += $quantity;
 
-                DB::table('buying_transactions_items')->insert([
+                DB::table('selling_transactions_items')->insert([
                     'transaction_id' => $transaction->id,
                     'item_id' => $itemId,
                     'total_quantity' => $quantity,
@@ -40,7 +40,7 @@ class BuyingTransactionItemSeeder extends Seeder
                 ]);
             }
 
-            DB::table('buying_transactions')->where('id', $transaction->id)->update([
+            DB::table('selling_transactions')->where('id', $transaction->id)->update([
                 'total_amount' => $totalAmount,
                 'total_count' => $totalCount
             ]);

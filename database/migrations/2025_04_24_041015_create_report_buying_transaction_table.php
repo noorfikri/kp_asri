@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ItemsColoridFk extends Migration
+class CreateReportBuyingTransactionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class ItemsColoridFk extends Migration
      */
     public function up()
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->foreignId('colour_id')->constrained('colours');
+        Schema::create('report_buying_transactions', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +26,6 @@ class ItemsColoridFk extends Migration
      */
     public function down()
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->dropForeign(['colour_id']);
-        });
+        Schema::dropIfExists('report_buying_transactions');
     }
 }

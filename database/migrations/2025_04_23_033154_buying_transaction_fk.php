@@ -26,7 +26,7 @@ class BuyingTransactionFk extends Migration
     public function down()
     {
         Schema::table('buying_transactions', function (Blueprint $table) {
-            $table->dropForeign('supplier_id');
+            $table->dropForeign(['supplier_id']);
         });
     }
 }

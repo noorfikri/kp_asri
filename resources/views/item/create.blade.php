@@ -1,4 +1,4 @@
-<div class="card card-primary">
+<div class="card card-primary shadow-lg">
     <div class="card-header">
       <h3 class="card-title">Create Item</h3>
 

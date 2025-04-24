@@ -101,19 +101,6 @@
           <a href="#" class="d-block">Alexander Pierce</a>
         </div>
       </div>
-
-      <!-- SidebarSearch Form -->
-      <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -174,7 +161,7 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="./index3.html" class="nav-link">
+            <a href="{{route('sellingtransactions.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Selling</p>
             </a>
@@ -212,6 +199,24 @@
             <a href="{{route('suppliers.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Supplier</p>
+            </a>
+          </li>
+        </ul>
+        </li>
+        <li class="nav-header">REPORT</li>
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fa-solid fa-clipboard-list"></i>
+          <p>
+            Report
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{route('reports.index')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Report</p>
             </a>
           </li>
         </ul>

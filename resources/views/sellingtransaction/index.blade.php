@@ -1,16 +1,16 @@
 @extends('layouts.adminlte3')
 
 @section('javascript')
-<script>
-function showDetails(item_id){
+{{-- <script>
+function showDetails(transaction_id){
     $.ajax({
         type:'POST',
-        url:'{{route("items.showDetail")}}',
+        url:'{{route("sellingtransactions.showDetail")}}',
         data:{'_token':'<?php echo csrf_token() ?>',
-            'id':item_id
+            'id':transaction_id
         },
         success: function(data){
-            $('#itemdetail'+item_id).html(data.msg)
+            $('#transactiondetail'+transaction_id).html(data.msg)
         }
     });
 }
@@ -18,7 +18,7 @@ function showDetails(item_id){
 function showCreate(){
     $.ajax({
         type:'POST',
-        url:'{{route("items.showCreate")}}',
+        url:'{{route("sellingtransactions.showCreate")}}',
         data:{'_token':'<?php echo csrf_token() ?>',
         },
         success: function(data){
@@ -27,19 +27,19 @@ function showCreate(){
     });
 }
 
-function showEdit(item_id){
+function showEdit(transaction_id){
     $.ajax({
         type:'POST',
-        url:'{{route("items.showEdit")}}',
+        url:'{{route("sellingtransactions.showEdit")}}',
         data:{'_token':'<?php echo csrf_token() ?>',
-            'id':item_id,
+            'id':transaction_id,
         },
         success: function(data){
-            $('#itemedit'+item_id).html(data.msg)
+            $('#transactionedit'+transaction_id).html(data.msg)
         }
     });
 }
-</script>
+</script> --}}
 @endsection
 
 @section('content')
@@ -53,34 +53,32 @@ function showEdit(item_id){
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Daftar Barang</h1>
+          <h1>Daftar Transaksi Penjualan</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Daftar Barang</li>
+            <li class="breadcrumb-item active">Daftar Transaksi Penjualan</li>
           </ol>
         </div>
       </div>
-    </div><!-- /.container-fluid -->
+    </div>
   </section>
 
   <!-- Main content -->
   <section class="content">
 
-    <!-- Default box -->
     <div class="card">
         <div class="card-header">
             <div class="card-tools input-group">
                 <input type="search" class="form-control rounded m-auto" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
                 <button type="button" class="btn btn-outline-primary rounded" data-mdb-ripple-init>Cari</button>
-                <a href="{{url('items/create')}}" class=" btn btn-primary rounded"
+                <a href="{{url('sellingtransactions/create')}}" class="btn btn-primary rounded"
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content" id="createmodal">
-                        <!-- put animated gif here -->
                         <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                     </div>
                 </div>
@@ -90,111 +88,67 @@ function showEdit(item_id){
         <table class="table table-striped projects">
             <thead>
                 <tr>
-                    <th style="width: 1%">
-                        #
-                    </th>
-                    <th style="width: 15%">
-                        Name
-                    </th>
-                    <th style="width: 10%">
-                        Category
-                    </th>
-                    <th style="width: 10%">
-                        Brand
-                    </th>
-                    <th style="width: 10%">
-                        Price
-                    </th>
-                    <th style="width: 10%" class="text-center">
-                        Stock
-                    </th>
-                    <th style="width: 15%">
-                    </th>
-                    <th style="width: 1%"></th>
+                    <th style="width: 1%">#</th>
+                    <th style="width: 10%">Seller</th>
+                    <th style="width: 10%">Date</th>
+                    <th style="width: 15%">Total Revenue</th>
+                    <th style="width: 10%">Total Item Count</th>
+                    <th style="width: 20%"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($data as $d)
                 <tr id='tr{{$d->id}}'>
-                    <td>
-                        {{$d->id}}
-                    </td>
-                    <td>
-                        <a>
-                            {{$d->name}}
-                        </a>
-                        <br/>
-                        <small>
-                            Size: {{$d->size->name}}, Colour: {{$d->colour->name}}
-                        </small>
-                    </td>
-                    <td>
-                        {{$d->category->name}}
-                    </td>
-                    <td>
-                        {{$d->brand->name}}
-                    </td>
-                    <td class="project_progress">
-                        {{$d->price}}
-                    </td>
-                    <td class="project-state">
-                        {{$d->stock}}
-                    </td>
+                    <td>{{$d->id}}</td>
+                    <td>{{$d->seller->name}}</td>
+                    <td>{{$d->date}}</td>
+                    <td>{{$d->total_amount}}</td>
+                    <td>{{$d->total_count}}</td>
                     <td class="project-actions text-right">
-                        <a class="btn btn-primary btn-sm" href="{{url('items/'.$d->id)}}"
+                        <a class="btn btn-primary btn-sm" href="{{url('sellingtransactions/'.$d->id)}}"
                             data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
-                            <i class="fas fa-folder">
-                            </i>
-                            View
+                            <i class="fas fa-folder"></i> View
                         </a>
-                        <a class="btn btn-info btn-sm" href="{{url('items/'.$d->id.'/edit')}}"
-                            data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
-                            <i class="fas fa-pencil-alt">
-                            </i>
-                            Edit
-                        </a>
-                        <a class="btn btn-danger btn-sm" href="{{url('items/'.$d->id)}}"
-                            data-target="#delete{{$d->id}}" data-toggle='modal'>
-                            <i class="fas fa-trash">
-                            </i>
-                            Delete
-                        </a>
-                    </td>
-                    <td>
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content" id="itemdetail{{$d->id}}">
-                                    <!-- put animated gif here -->
+                                <div class="modal-content" id="transactiondetail{{$d->id}}">
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
                             </div>
                         </div>
+                        <a class="btn btn-info btn-sm" href="{{url('sellingtransactions/'.$d->id.'/edit')}}"
+                            data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
+                            <i class="fas fa-pencil-alt"></i> Edit
+                        </a>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content" id="itemedit{{$d->id}}">
-                                    <!-- put animated gif here -->
+                                <div class="modal-content" id="transactionedit{{$d->id}}">
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
                             </div>
                         </div>
+                        <a class="btn btn-danger btn-sm" href="{{url('sellingtransactions/'.$d->id)}}"
+                            data-target="#delete{{$d->id}}" data-toggle='modal'>
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content" id="itemdelete{{$d->id}}">
-                                    <form method='POST' action="{{route('items.destroy', $d->id)}}">
+                                <div class="modal-content" id="transactiondelete{{$d->id}}">
+                                    <form method='POST' action="{{route('sellingtransactions.destroy', $d->id)}}">
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-header bg-danger">
-                                            <h4 class="modal-title">Delete Item</h4>
+                                            <h4 class="modal-title">Delete Transaction</h4>
                                             <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Close">
                                               <span aria-hidden="true">×</span>
                                             </button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Are you sure you want to delete item "{{$d->name}}"?</p>
+                                            <p>Are you sure you want to delete transaction "{{$d->transaction_code}}"?</p>
                                           </div>
                                           <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Close</button>
-                                            <button type="submit" class="btn btn-danger">Delete Item</button>
+                                            <button type="submit" class="btn btn-danger">Delete Transaction</button>
                                           </div>
                                     </form>
                                 </div>
@@ -206,11 +160,7 @@ function showEdit(item_id){
             </tbody>
         </table>
       </div>
-      <!-- /.card-body -->
     </div>
-    <!-- /.card -->
 
   </section>
-  <!-- /.content -->
 @endsection
-<!-- Vertically centered scrollable modal -->

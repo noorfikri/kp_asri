@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BuyingTransaction extends Model
+class SellingTransaction extends Model
 {
-    public function supplier(){
-        return $this->belongsTo('App\Models\Supplier','supplier_id');
+    public function seller(){
+        return $this->belongsTo('App\Models\User','seller_id');
     }
 
     public function items()
     {
         return $this->belongsToMany(
             'App\Models\Item',
-            'buying_transactions_items',
+            'selling_transactions_items',
             'transaction_id',
             'item_id'
         )->withPivot('total_quantity', 'total_price')->withTimestamps();
@@ -25,8 +25,8 @@ class BuyingTransaction extends Model
     {
         return $this->belongsToMany(
             Report::class,
-            'report_buying_transactions',
-            'buying_transaction_id',
+            'report_selling_transactions',
+            'selling_transaction_id',
             'report_id'
         );
     }
