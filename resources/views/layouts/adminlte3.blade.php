@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard 3</title>
+  <title>Administrasi Toko ASRI | Dashboard</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{asset('assets/img/favicon.ico')}}">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -86,8 +89,8 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-      <img src="{{asset('assets/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <img src="{{asset('assets/img/Logo ASRI.png')}}" alt="ASRI Logo" class="brand-image" style="opacity: .8">
+      <span class="brand-text font-weight-light">Administrasi Toko ASRI</span>
     </a>
 
     <!-- Sidebar -->
@@ -117,9 +120,9 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="./index3.html" class="nav-link">
+            <a href="{{url('/dashboard')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Dashboard v3</p>
+            <p>Dashboard</p>
             </a>
           </li>
         </ul>
@@ -241,7 +244,7 @@
         </li>
         <li class="nav-header">EXIT</li>
         <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="{{url('/')}}" class="nav-link">
           <i class="nav-icon fa-solid fa-sign-out-alt"></i>
           <p>EXIT</p>
         </a>

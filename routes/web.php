@@ -28,8 +28,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::view('/','homepage/index')->name('home');
 
-Route::view('/','welcome');
+Route::view('/dashboard','dashboard/index')->name('dashboard');
 
 Route::resource('items',ItemController::class);
 
