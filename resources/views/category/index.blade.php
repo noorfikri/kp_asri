@@ -57,7 +57,7 @@ function showEdit(category_id){
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
             <li class="breadcrumb-item active">Daftar Kategori</li>
           </ol>
         </div>
@@ -72,15 +72,15 @@ function showEdit(category_id){
     <div class="card">
         <div class="card-header">
             <div class="card-tools input-group">
-                <input type="search" class="form-control rounded m-auto" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                <input type="search" class="form-control rounded m-auto" placeholder="Cari" aria-label="Cari" aria-describedby="search-addon" />
                 <button type="button" class="btn btn-outline-primary rounded" data-mdb-ripple-init>Cari</button>
-                <a href="{{url('categories/create')}}" class=" btn btn-primary rounded"
+                <a href="{{url('admin/categories/create')}}" class=" btn btn-primary rounded"
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content" id="createmodal">
-                        <!-- put animated gif here -->
+                        <!-- letakkan gif animasi di sini -->
                         <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                     </div>
                 </div>
@@ -94,7 +94,7 @@ function showEdit(category_id){
                         #
                     </th>
                     <th style="width: 50%">
-                        Name
+                        Nama
                     </th>
                     <th style="width: 20%">
                     </th>
@@ -104,7 +104,7 @@ function showEdit(category_id){
                 @if ($data->isEmpty())
                 <tr>
                     <td colspan="3" class="text-center">
-                        No data available in the category list.
+                        Tidak ada data dalam daftar kategori.
                     </td>
                 </tr>
                 @else
@@ -119,39 +119,37 @@ function showEdit(category_id){
                         </a>
                     </td>
                     <td class="project-actions text-right">
-                        <a class="btn btn-primary btn-sm" href="{{url('categories/'.$d->id)}}"
+                        <a class="btn btn-primary btn-sm" href="{{url('admin/categories/'.$d->id)}}"
                             data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                             <i class="fas fa-folder">
                             </i>
-                            View
+                            Lihat
                         </a>
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="categorydetail{{$d->id}}">
-                                    <!-- put animated gif here -->
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-info btn-sm" href="{{url('categories/'.$d->id.'/edit')}}"
+                        <a class="btn btn-info btn-sm" href="{{url('admin/categories/'.$d->id.'/edit')}}"
                             data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
                             <i class="fas fa-pencil-alt">
                             </i>
-                            Edit
+                            Ubah
                         </a>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="categoryedit{{$d->id}}">
-                                    <!-- put animated gif here -->
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-danger btn-sm" href="{{url('categories/'.$d->id)}}"
+                        <a class="btn btn-danger btn-sm" href="{{url('admin/categories/'.$d->id)}}"
                             data-target="#delete{{$d->id}}" data-toggle='modal'>
                             <i class="fas fa-trash">
                             </i>
-                            Delete
+                            Hapus
                         </a>
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
@@ -160,17 +158,17 @@ function showEdit(category_id){
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-header bg-danger">
-                                            <h4 class="modal-title">Delete Category</h4>
-                                            <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Close">
+                                            <h4 class="modal-title">Hapus Kategori</h4>
+                                            <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Tutup">
                                               <span aria-hidden="true">×</span>
                                             </button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Are you sure you want to delete category "{{$d->name}}"?</p>
+                                            <p>Apakah Anda yakin ingin menghapus kategori "{{$d->name}}"?</p>
                                           </div>
                                           <div class="modal-footer justify-content-between">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Close</button>
-                                            <button type="submit" class="btn btn-danger">Delete Category</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Tutup</button>
+                                            <button type="submit" class="btn btn-danger">Hapus Kategori</button>
                                           </div>
                                     </form>
                                 </div>

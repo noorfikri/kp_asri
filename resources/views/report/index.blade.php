@@ -41,7 +41,6 @@ function showEdit(report_id){
 }
 </script>--}}
 @endsection
-
 @section('content')
 @if (session('status'))
     <div class="alert alert-success">
@@ -57,7 +56,7 @@ function showEdit(report_id){
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
             <li class="breadcrumb-item active">Daftar Laporan</li>
           </ol>
         </div>
@@ -72,9 +71,9 @@ function showEdit(report_id){
     <div class="card">
         <div class="card-header">
             <div class="card-tools input-group">
-                <input type="search" class="form-control rounded m-auto" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                <input type="search" class="form-control rounded m-auto" placeholder="Cari" aria-label="Cari" aria-describedby="search-addon" />
                 <button type="button" class="btn btn-outline-primary rounded" data-mdb-ripple-init>Cari</button>
-                <a href="{{url('reports/create')}}" class=" btn btn-primary rounded"
+                <a href="{{url('admin/reports/create')}}" class=" btn btn-primary rounded"
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
@@ -94,22 +93,22 @@ function showEdit(report_id){
                         #
                     </th>
                     <th style="width: 15%">
-                        Report Date
+                        Tanggal Laporan
                     </th>
                     <th style="width: 15%">
-                        Report Creator
+                        Pembuat Laporan
                     </th>
                     <th style="width: 10%">
-                        Type
+                        Jenis
                     </th>
                     <th style="width: 10%">
-                        Total Buying
+                        Total Pembelian
                     </th>
                     <th style="width: 10%">
-                        Total Selling
+                        Total Penjualan
                     </th>
                     <th style="width: 10%">
-                        Cash Flow
+                        Arus Kas
                     </th>
                     <th style="width: 15%">
                     </th>
@@ -143,23 +142,23 @@ function showEdit(report_id){
                         {{$d->cash_flow}}
                     </td>
                     <td class="project-actions text-right">
-                        <a class="btn btn-primary btn-sm" href="{{url('reports/'.$d->id)}}"
+                        <a class="btn btn-primary btn-sm" href="{{url('admin/reports/'.$d->id)}}"
                             data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                             <i class="fas fa-folder">
                             </i>
-                            View
+                            Lihat
                         </a>
-                        <a class="btn btn-info btn-sm" href="{{url('reports/'.$d->id.'/edit')}}"
+                        <a class="btn btn-info btn-sm" href="{{url('admin/reports/'.$d->id.'/edit')}}"
                             data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
                             <i class="fas fa-pencil-alt">
                             </i>
-                            Edit
+                            Ubah
                         </a>
-                        <a class="btn btn-danger btn-sm" href="{{url('reports/'.$d->id)}}"
+                        <a class="btn btn-danger btn-sm" href="{{url('admin/reports/'.$d->id)}}"
                             data-target="#delete{{$d->id}}" data-toggle='modal'>
                             <i class="fas fa-trash">
                             </i>
-                            Delete
+                            Hapus
                         </a>
                     </td>
                     <td>
@@ -186,17 +185,17 @@ function showEdit(report_id){
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-header bg-danger">
-                                            <h4 class="modal-title">Delete Report</h4>
+                                            <h4 class="modal-title">Hapus Laporan</h4>
                                             <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Close">
                                               <span aria-hidden="true">×</span>
                                             </button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Are you sure you want to delete report dated "{{$d->report_date}}"?</p>
+                                            <p>Apakah Anda yakin ingin menghapus laporan bertanggal "{{$d->report_date}}"?</p>
                                           </div>
                                           <div class="modal-footer justify-content-between">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Close</button>
-                                            <button type="submit" class="btn btn-danger">Delete Report</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Tutup</button>
+                                            <button type="submit" class="btn btn-danger">Hapus Laporan</button>
                                           </div>
                                     </form>
                                 </div>

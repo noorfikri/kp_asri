@@ -41,7 +41,6 @@ function showEdit(transaction_id){
 }
 </script> --}}
 @endsection
-
 @section('content')
 @if (session('status'))
     <div class="alert alert-success">
@@ -57,7 +56,7 @@ function showEdit(transaction_id){
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
             <li class="breadcrumb-item active">Daftar Transaksi Penjualan</li>
           </ol>
         </div>
@@ -71,9 +70,9 @@ function showEdit(transaction_id){
     <div class="card">
         <div class="card-header">
             <div class="card-tools input-group">
-                <input type="search" class="form-control rounded m-auto" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                <input type="search" class="form-control rounded m-auto" placeholder="Cari" aria-label="Cari" aria-describedby="search-addon" />
                 <button type="button" class="btn btn-outline-primary rounded" data-mdb-ripple-init>Cari</button>
-                <a href="{{url('sellingtransactions/create')}}" class="btn btn-primary rounded"
+                <a href="{{url('admin/sellingtransactions/create')}}" class="btn btn-primary rounded"
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
@@ -89,10 +88,10 @@ function showEdit(transaction_id){
             <thead>
                 <tr>
                     <th style="width: 1%">#</th>
-                    <th style="width: 10%">Seller</th>
-                    <th style="width: 10%">Date</th>
-                    <th style="width: 15%">Total Revenue</th>
-                    <th style="width: 10%">Total Item Count</th>
+                    <th style="width: 10%">Penjual</th>
+                    <th style="width: 10%">Tanggal</th>
+                    <th style="width: 15%">Total Pendapatan</th>
+                    <th style="width: 10%">Jumlah Barang</th>
                     <th style="width: 20%"></th>
                 </tr>
             </thead>
@@ -105,9 +104,9 @@ function showEdit(transaction_id){
                     <td>{{$d->total_amount}}</td>
                     <td>{{$d->total_count}}</td>
                     <td class="project-actions text-right">
-                        <a class="btn btn-primary btn-sm" href="{{url('sellingtransactions/'.$d->id)}}"
+                        <a class="btn btn-primary btn-sm" href="{{url('admin/sellingtransactions/'.$d->id)}}"
                             data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
-                            <i class="fas fa-folder"></i> View
+                            <i class="fas fa-folder"></i> Lihat
                         </a>
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
@@ -116,9 +115,9 @@ function showEdit(transaction_id){
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-info btn-sm" href="{{url('sellingtransactions/'.$d->id.'/edit')}}"
+                        <a class="btn btn-info btn-sm" href="{{url('admin/sellingtransactions/'.$d->id.'/edit')}}"
                             data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
-                            <i class="fas fa-pencil-alt"></i> Edit
+                            <i class="fas fa-pencil-alt"></i> Ubah
                         </a>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
@@ -127,9 +126,9 @@ function showEdit(transaction_id){
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-danger btn-sm" href="{{url('sellingtransactions/'.$d->id)}}"
+                        <a class="btn btn-danger btn-sm" href="{{url('admin/sellingtransactions/'.$d->id)}}"
                             data-target="#delete{{$d->id}}" data-toggle='modal'>
-                            <i class="fas fa-trash"></i> Delete
+                            <i class="fas fa-trash"></i> Hapus
                         </a>
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
@@ -138,17 +137,17 @@ function showEdit(transaction_id){
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-header bg-danger">
-                                            <h4 class="modal-title">Delete Transaction</h4>
+                                            <h4 class="modal-title">Hapus Transaksi</h4>
                                             <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Close">
                                               <span aria-hidden="true">×</span>
                                             </button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Are you sure you want to delete transaction "{{$d->transaction_code}}"?</p>
+                                            <p>Apakah Anda yakin ingin menghapus transaksi "{{$d->transaction_code}}"?</p>
                                           </div>
                                           <div class="modal-footer justify-content-between">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Close</button>
-                                            <button type="submit" class="btn btn-danger">Delete Transaction</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Tutup</button>
+                                            <button type="submit" class="btn btn-danger">Hapus Transaksi</button>
                                           </div>
                                     </form>
                                 </div>

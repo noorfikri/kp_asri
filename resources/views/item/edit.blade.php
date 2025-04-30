@@ -1,6 +1,6 @@
 <div class="card card-primary shadow-lg">
     <div class="card-header">
-      <h3 class="card-title">Create Item</h3>
+      <h3 class="card-title">Edit Barang</h3>
 
       <div class="card-tools">
         <button type="button" class="close" data-target="#edit{{$item->id}}" data-dismiss="modal" aria-label="Close">
@@ -8,21 +8,21 @@
           </button>
       </div>
     </div>
-    <form method="POST" action="{{url('items/'.$item->id)}}">
+    <form method="POST" action="{{url('admin/items/'.$item->id)}}">
         @csrf
         @method('PUT')
         <div class="card-body">
-        <img class="img-fluid pad" src="https://placehold.co/400x400?text=Placeholder+Image" alt="Photo">
+        <img class="img-fluid pad" src="https://placehold.co/400x400?text=Placeholder+Image" alt="Foto">
         <div class="form-group">
-            <label for="inputImage">Image Location</label>
+            <label for="inputImage">Gambar</label>
             <input type="text" id="inputImage" name="image" class="form-control" value="placeholder">
           </div>
         <div class="form-group">
-            <label for="inputName">Item Name</label>
+            <label for="inputName">Nama Barang</label>
             <input type="text" id="inputName" name="name" class="form-control" value="{{$item->name}}">
           </div>
             <div class="form-group">
-            <label for="inputCategory">Category</label>
+            <label for="inputCategory">Kategori</label>
             <select id="inputCategory" name="category_id" class="form-control custom-select">
                 @foreach ($category as $cat)
                 @if ($cat->id == $item->category_id)
@@ -37,7 +37,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="inputSize">Size</label>
+            <label for="inputSize">Ukuran</label>
             <select id="inputSize" name="size_id" class="form-control custom-select">
               @foreach ($size as $s)
               @if ($s->id == $item->size_id)
@@ -51,7 +51,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="inputColour">Colour</label>
+            <label for="inputColour">Warna</label>
             <select id="inputColour" name="colour_id" class="form-control custom-select">
               @foreach ($colour as $co)
               @if ($co->id == $item->colour_id)
@@ -64,7 +64,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="inputBrand">Brand</label>
+            <label for="inputBrand">Merek</label>
             <select id="inputBrand" name="brand_id" class="form-control custom-select">
               @foreach ($brand as $b)
               @if ($b->id == $item->brand_id)
@@ -77,21 +77,21 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="inputPrice">Item Price</label>
+            <label for="inputPrice">Harga Barang</label>
             <input type="text" id="inputPrice" name="price" class="form-control" value="{{$item->price}}">
           </div>
           <div class="form-group">
-            <label for="inputStock">Item Stock</label>
+            <label for="inputStock">Stok Barang</label>
             <input type="text" id="inputStock" name="stock" class="form-control" value="{{$item->stock}}">
           </div>
           <div class="form-group">
-            <label for="inputNote">Note</label>
+            <label for="inputNote">Catatan</label>
             <textarea id="inputNote" name="note" class="form-control" rows="4" value="{{$item->note}}">{{ $item->note }}</textarea>
           </div>
         </div>
         <div class="card-footer">
             <div class="col-12">
-                <a href="#" class="btn btn-secondary" data-target="#edit{{$item->id}}" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-secondary" data-target="#edit{{$item->id}}" data-dismiss="modal">Batal</a>
                 <input type="submit" value="Edit" class="btn btn-success float-right">
             </div>
         </div>

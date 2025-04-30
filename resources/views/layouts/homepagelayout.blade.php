@@ -70,7 +70,7 @@
                     <a href="#contact">Kontak</a>
                 </li>
                 <li>
-                    <a href="{{url('/dashboard')}}">Masuk</a>
+                    <a href="{{url('/admin')}}">Masuk</a>
                 </li>
             </ul>
         </nav>
@@ -102,7 +102,7 @@
                 <a href="#gallery">Galeri</a>
                 <a href="#contact">Kontak</a>
                 <p></p>
-                <a href="{{url('/dashboard')}}">Masuk Karyawan</a>
+                <a href="{{url('/admin')}}">Masuk Karyawan</a>
         </div>
         <div id = "footer_credits">
             <p><b>Website Toko Asri &#169; 2024,</b> Wildan Achmad Noorfikri</p>

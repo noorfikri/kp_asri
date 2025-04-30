@@ -40,7 +40,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
+        <a href="{{url('/admin')}}" class="nav-link">Home</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
@@ -88,7 +88,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="{{url('/admin')}}" class="brand-link">
       <img src="{{asset('assets/img/Logo ASRI.png')}}" alt="ASRI Logo" class="brand-image" style="opacity: .8">
       <span class="brand-text font-weight-light">Administrasi Toko ASRI</span>
     </a>
@@ -120,19 +120,19 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="{{url('/dashboard')}}" class="nav-link">
+            <a href="{{url('/admin')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Dashboard</p>
             </a>
           </li>
         </ul>
         </li>
-        <li class="nav-header">ITEMS</li>
+        <li class="nav-header">Barang</li>
         <li class="nav-item">
         <a href="#" class="nav-link">
           <i class="nav-icon fa-solid fa-boxes-stacked"></i>
           <p>
-            Items
+            Barang
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
@@ -140,25 +140,25 @@
           <li class="nav-item">
             <a href="{{route('categories.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Category</p>
+            <p>Daftar Kategori</p>
             </a>
             <a href="{{route('items.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Item List</p>
+            <p>Daftar Barang</p>
             </a>
             <a href="{{route('brands.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Brand</p>
+            <p>Daftar Merek</p>
             </a>
           </li>
         </ul>
         </li>
-        <li class="nav-header">SALES</li>
+        <li class="nav-header">Data Transaksi</li>
         <li class="nav-item">
         <a href="#" class="nav-link">
           <i class="nav-icon fa-solid fa-cart-flatbed"></i>
           <p>
-            Selling
+            Penjualan
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
@@ -166,7 +166,7 @@
           <li class="nav-item">
             <a href="{{route('sellingtransactions.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Selling</p>
+            <p>Transaksi Penjualan</p>
             </a>
         </li>
         </ul>
@@ -175,7 +175,7 @@
         <a href="#" class="nav-link">
           <i class="nav-icon fa-solid fa-cart-arrow-down"></i>
           <p>
-            Buying
+            Pembelian
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
@@ -183,12 +183,12 @@
           <li class="nav-item">
             <a href="{{route('buyingtransactions.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Buying</p>
+            <p>Transaksi Pembelian</p>
             </a>
           </li>
         </ul>
         </li>
-        <li class="nav-header">SUPPLIERS</li>
+        <li class="nav-header">SUPPLIER</li>
         <li class="nav-item">
         <a href="#" class="nav-link">
           <i class="nav-icon fa-solid fa-truck"></i>
@@ -201,17 +201,17 @@
           <li class="nav-item">
             <a href="{{route('suppliers.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Supplier</p>
+            <p>Daftar Supplier</p>
             </a>
           </li>
         </ul>
         </li>
-        <li class="nav-header">REPORT</li>
+        <li class="nav-header">Laporan</li>
         <li class="nav-item">
         <a href="#" class="nav-link">
           <i class="nav-icon fa-solid fa-clipboard-list"></i>
           <p>
-            Report
+            Laporan
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
@@ -219,34 +219,69 @@
           <li class="nav-item">
             <a href="{{route('reports.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Report</p>
+            <p>Daftar Laporan</p>
             </a>
           </li>
         </ul>
         </li>
-        <li class="nav-header">ACCOUNT</li>
+        <li class="nav-header">Pesan</li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fa-solid fa-envelope"></i>
+            <p>
+              Pesan
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Daftar Pesan</p>
+              </a>
+            </li>
+          </ul>
+          </li>
+        <li class="nav-header">Akun</li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fa-solid fa-user"></i>
+            <p>
+              Manajemen Akun
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Daftar Akun</p>
+              </a>
+            </li>
+          </ul>
+          </li>
         <li class="nav-item">
         <a href="#" class="nav-link">
           <i class="nav-icon fa-solid fa-user"></i>
           <p>
-            Account
+            Akun
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="./index3.html" class="nav-link">
+            <a href="#" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Account</p>
+            <p>Akun</p>
             </a>
           </li>
         </ul>
-        </li>
-        <li class="nav-header">EXIT</li>
+      </li>
+        <li class="nav-header">Keluar</li>
         <li class="nav-item">
         <a href="{{url('/')}}" class="nav-link">
           <i class="nav-icon fa-solid fa-sign-out-alt"></i>
-          <p>EXIT</p>
+          <p>Keluar</p>
         </a>
         </li>
       </ul>

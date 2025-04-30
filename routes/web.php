@@ -30,31 +30,31 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/','homepage/index')->name('home');
 
-Route::view('/dashboard','dashboard/index')->name('dashboard');
+Route::view('/admin','dashboard/index')->name('dashboard');
 
-Route::resource('items',ItemController::class);
+Route::resource('/admin/items',ItemController::class);
 
-Route::post('/items/showDetail', [ItemController::class, 'showDetail'])->name('items.showDetail');
-Route::post('/items/showCreate', [ItemController::class, 'showCreate'])->name('items.showCreate');
-Route::post('/items/showEdit', [ItemController::class, 'showEdit'])->name('items.showEdit');
+Route::post('/admin/items/showDetail', [ItemController::class, 'showDetail'])->name('items.showDetail');
+Route::post('/admin/items/showCreate', [ItemController::class, 'showCreate'])->name('items.showCreate');
+Route::post('/admin/items/showEdit', [ItemController::class, 'showEdit'])->name('items.showEdit');
 
 
-Route::resource('categories',CategoryController::class);
-Route::resource('sizes',SizeController::class);
-Route::resource('colours',ColourController::class);
-Route::resource('brands',BrandController::class);
+Route::resource('/admin/categories',CategoryController::class);
+Route::resource('/admin/sizes',SizeController::class);
+Route::resource('/admin/colours',ColourController::class);
+Route::resource('/admin/brands',BrandController::class);
 
-Route::resource('suppliers',SupplierController::class);
+Route::resource('/admin/suppliers',SupplierController::class);
 
-Route::resource('users',UserController::class);
+Route::resource('/admin/users',UserController::class);
 
-Route::resource('buyingtransactions',BuyingTranscationController::class);
-Route::resource('buyingtransactionitems',BuyingTranscationItemController::class);
+Route::resource('/admin/buyingtransactions',BuyingTranscationController::class);
+Route::resource('/admin/buyingtransactionitems',BuyingTranscationItemController::class);
 
-Route::resource('sellingtransactions',SellingTransactionController::class);
-Route::resource('sellingtransactionitems',SellingTransactionItemController::class);
+Route::resource('/admin/sellingtransactions',SellingTransactionController::class);
+Route::resource('/admin/sellingtransactionitems',SellingTransactionItemController::class);
 
-Route::resource('reports',ReportController::class);
+Route::resource('/admin/reports',ReportController::class);
 
-Route::resource('reportbuyingtransactions',ReportBuyingTransactionController::class);
-Route::resource('reportsellingtransactions',ReportSellingTransactionController::class);
+Route::resource('/admin/reportbuyingtransactions',ReportBuyingTransactionController::class);
+Route::resource('/admin/reportsellingtransactions',ReportSellingTransactionController::class);
