@@ -20,36 +20,6 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Javascript Methods-->
-    <script>
-        function toggleAside() {
-            var iconOpen = document.getElementById("btn_open")
-            var iconClose = document.getElementById("btn_close")
-            var asideContent = document.getElementById("aside_content")
-
-            if (iconOpen.style.visibility == "visible"){
-                iconOpen.style.visibility = "hidden"
-                iconOpen.style.display = "none"
-
-                iconClose.style.visibility = "visible"
-                iconClose.style.display = "flex"
-
-                asideContent.style.visibility = "visible"
-                asideContent.style.display = "flex"
-                asideContent.style.flexFlow = "column nowrap"
-            } else {
-                iconClose.style.visibility = "hidden"
-                iconClose.style.display = "none"
-
-                iconOpen.style.visibility = "visible"
-                iconOpen.style.display = "flex"
-
-                asideContent.style.visibility = "hidden"
-                asideContent.style.display = "none"
-            }
-        }
-    </script>
-
 @yield('javascript')
 
 </head>
@@ -61,16 +31,16 @@
         <nav class = "navlist">
             <ul>
                 <li>
-                    <a href="#home">Beranda</a>
+                    <a href="{{url('/')}}">Beranda</a>
                 </li>
                 <li>
-                    <a href="#gallery">Galeri</a>
+                    <a href="{{ route('gallery') }}">Galeri</a>
                 </li>
                 <li>
-                    <a href="#contact">Kontak</a>
+                    <a href="{{ route('contact') }}">Hubungi Kami</a>
                 </li>
                 <li>
-                    <a href="{{url('/admin')}}">Masuk</a>
+                    <a href="{{url('/admin')}}">Masuk Karyawan</a>
                 </li>
             </ul>
         </nav>
@@ -98,9 +68,9 @@
             </i>
         </div>
         <div id = "footer_menu">
-                <a href="#home">Beranda</a>
-                <a href="#gallery">Galeri</a>
-                <a href="#contact">Kontak</a>
+                <a href="{{url('/')}}">Beranda</a>
+                <a href="{{ route('gallery') }}">Galeri</a>
+                <a href="{{ route('contact') }}">Hubungi Kami</a>
                 <p></p>
                 <a href="{{url('/admin')}}">Masuk Karyawan</a>
         </div>

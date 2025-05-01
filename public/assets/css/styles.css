@@ -192,13 +192,13 @@ main .content .card {
     overflow: hidden;
 
     box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.25);
-    
+
     margin: 1rem 0.5rem;
 }
 
 main .content .card img {
     flex: 3;
-    
+
     height: 75%;
     width: auto;
 }
@@ -338,9 +338,9 @@ main .content .card_review {
     overflow: hidden;
 
     box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.25);
-    
-    margin: 1rem;
-    padding: 2rem;
+
+    margin: 0.5rem;
+    padding: 1rem;
 }
 
 main .content .card_review .card_header {
@@ -366,7 +366,15 @@ main .content .card_review .card_header .card_header_info {
     margin-right: 1rem;
 }
 
-main .content .card_review .card_header .card_header_info .username {
+main .content .card_review .card_header .card_header_info .title {
+    margin: 0.5rem;
+
+    text-align: start;
+
+    font-size: 2rem;
+}
+
+main .content .card_review .username {
     margin: 0.5rem;
 
     text-align: start;
@@ -375,12 +383,14 @@ main .content .card_review .card_header .card_header_info .username {
 }
 
 main .content .card_review .card_content blockquote {
+    font-size: 1.5rem;
     margin-left: 1rem;
     margin-right: 1rem;
 }
 
 main .content .card_review .card_rating {
     flex: 1;
+    margin: 0.25rem;
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
@@ -446,11 +456,27 @@ main .content #contact .content_desc {
 
 main .content #contact .content_desc .title {
     text-align: center;
-    
+
 }
 
 main .content #contact .content_desc p {
     text-align: center;
+}
+
+main .content #contact .content_desc a {
+    text-decoration: none;
+    font-size: 2.5rem;
+    color: #64d64d;
+    transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -ms-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+}
+
+main .content #contact .content_desc a:hover {
+    font-size: 3rem;
+    font-weight: bold;
 }
 
 main .content #contact .content_desc ul {
@@ -486,6 +512,109 @@ main .content #contact .content_desc li i {
     font-size: 5rem;
 
     margin: 2rem;
+}
+
+main .content #gallery .card {
+    border-radius: 15px;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    width: 18rem;
+    height: auto;
+    margin: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+main .content #gallery .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);
+}
+
+main .content #gallery .card img {
+    width: 100%;
+    height: 12rem;
+    object-fit: cover;
+}
+
+main .content #gallery .card .card_content {
+    padding: 1rem;
+    text-align: center;
+}
+
+main .content #gallery .card .card_content h1 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+main .content #gallery .card .card_content p {
+    font-size: 1rem;
+    color: #555;
+}
+
+main .content #contact-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+main .content #contact-form .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+main .content #contact-form .form-group {
+    margin-bottom: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+main .content #contact-form .form-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+main .content #contact-form .form-control,
+main .content #contact-form .styled-select,
+main .content #contact-form .styled-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 0.2rem 0.5rem rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease;
+}
+
+main .content #contact-form .form-control:focus,
+main .content #contact-form .styled-select:focus,
+main .content #contact-form .styled-textarea:focus {
+    border-color: #64d64d;
+    outline: none;
+}
+
+main .content #contact-form .styled-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #64d64d;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+main .content #contact-form .styled-button:hover {
+    background-color: #52b452;
 }
 
 main aside {
@@ -702,7 +831,7 @@ footer #footer_credits {
         margin-bottom: 0.5rem;
         font-size: 1rem;
     }
-    
+
     main .content .card .card_content p {
         font-size: 1rem;
     }
@@ -725,26 +854,26 @@ footer #footer_credits {
         margin: 1rem;
         padding: 2rem;
     }
-    
+
     main .content .card_review .card_header .card_header_info .username {
         margin: 0.5rem;
     }
-    
+
     main .content .card_review .card_content blockquote {
         margin-left: 1rem;
         margin-right: 1rem;
     }
-    
+
     main .content .card_review .card_rating .rating_good {
         margin-left: 0.25rem;
-    
+
         width: 1rem;
         height: 1rem;
     }
-    
+
     main .content .card_review .card_rating .rating_bad {
         margin-left: 0.25rem;
-    
+
         width: 1rem;
         height: 1rem;
     }
@@ -752,7 +881,7 @@ footer #footer_credits {
     main .content .card_review .card_header .card_header_info .username {
         font-size: 1.25rem;
      }
-    
+
     main .content .card_review .card_header .card_profile_img {
         width: 4rem;
         height: 4rem;
@@ -761,7 +890,7 @@ footer #footer_credits {
     main .content #contact .content_desc li h1 {
         font-size: 2rem;
     }
-    
+
     main .content #contact .content_desc li i {
         font-size: 3rem;
     }
@@ -773,15 +902,15 @@ footer #footer_credits {
     main aside img {
         max-width: 200px;
     }
-    
+
     main aside h1, aside p {
         font-size: 1.5rem;
     }
-    
+
     main aside header i {
         font-size: 1.5rem;
     }
-    
+
     main aside #aside_content p, #aside_content h1 {
         font-size: 1.25rem;
     }
@@ -789,16 +918,16 @@ footer #footer_credits {
     footer img {
         width: 100px;
     }
-    
+
     footer h1 {
         margin-block: 1rem;
-    
+
         font-size: 1.5rem;
         font-weight: bold;
-    
+
         color: white;
     }
-    
+
     footer p, footer i {
         font-size: 1.25rem;
     }
@@ -810,7 +939,7 @@ footer #footer_credits {
     footer #footer_menu a{
         font-size: 1.25rem;
     }
-    
+
     footer #footer_menu a:hover {
         font-size: 1.5rem;
     }
@@ -871,11 +1000,11 @@ footer #footer_credits {
     main .content article .content_desc {
         box-sizing: border-box;
         flex: 1 1;
-    
+
         min-width: 40%;
         width: 60%;
         height: auto;
-    
+
         margin: 5rem;
         margin-bottom: 1rem;
     }

@@ -171,6 +171,12 @@ class ItemController extends Controller
         ),200);
     }
 
+    public function gallery()
+    {
+        $items = Item::all();
+        return view('homepage/gallery', ['items' => $items]);
+    }
+
     public function search(Request $request)
     {
         $query = $request->get('query');

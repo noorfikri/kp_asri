@@ -11,6 +11,7 @@ use App\Http\Controllers\BuyingTranscationController;
 use App\Http\Controllers\BuyingTranscationItemController;
 use App\Http\Controllers\ReportBuyingTransactionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ReportSellingTransactionController;
 use App\Http\Controllers\SellingTransactionController;
 use App\Http\Controllers\SellingTransactionItemController;
@@ -28,7 +29,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/','homepage/index')->name('home');
+Route::get('/',[MessageController::class,'review'])->name('home');
+
+Route::get('/gallery',[ItemController::class,'gallery'])->name('gallery');
+Route::view('/contact','homepage/contact')->name('contact');
 
 Route::view('/admin','dashboard/index')->name('dashboard');
 
@@ -38,7 +42,6 @@ Route::post('/admin/items/showDetail', [ItemController::class, 'showDetail'])->n
 Route::post('/admin/items/showCreate', [ItemController::class, 'showCreate'])->name('items.showCreate');
 Route::post('/admin/items/showEdit', [ItemController::class, 'showEdit'])->name('items.showEdit');
 
-
 Route::resource('/admin/categories',CategoryController::class);
 Route::resource('/admin/sizes',SizeController::class);
 Route::resource('/admin/colours',ColourController::class);
@@ -47,6 +50,8 @@ Route::resource('/admin/brands',BrandController::class);
 Route::resource('/admin/suppliers',SupplierController::class);
 
 Route::resource('/admin/users',UserController::class);
+
+Route::resource('/admin/messages',MessageController::class);
 
 Route::resource('/admin/buyingtransactions',BuyingTranscationController::class);
 Route::resource('/admin/buyingtransactionitems',BuyingTranscationItemController::class);
