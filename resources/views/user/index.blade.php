@@ -1,7 +1,7 @@
 @extends('layouts.adminlte3')
 
 @section('javascript')
-{{--<script>
+<script>
 function showDetails(user_id){
     $.ajax({
         type:'POST',
@@ -39,7 +39,7 @@ function showEdit(user_id){
         }
     });
 }
-</script> --}}
+</script>
 @endsection
 
 @section('content')
@@ -53,12 +53,12 @@ function showEdit(user_id){
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Daftar Pengguna</h1>
+          <h1>Daftar Akun</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Beranda</a></li>
-            <li class="breadcrumb-item active">Daftar Pengguna</li>
+            <li class="breadcrumb-item active">Daftar Akun</li>
           </ol>
         </div>
       </div>
@@ -137,17 +137,17 @@ function showEdit(user_id){
                                             @csrf
                                             @method('DELETE')
                                             <div class="modal-header bg-danger">
-                                                <h4 class="modal-title">Hapus Pengguna</h4>
+                                                <h4 class="modal-title">Hapus Akun</h4>
                                                 <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Close">
                                                   <span aria-hidden="true">×</span>
                                                 </button>
                                               </div>
                                               <div class="modal-body">
-                                                <p>Apakah Anda yakin ingin menghapus pengguna "{{$d->name}}"?</p>
+                                                <p>Apakah Anda yakin ingin menghapus akun dengan nama: "{{$d->name}}"?</p>
                                               </div>
                                               <div class="modal-footer justify-content-between">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Tutup</button>
-                                                <button type="submit" class="btn btn-danger">Hapus Pengguna</button>
+                                                <button type="submit" class="btn btn-danger">Hapus Akun</button>
                                               </div>
                                         </form>
                                     </div>

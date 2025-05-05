@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -36,7 +37,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new User();
+        $data->name = $request->get('name');
+        $data->email = $request->get('email');
+        $data->email_verified_at = now();
+        $data->password = bcrypt($request->get('password'));
+        $data->category = $request->get('category');
+        $data->remember_token = Str::random(10);
+
+        $data->save();
+
+        return redirect()->route('users.index')->with('status','Akun dengan nama: '.$data->name.' berhasil dibuat');
     }
 
     /**
@@ -70,7 +81,16 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->email_verified_at = now();
+        $user->password = bcrypt($request->get('password'));
+        $user->category = $request->get('category');
+        $user->remember_token = Str::random(10);
+
+        $user->save();
+
+        return redirect()->route('users.index')->with('status','Akun dengan nama: '.$user->name.' berhasil diperbarui');
     }
 
     /**
@@ -81,6 +101,36 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        try{
+            $user->delete();
+            return redirect()->route('users.index')->with('status','Akun dengan nama: '.$user->name.' telah dihapus');
+        }catch(\Exception $e){
+            return redirect()->route('users.index')->with('error','Akun tidak dapat dihapus, Pesan Error: '.$e->getMessage());
+        }
+    }
+
+    public function showDetail(Request $request){
+        $data=User::find($_POST['id']);
+        return response()->json(array(
+            'status'=>'ok',
+            'msg'=>view('user.show',compact('data'))->render()
+        ),200);
+    }
+
+    public function showCreate(Request $request){
+
+        return response()->json(array(
+            'status'=>'ok',
+            'msg'=>view('user.create')->render()
+        ),200);
+    }
+
+    public function showEdit(Request $request){
+        $user=User::find($_POST['id']);
+
+        return response()->json(array(
+            'status'=>'ok',
+            'msg'=>view('user.edit',['user'=>$user])->render()
+        ),200);
     }
 }

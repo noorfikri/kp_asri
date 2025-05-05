@@ -63,7 +63,7 @@ class ItemController extends Controller
 
         $data->save();
 
-        return redirect()->route('items.index')->with('status','Item created '.$data->name.' successfully');
+        return redirect()->route('items.index')->with('status','Barang dengan nama: '.$data->name.' berhasil dibuat');
     }
 
     /**
@@ -119,7 +119,7 @@ class ItemController extends Controller
 
         $item->save();
 
-        return redirect()->route('items.index')->with('status','Item '.$item->name.' updated successfully');
+        return redirect()->route('items.index')->with('status','Barang dengan nama: '.$item->name.' berhasil diperbarui');
     }
 
     /**
@@ -132,9 +132,9 @@ class ItemController extends Controller
     {
         try{
             $item->delete();
-            return redirect()->route('items.index')->with('status','Item has been deleted');
+            return redirect()->route('items.index')->with('status','Barang telah dihapus');
         }catch(\Exception $e){
-            return redirect()->route('items.index')->with('error','Item cannot be deleted');
+            return redirect()->route('items.index')->with('error','Barang tidak dapat dihapus, Pesan Error: '.$e->getMessage());
         }
     }
 

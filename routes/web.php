@@ -52,6 +52,9 @@ Route::middleware(['auth'])->group(function(){
     Route::resource('/admin/brands',BrandController::class);
 
     Route::resource('/admin/users',UserController::class);
+    Route::post('/admin/users/showDetail', [UserController::class, 'showDetail'])->name('users.showDetail');
+    Route::post('/admin/users/showCreate', [UserController::class, 'showCreate'])->name('users.showCreate');
+    Route::post('/admin/users/showEdit', [UserController::class, 'showEdit'])->name('users.showEdit');
 
     Route::resource('/admin/messages',MessageController::class);
 
