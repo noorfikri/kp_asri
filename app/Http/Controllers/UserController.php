@@ -15,6 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('userManagementAccess', Auth()->user());
+
         $queryBuilder = User::all();
         return view('user.index',['data'=>$queryBuilder]);
     }
@@ -37,6 +39,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('userManagementAccess', Auth()->user());
+
         $data = new User();
         $data->name = $request->get('name');
         $data->email = $request->get('email');
@@ -81,6 +85,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $this->authorize('userManagementAccess', Auth()->user());
+
         $user->name = $request->get('name');
         $user->email = $request->get('email');
         $user->email_verified_at = now();
@@ -101,6 +107,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('userManagementAccess', Auth()->user());
+        if($user->id == Auth()->user()->id){
+            return redirect()->route('users.index')->with('error','Akun tidak dapat dihapus, karena sedang digunakan');
+        }
         try{
             $user->delete();
             return redirect()->route('users.index')->with('status','Akun dengan nama: '.$user->name.' telah dihapus');

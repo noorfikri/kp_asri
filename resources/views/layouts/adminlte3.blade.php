@@ -228,23 +228,25 @@
           </ul>
           </li>
         <li class="nav-header">Akun</li>
+        @can('user-management-access',Auth::user())
         <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fa-solid fa-user"></i>
-            <p>
-              Manajemen Akun
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{route('users.index')}}" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Daftar Akun</p>
-              </a>
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa-solid fa-user"></i>
+              <p>
+                Manajemen Akun
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('users.index')}}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Daftar Akun</p>
+                </a>
+              </li>
+            </ul>
             </li>
-          </ul>
-          </li>
+        @endcan
         <li class="nav-item">
         <a href="#" class="nav-link">
           <i class="nav-icon fa-solid fa-user"></i>
