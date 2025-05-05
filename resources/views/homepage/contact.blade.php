@@ -6,15 +6,15 @@
         <div class="content_desc">
             <h1 class="title">Hubungi Kami</h1>
             <p>Untuk kritik, saran, pertanyaan dan pesan maupum pesanan anda dapat lakukan pada form ini</p>
-            <form id="contact-form" method="POST" action="#" class="form styled-form">
+            <form id="contact-form" method="POST" action="{{route('messages.store')}}" class="form styled-form">
                 @csrf
                 <div class="form-group">
                     <label for="inputName" class="form-label">Nama</label>
                     <input type="text" id="inputName" name="name" class="form-control styled-input" placeholder="Masukkan nama Anda" required>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail" class="form-label">Kontak yang bisa dihubungi</label>
-                    <input type="text" id="inputEmail" name="email" class="form-control styled-input" placeholder="Masukkan email Anda" required>
+                    <label for="inputContact" class="form-label">Kontak yang bisa dihubungi</label>
+                    <input type="text" id="inputContact" name="contact" class="form-control styled-input" placeholder="Masukkan email Anda" required>
                 </div>
                 <div class="form-row">
                     <div class="form-group">

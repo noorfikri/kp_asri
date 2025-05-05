@@ -36,7 +36,18 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Message();
+        $data->name = $request->get('name');
+        $data->contact = $request->get('contact');
+        $data->subject = $request->get('subject');
+        $data->category = $request->get('category');
+        $data->message = $request->get('message');
+        $data->post_time = now();
+
+
+        $data->save();
+
+        return redirect('/contact')->with('status','Message has been sent');
     }
 
     /**
@@ -81,7 +92,12 @@ class MessageController extends Controller
      */
     public function destroy(Message $message)
     {
-        //
+        try{
+            $message->delete();
+            return redirect()->route('messages.index')->with('status','Message has been deleted');
+        }catch(\Exception $e){
+            return redirect()->route('messages.index')->with('error','Message cannot be deleted');
+        }
     }
 
     public function review(){

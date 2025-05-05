@@ -29,37 +29,42 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
 Route::get('/',[MessageController::class,'review'])->name('home');
 
 Route::get('/gallery',[ItemController::class,'gallery'])->name('gallery');
 Route::view('/contact','homepage/contact')->name('contact');
 
-Route::view('/admin','dashboard/index')->name('dashboard');
+Route::middleware(['auth'])->group(function(){
+    Route::view('/admin','dashboard/index')->name('dashboard');
 
-Route::resource('/admin/items',ItemController::class);
+    Route::resource('/admin/items',ItemController::class);
+    Route::resource('/admin/suppliers',SupplierController::class);
 
-Route::post('/admin/items/showDetail', [ItemController::class, 'showDetail'])->name('items.showDetail');
-Route::post('/admin/items/showCreate', [ItemController::class, 'showCreate'])->name('items.showCreate');
-Route::post('/admin/items/showEdit', [ItemController::class, 'showEdit'])->name('items.showEdit');
+    Route::post('/admin/items/showDetail', [ItemController::class, 'showDetail'])->name('items.showDetail');
+    Route::post('/admin/items/showCreate', [ItemController::class, 'showCreate'])->name('items.showCreate');
+    Route::post('/admin/items/showEdit', [ItemController::class, 'showEdit'])->name('items.showEdit');
 
-Route::resource('/admin/categories',CategoryController::class);
-Route::resource('/admin/sizes',SizeController::class);
-Route::resource('/admin/colours',ColourController::class);
-Route::resource('/admin/brands',BrandController::class);
+    Route::resource('/admin/categories',CategoryController::class);
+    Route::resource('/admin/sizes',SizeController::class);
+    Route::resource('/admin/colours',ColourController::class);
+    Route::resource('/admin/brands',BrandController::class);
 
-Route::resource('/admin/suppliers',SupplierController::class);
+    Route::resource('/admin/users',UserController::class);
 
-Route::resource('/admin/users',UserController::class);
+    Route::resource('/admin/messages',MessageController::class);
 
-Route::resource('/admin/messages',MessageController::class);
+    Route::resource('/admin/buyingtransactions',BuyingTranscationController::class);
+    Route::resource('/admin/buyingtransactionitems',BuyingTranscationItemController::class);
 
-Route::resource('/admin/buyingtransactions',BuyingTranscationController::class);
-Route::resource('/admin/buyingtransactionitems',BuyingTranscationItemController::class);
+    Route::resource('/admin/sellingtransactions',SellingTransactionController::class);
+    Route::resource('/admin/sellingtransactionitems',SellingTransactionItemController::class);
 
-Route::resource('/admin/sellingtransactions',SellingTransactionController::class);
-Route::resource('/admin/sellingtransactionitems',SellingTransactionItemController::class);
+    Route::resource('/admin/reports',ReportController::class);
 
-Route::resource('/admin/reports',ReportController::class);
+    Route::resource('/admin/reportbuyingtransactions',ReportBuyingTransactionController::class);
+    Route::resource('/admin/reportsellingtransactions',ReportSellingTransactionController::class);
+});
 
-Route::resource('/admin/reportbuyingtransactions',ReportBuyingTransactionController::class);
-Route::resource('/admin/reportsellingtransactions',ReportSellingTransactionController::class);
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
