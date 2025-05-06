@@ -18,6 +18,15 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('assets/css/adminlte.css')}}">
 
+  <!-- REQUIRED SCRIPTS -->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script>
+    <!-- Bootstrap -->
+    <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <!-- AdminLTE -->
+    <script src="{{asset('assets/js/adminlte.js')}}"></script>
+
 @yield('javascript')
 
 </head>
@@ -46,13 +55,13 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-          <img src="{{asset('assets/img/user2-160x160.jpg')}}" class="user-image img-circle elevation-2" alt="User Image">
+          <img src="{{asset(Auth::user()->profile_picture)}}" class="user-image img-circle elevation-2" alt="User Image">
           <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <!-- User image -->
           <li class="user-header bg-primary">
-            <img src="{{asset('assets/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+            <img src="{{asset(Auth::user()->profile_picture)}}" class="img-circle elevation-2" alt="User Image">
 
             <p>
               {{ Auth::user()->name }} - {{ Auth::user()->category}}
@@ -73,7 +82,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{url('/admin')}}" class="brand-link">
+    <a href="{{url('/')}}" class="brand-link">
       <img src="{{asset('assets/img/Logo ASRI.png')}}" alt="ASRI Logo" class="brand-image" style="opacity: .8">
       <span class="brand-text font-weight-light">Administrasi Toko ASRI</span>
     </a>
@@ -83,7 +92,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{asset('assets/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{asset(Auth::user()->profile_picture)}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ Auth::user()->name }}</a>
@@ -306,15 +315,6 @@
 </form>
 </div>
 <!-- ./wrapper -->
-
-<!-- REQUIRED SCRIPTS -->
-
-<!-- jQuery -->
-<script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script>
-<!-- Bootstrap -->
-<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-<!-- AdminLTE -->
-<script src="{{asset('assets/js/adminlte.js')}}"></script>
 
 <!-- OPTIONAL SCRIPTS -->
 <!-- <script src="{{asset('assets/plugins/chart.js/Chart.min.js')}}"></script> -->

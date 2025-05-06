@@ -18,6 +18,8 @@ class CreateItemsTable extends Migration
             $table->string('name')->default('unnamed_item');
             $table->integer('price')->default(0);
             $table->integer('stock')->default(0);
+            $table->string('image')->default('assets/img/Placeholder_Image.png');
+            $table->text('description')->default('');
             $table->text('note')->default('');
             $table->timestamps();
         });

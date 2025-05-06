@@ -9,7 +9,7 @@
         <!-- /.card-header -->
         <div class="card-body">
             <div class="text-center mb-3">
-                <img class="img-fluid rounded shadow-sm" src="https://placehold.co/400x400?text=Placeholder+Image" alt="Photo">
+                <img class="img-fluid rounded shadow-sm" src="{{ asset($data->image) }}" alt="Photo">
             </div>
             <table class="table table-bordered table-hover">
                 <tbody>
@@ -39,7 +39,7 @@
                     </tr>
                     <tr>
                         <th>Harga</th>
-                        <td>Rp {{number_format($data->price, 0, ',', '.')}}</td>
+                        <td>@toIDR($data->price)</td>
                     </tr>
                     <tr>
                         <th>Stok</th>

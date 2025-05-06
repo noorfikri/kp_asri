@@ -23,6 +23,10 @@ function showCreate(){
         },
         success: function(data){
             $('#createmodal').html(data.msg)
+
+            $("#inputImageCreate").change(function(){
+                createPreviewImage(this);
+            });
         }
     });
 }
@@ -36,8 +40,32 @@ function showEdit(item_id){
         },
         success: function(data){
             $('#itemedit'+item_id).html(data.msg)
+
+            $("#inputImageEdit").change(function(){
+                editPreviewImage(this);
+            });
         }
     });
+}
+
+function createPreviewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#create-preview-image').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function editPreviewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#edit-preview-image').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 </script>
 @endsection
@@ -139,7 +167,7 @@ function showEdit(item_id){
                         {{$d->brand->name}}
                     </td>
                     <td class="project_progress">
-                        {{$d->price}}
+                        @toIDR($d->price)
                     </td>
                     <td class="project-state">
                         {{$d->stock}}

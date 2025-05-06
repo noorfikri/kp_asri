@@ -20,6 +20,8 @@ class TestLoginUserSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => bcrypt('test'),
             'category' => 'owner',
+            'contact_number' => '1234567890',
+            'address' => '123 Test',
             'remember_token' => Random::generate(10),
             'email_verified_at' => now(),
             'created_at' => now(),

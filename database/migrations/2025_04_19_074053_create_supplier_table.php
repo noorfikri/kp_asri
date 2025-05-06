@@ -18,6 +18,7 @@ class CreateSupplierTable extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('telephone');
+            $table->string('picture')->default('assets/img/Placeholder_Image.png');
             $table->timestamps();
         });
     }

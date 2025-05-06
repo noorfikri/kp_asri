@@ -1,3 +1,5 @@
+
+
 <div class="card card-primary shadow-lg">
     <div class="card-header">
       <h3 class="card-title">Buat Barang</h3>
@@ -8,9 +10,14 @@
           </button>
       </div>
     </div>
-    <form method="POST" action="{{route('items.store')}}">
+    <form method="POST" action="{{route('items.store')}}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
+            <img class="img-fluid pad" id="create-preview-image" src="{{asset('assets/img/Placeholder_Image.png') }}" alt="Foto">
+            <div class="form-group">
+                <label for="inputImage">Gambar</label>
+                <input type="file" id="inputImageCreate" name="image" class="form-control" value="Masukkan Gambar" onchange="createPreviewImage(event)">
+              </div>
         <div class="form-group">
             <label for="inputName">Nama Barang</label>
             <input type="text" id="inputName" name="name" class="form-control">
@@ -67,7 +74,7 @@
           </div>
           <div class="form-group">
             <label for="inputPrice">Harga Barang</label>
-            <input type="text" id="inputPrice" name="price" class="form-control">
+            <p>RP. </p><input type="text" id="inputPrice" name="price" class="form-control">
           </div>
           <div class="form-group">
             <label for="inputStock">Stok Barang</label>

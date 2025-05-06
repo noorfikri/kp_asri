@@ -18,6 +18,7 @@ class CreateBuyingTransactionsTable extends Migration
             $table->date('date');
             $table->integer('total_amount')->default(0);
             $table->integer('total_count')->default(0);
+            $table->string('reciept_image')->default('assets/img/Placeholder_Image.png');
             $table->timestamps();
         });
     }

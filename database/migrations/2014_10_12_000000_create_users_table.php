@@ -17,6 +17,9 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('contact_number')->nullable();
+            $table->string('address')->nullable();
+            $table->string('profile_picture')->default("assets/img/Placeholder_Profile.png");
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('category',['staff','owner']);

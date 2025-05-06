@@ -102,7 +102,7 @@ function showEdit(transaction_id){
                     <td>{{$d->id}}</td>
                     <td>{{$d->supplier->name}}</td>
                     <td>{{$d->date}}</td>
-                    <td>{{$d->total_amount}}</td>
+                    <td>@toIDR($d->total_amount)</td>
                     <td>{{$d->total_count}}</td>
                     <td class="project-actions text-right">
                         <a class="btn btn-primary btn-sm" href="{{url('admin/buyingtransactions/'.$d->id)}}"

@@ -8,14 +8,14 @@
           </button>
       </div>
     </div>
-    <form method="POST" action="{{url('admin/items/'.$item->id)}}">
+    <form method="POST" action="{{url('admin/items/'.$item->id)}}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="card-body">
-        <img class="img-fluid pad" src="https://placehold.co/400x400?text=Placeholder+Image" alt="Foto">
+        <img class="img-fluid pad" id="edit-preview-image" src="{{asset($item->image) }}" alt="Foto">
         <div class="form-group">
             <label for="inputImage">Gambar</label>
-            <input type="text" id="inputImage" name="image" class="form-control" value="placeholder">
+            <input type="file" id="inputImageEdit" name="image" class="form-control" value="Masukkan Gambar">
           </div>
         <div class="form-group">
             <label for="inputName">Nama Barang</label>

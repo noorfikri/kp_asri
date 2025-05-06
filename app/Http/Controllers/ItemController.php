@@ -7,7 +7,9 @@ use App\Models\Category;
 use App\Models\Colour;
 use App\Models\Item;
 use App\Models\Size;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class ItemController extends Controller
 {
@@ -49,7 +51,7 @@ class ItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, FileUploadService $fileUpload)
     {
         $data = new Item();
         $data->name = $request->get('name');
@@ -60,6 +62,9 @@ class ItemController extends Controller
         $data->price = $request->get('price');
         $data->stock = $request->get('stock');
         $data->note = $request->get('note');
+
+        $image = $request->file('image');
+        $data->image = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $data->name, 'folder' => 'item']);
 
         $data->save();
 
@@ -116,6 +121,9 @@ class ItemController extends Controller
         $item->price = $request->get('price');
         $item->stock = $request->get('stock');
         $item->note = $request->get('note');
+
+        $image = $request->file('image');
+        $item->image = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $item->name, 'folder' => 'item']);
 
         $item->save();
 

@@ -133,13 +133,13 @@ function showEdit(report_id){
                         {{$d->type}}
                     </td>
                     <td>
-                        {{$d->total_buying}}
+                        @toIDR($d->total_buying)
                     </td>
                     <td>
-                        {{$d->total_selling}}
+                        @toIDR($d->total_selling)
                     </td>
                     <td>
-                        {{$d->cash_flow}}
+                        @toIDR($d->cash_flow)
                     </td>
                     <td class="project-actions text-right">
                         <a class="btn btn-primary btn-sm" href="{{url('admin/reports/'.$d->id)}}"
