@@ -64,7 +64,9 @@ class ItemController extends Controller
         $data->note = $request->get('note');
 
         $image = $request->file('image');
-        $data->image = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $data->name, 'folder' => 'item']);
+        if($image){
+            $data->image = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $data->name, 'folder' => 'item']);
+        }
 
         $data->save();
 
@@ -123,7 +125,9 @@ class ItemController extends Controller
         $item->note = $request->get('note');
 
         $image = $request->file('image');
-        $item->image = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $item->name, 'folder' => 'item']);
+        if ($image) {
+            $item->image = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $item->name, 'folder' => 'item']);
+        }
 
         $item->save();
 

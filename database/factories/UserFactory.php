@@ -20,7 +20,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'contact_number' => $this->faker->phoneNumber(),
             'address' => $this->faker->address(),
-            'profile_picture' => $this->faker->imageUrl(100, 100, 'people', true),
+            'profile_picture' => "assets/img/Placeholder_Profile.png",
             'email_verified_at' => now(),
             'category' => $this->faker->randomElement(['staff', 'owner']),
             'password' => bcrypt(Random::generate(10)), // password

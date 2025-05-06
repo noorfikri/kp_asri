@@ -38,6 +38,7 @@ Route::view('/contact','homepage/contact')->name('contact');
 
 Route::middleware(['auth'])->group(function(){
     Route::view('/admin','dashboard/index')->name('dashboard');
+    Route::view('/admin/profile','profile/index')->name('profile');
 
     Route::resource('/admin/items',ItemController::class);
     Route::resource('/admin/suppliers',SupplierController::class);
@@ -55,6 +56,7 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/admin/users/showDetail', [UserController::class, 'showDetail'])->name('users.showDetail');
     Route::post('/admin/users/showCreate', [UserController::class, 'showCreate'])->name('users.showCreate');
     Route::post('/admin/users/showEdit', [UserController::class, 'showEdit'])->name('users.showEdit');
+    Route::post('/admin/users/updateProfile/{user}', [UserController::class, 'updateProfile'])->name('users.updateProfile');
 
     Route::resource('/admin/messages',MessageController::class);
 

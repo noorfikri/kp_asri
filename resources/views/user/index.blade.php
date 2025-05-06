@@ -48,6 +48,11 @@ function showEdit(user_id){
         {{ session('status') }}
     </div>
 @endif
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 
 <section class="content-header">
     <div class="container-fluid">
@@ -87,8 +92,9 @@ function showEdit(user_id){
                 <thead>
                     <tr>
                         <th style="width: 1%">#</th>
-                        <th style="width: 20%">Nama</th>
-                        <th style="width: 20%">Email</th>
+                        <th style="width: 15%">Nama</th>
+                        <th style="width: 15%">Email</th>
+                        <th style="width: 15%">Kontak</th>
                         <th style="width: 15%">Tanggal Dibuat</th>
                         <th style="width: 15%"></th>
                         <th style="width: 1%"></th>
@@ -100,6 +106,7 @@ function showEdit(user_id){
                         <td>{{$d->id}}</td>
                         <td>{{$d->name}}</td>
                         <td>{{$d->email}}</td>
+                        <td>{{$d->contact_number}}</td>
                         <td>{{$d->created_at}}</td>
                         <td class="project-actions text-right">
                             <a class="btn btn-primary btn-sm" href="{{url('admin/users/'.$d->id)}}"

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -44,10 +46,16 @@ class UserController extends Controller
         $data = new User();
         $data->name = $request->get('name');
         $data->email = $request->get('email');
-        $data->email_verified_at = now();
+        $data->contact_number = $request->get('contact_number');
+        $data->address = $request->get('address');
         $data->password = bcrypt($request->get('password'));
         $data->category = $request->get('category');
         $data->remember_token = Str::random(10);
+
+        $image = $request->file('image');
+        if($image){;
+            $data->image = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $data->name, 'folder' => 'user']);
+        }
 
         $data->save();
 
@@ -89,12 +97,19 @@ class UserController extends Controller
 
         $user->name = $request->get('name');
         $user->email = $request->get('email');
-        $user->email_verified_at = now();
+        $user->contact_number = $request->get('contact_number');
+        $user->address = $request->get('address');
         $user->password = bcrypt($request->get('password'));
         $user->category = $request->get('category');
-        $user->remember_token = Str::random(10);
+
+        $image = $request->file('image');
+        if ($image) {
+            $user->profile_picture = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $user->name, 'folder' => 'user']);
+        }
 
         $user->save();
+
+
 
         return redirect()->route('users.index')->with('status','Akun dengan nama: '.$user->name.' berhasil diperbarui');
     }
@@ -142,5 +157,21 @@ class UserController extends Controller
             'status'=>'ok',
             'msg'=>view('user.edit',['user'=>$user])->render()
         ),200);
+    }
+
+    public function updateProfile(Request $request, User $user){
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->contact_number = $request->get('contact_number');
+        $user->address = $request->get('address');
+
+        $image = $request->file('image');
+        if ($image) {
+            $user->profile_picture = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $user->name, 'folder' => 'user']);
+        }
+
+        $user->save();
+
+        return redirect()->to('admin/profile')->with('status','Akun anda berhasil diperbarui');
     }
 }

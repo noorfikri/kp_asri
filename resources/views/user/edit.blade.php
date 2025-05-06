@@ -8,10 +8,15 @@
             </button>
         </div>
     </div>
-    <form method="POST" action="{{url('admin/users/'.$user->id) }}">
+    <form method="POST" action="{{url('admin/users/'.$user->id) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="card-body">
+            <img class="img-fluid pad" id="edit-preview-image" src="{{asset($user->profile_picture) }}" alt="Foto">
+            <div class="form-group">
+                <label for="inputImage">Gambar Profil</label>
+                <input type="file" id="inputImageEdit" name="image" class="form-control" value="Masukkan Gambar">
+            </div>
             <div class="form-group">
                 <label for="inputName">Nama</label>
                 <input type="text" id="inputName" name="name" class="form-control" value="{{ $user->name }}" required>
@@ -19,6 +24,14 @@
             <div class="form-group">
                 <label for="inputEmail">Email</label>
                 <input type="email" id="inputEmail" name="email" class="form-control" value="{{ $user->email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="inputContact">Kontak</label>
+                <input type="text" id="inputContact" name="contact_number" class="form-control" value="{{ $user->contact_number }}" required>
+            </div>
+            <div class="form-group">
+                <label for="inputAddress">Alamat</label>
+                <input type="text" id="inputAddress" name="address" class="form-control" value="{{ $user->address }}" required>
             </div>
             <div class="form-group">
                 <label for="inputPassword">Kata Sandi (Kosongkan jika tidak ingin mengubah)</label>
