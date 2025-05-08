@@ -5,7 +5,7 @@
 function showCreate(){
     $.ajax({
         type:'POST',
-        url:'{{route("brands.showCreate")}}',
+        url:'{{route("colours.showCreate")}}',
         data:{'_token':'<?php echo csrf_token() ?>',
         },
         success: function(data){
@@ -14,15 +14,15 @@ function showCreate(){
     });
 }
 
-function showEdit(brand_id){
+function showEdit(colour_id){
     $.ajax({
         type:'POST',
-        url:'{{route("brands.showEdit")}}',
+        url:'{{route("colours.showEdit")}}',
         data:{'_token':'<?php echo csrf_token() ?>',
-            'id':brand_id,
+            'id':colour_id,
         },
         success: function(data){
-            $('#brandedit'+brand_id).html(data.msg)
+            $('#colouredit'+colour_id).html(data.msg)
         }
     });
 }
@@ -45,12 +45,12 @@ function showEdit(brand_id){
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Daftar Merek</h1>
+          <h1>Daftar Warna</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Beranda</a></li>
-            <li class="breadcrumb-item active">Daftar Merek</li>
+            <li class="breadcrumb-item active">Daftar Warna</li>
           </ol>
         </div>
       </div>
@@ -66,13 +66,13 @@ function showEdit(brand_id){
             <div class="card-tools input-group">
                 <input type="search" class="form-control rounded m-auto" placeholder="Cari" aria-label="Cari" aria-describedby="search-addon" />
                 <button type="button" class="btn btn-outline-primary rounded" data-mdb-ripple-init>Cari</button>
-                <a href="{{url('admin/brands/create')}}" class=" btn btn-primary rounded"
+                <a href="{{url('admin/colours/create')}}" class=" btn btn-primary rounded"
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content" id="createmodal">
-                        <!-- put animated gif here -->
+                        <!-- letakkan gif animasi di sini -->
                         <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                     </div>
                 </div>
@@ -85,8 +85,8 @@ function showEdit(brand_id){
                     <th style="width: 1%">
                         #
                     </th>
-                    <th style="width: 25%">
-                        Nama Merek
+                    <th style="width: 50%">
+                        Nama
                     </th>
                     <th style="width: 20%">
                     </th>
@@ -98,7 +98,7 @@ function showEdit(brand_id){
                 @if ($data->isEmpty())
                 <tr>
                     <td colspan="3" class="text-center">
-                        Tidak ada data yang tersedia dalam daftar merek.
+                        Tidak ada data dalam daftar warna.
                     </td>
                 </tr>
                 @else
@@ -108,16 +108,18 @@ function showEdit(brand_id){
                         {{$d->id}}
                     </td>
                     <td>
-                        {{$d->name}}
+                        <a>
+                            {{$d->name}}
+                        </a>
                     </td>
                     <td class="project-actions text-right">
-                        <a class="btn btn-info btn-sm" href="{{url('admin/brands/'.$d->id.'/edit')}}"
+                        <a class="btn btn-info btn-sm" href="{{url('admin/colours/'.$d->id.'/edit')}}"
                             data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
                             <i class="fas fa-pencil-alt">
                             </i>
                             Ubah
                         </a>
-                        <a class="btn btn-danger btn-sm" href="{{url('admin/brands/'.$d->id)}}"
+                        <a class="btn btn-danger btn-sm" href="{{url('admin/colours/'.$d->id)}}"
                             data-target="#delete{{$d->id}}" data-toggle='modal'>
                             <i class="fas fa-trash">
                             </i>
@@ -127,30 +129,29 @@ function showEdit(brand_id){
                     <td>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content" id="brandedit{{$d->id}}">
-                                    <!-- put animated gif here -->
+                                <div class="modal-content" id="colouredit{{$d->id}}">
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
                             </div>
                         </div>
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content" id="branddelete{{$d->id}}">
-                                    <form method='POST' action="{{route('brands.destroy', $d->id)}}">
+                                <div class="modal-content" id="colourdelete{{$d->id}}">
+                                    <form method='POST' action="{{route('colours.destroy', $d->id)}}">
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-header bg-danger">
-                                            <h4 class="modal-title">Hapus Merek</h4>
-                                            <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Close">
+                                            <h4 class="modal-title">Hapus Warna</h4>
+                                            <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Tutup">
                                               <span aria-hidden="true">×</span>
                                             </button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Apakah Anda yakin ingin menghapus merek "{{$d->name}}"?</p>
+                                            <p>Apakah Anda yakin ingin menghapus warna "{{$d->name}}"?</p>
                                           </div>
                                           <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Tutup</button>
-                                            <button type="submit" class="btn btn-danger">Hapus Merek</button>
+                                            <button type="submit" class="btn btn-danger">Hapus Warna</button>
                                           </div>
                                     </form>
                                 </div>

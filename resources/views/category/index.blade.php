@@ -1,20 +1,7 @@
 @extends('layouts.adminlte3')
 
 @section('javascript')
-{{-- <script>
-function showDetails(category_id){
-    $.ajax({
-        type:'POST',
-        url:'{{route("categories.showDetail")}}',
-        data:{'_token':'<?php echo csrf_token() ?>',
-            'id':category_id
-        },
-        success: function(data){
-            $('#categorydetail'+category_id).html(data.msg)
-        }
-    });
-}
-
+<script>
 function showCreate(){
     $.ajax({
         type:'POST',
@@ -39,7 +26,7 @@ function showEdit(category_id){
         }
     });
 }
-</script> --}}
+</script>
 @endsection
 
 @section('content')
@@ -103,6 +90,8 @@ function showEdit(category_id){
                     </th>
                     <th style="width: 20%">
                     </th>
+                    <th style="width: 1%">
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -124,25 +113,20 @@ function showEdit(category_id){
                         </a>
                     </td>
                     <td class="project-actions text-right">
-                        <a class="btn btn-primary btn-sm" href="{{url('admin/categories/'.$d->id)}}"
-                            data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
-                            <i class="fas fa-folder">
-                            </i>
-                            Lihat
-                        </a>
-                        <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content" id="categorydetail{{$d->id}}">
-                                    <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
-                                </div>
-                            </div>
-                        </div>
                         <a class="btn btn-info btn-sm" href="{{url('admin/categories/'.$d->id.'/edit')}}"
                             data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
                             <i class="fas fa-pencil-alt">
                             </i>
                             Ubah
                         </a>
+                        <a class="btn btn-danger btn-sm" href="{{url('admin/categories/'.$d->id)}}"
+                            data-target="#delete{{$d->id}}" data-toggle='modal'>
+                            <i class="fas fa-trash">
+                            </i>
+                            Hapus
+                        </a>
+                    </td>
+                    <td>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="categoryedit{{$d->id}}">
@@ -150,12 +134,6 @@ function showEdit(category_id){
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-danger btn-sm" href="{{url('admin/categories/'.$d->id)}}"
-                            data-target="#delete{{$d->id}}" data-toggle='modal'>
-                            <i class="fas fa-trash">
-                            </i>
-                            Hapus
-                        </a>
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="categorydelete{{$d->id}}">

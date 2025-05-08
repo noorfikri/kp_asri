@@ -135,17 +135,25 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
+            <a href="{{route('items.index')}}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Daftar Barang</p>
+            </a>
             <a href="{{route('categories.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Daftar Kategori</p>
             </a>
-            <a href="{{route('items.index')}}" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Daftar Barang</p>
-            </a>
             <a href="{{route('brands.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Daftar Merek</p>
+            </a>
+            <a href="{{route('colours.index')}}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Daftar Warna</p>
+            </a>
+            <a href="{{route('sizes.index')}}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Daftar Ukuran</p>
             </a>
           </li>
         </ul>

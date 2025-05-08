@@ -14,7 +14,8 @@ class ColourController extends Controller
      */
     public function index()
     {
-        //
+        $queryBuilder = Colour::all();
+        return view('colour.index',['data'=>$queryBuilder]);
     }
 
     /**
@@ -35,7 +36,12 @@ class ColourController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Colour();
+        $data->name = $request->get('name');
+
+        $data->save();
+
+        return redirect()->route('colours.index')->with('status','Warna dengan nama: '.$data->name.' berhasil dibuat');
     }
 
     /**
@@ -69,7 +75,11 @@ class ColourController extends Controller
      */
     public function update(Request $request, Colour $colour)
     {
-        //
+        $colour->name = $request->get('name');
+
+        $colour->save();
+
+        return redirect()->route('colours.index')->with('status','Warna dengan nama: '.$colour->name.' berhasil diperbarui');
     }
 
     /**
@@ -80,6 +90,27 @@ class ColourController extends Controller
      */
     public function destroy(Colour $colour)
     {
-        //
+        try{
+            $colour->delete();
+            return redirect()->route('colours.index')->with('status','Warna telah dihapus');
+        }catch(\Exception $e){
+            return redirect()->route('colours.index')->with('error','Warna tidak dapat dihapus, Pesan Error: '.$e->getMessage());
+        }
+    }
+
+    public function showCreate(Request $request){
+        return response()->json(array(
+            'status'=>'ok',
+            'msg'=>view('colour.create')->render()
+        ),200);
+    }
+
+    public function showEdit(Request $request){
+        $colour=Colour::find($_POST['id']);
+
+        return response()->json(array(
+            'status'=>'ok',
+            'msg'=>view('colour.edit',['colour'=>$colour])->render()
+        ),200);
     }
 }

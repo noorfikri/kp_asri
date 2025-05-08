@@ -36,7 +36,12 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Brand();
+        $data->name = $request->get('name');
+
+        $data->save();
+
+        return redirect()->route('brands.index')->with('status','Brand dengan nama: '.$data->name.' berhasil dibuat');
     }
 
     /**
@@ -70,7 +75,11 @@ class BrandController extends Controller
      */
     public function update(Request $request, Brand $brand)
     {
-        //
+        $brand->name = $request->get('name');
+
+        $brand->save();
+
+        return redirect()->route('brands.index')->with('status','Brand dengan nama: '.$brand->name.' berhasil diperbarui');
     }
 
     /**
@@ -81,6 +90,28 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        //
+        try{
+            $brand->delete();
+            return redirect()->route('brands.index')->with('status','Brand telah dihapus');
+        }catch(\Exception $e){
+            return redirect()->route('brands.index')->with('error','Brand tidak dapat dihapus, Pesan Error: '.$e->getMessage());
+        }
+    }
+
+
+    public function showCreate(Request $request){
+        return response()->json(array(
+            'status'=>'ok',
+            'msg'=>view('brand.create')->render()
+        ),200);
+    }
+
+    public function showEdit(Request $request){
+        $brand=Brand::find($_POST['id']);
+
+        return response()->json(array(
+            'status'=>'ok',
+            'msg'=>view('brand.edit',['brand'=>$brand])->render()
+        ),200);
     }
 }

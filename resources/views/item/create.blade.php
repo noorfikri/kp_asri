@@ -53,7 +53,7 @@
                 <label for="inputColour">Warna</label>
                 <div class="d-flex flex-wrap">
                     @foreach ($colour as $index => $co)
-                        @if ($index % 2 == 0 && $index != 0)
+                        @if ($index % 3 == 0 && $index != 0)
                             </div><div class="d-flex flex-wrap">
                         @endif
                         <div class="form-check mr-3 mb-2">

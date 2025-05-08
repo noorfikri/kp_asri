@@ -20,8 +20,9 @@
         <div class="form-group">
             <label for="inputName">Nama Barang</label>
             <input type="text" id="inputName" name="name" class="form-control" value="{{$item->name}}">
-          </div>
-            <div class="form-group">
+
+        </div>
+        <div class="form-group">
             <label for="inputCategory">Kategori</label>
             <select id="inputCategory" name="category_id" class="form-control custom-select">
                 @foreach ($category as $cat)
@@ -34,9 +35,8 @@
                 @endif
                 @endforeach
               </select>
-            </select>
-          </div>
-          <div class="form-group">
+        </div>
+        <div class="form-group">
             <label for="inputSize">Ukuran</label>
             <div class="d-flex flex-wrap">
                 @foreach ($size as $index => $s)
@@ -56,7 +56,7 @@
             <label for="inputColour">Warna</label>
             <div class="d-flex flex-wrap">
                 @foreach ($colour as $index => $co)
-                    @if ($index % 2 == 0 && $index != 0)
+                    @if ($index % 3 == 0 && $index != 0)
                         </div><div class="d-flex flex-wrap">
                     @endif
                     <div class="form-check mr-3 mb-2">
@@ -94,8 +94,8 @@
             <textarea id="inputNote" name="note" class="form-control" rows="4" value="{{$item->description}}">{{ $item->description }}</textarea>
           </div>
           <div class="form-group">
-            <label for="inputNote">Description</label>
-            <textarea id="inputNote" name="description" class="form-control" rows="4" value="{{$item->description}}">{{ $item->description }}</textarea>
+            <label for="inputNote">Catatan</label>
+            <textarea id="inputNote" name="note" class="form-control" rows="4">{{ $item->note }}</textarea>
           </div>
         </div>
         <div class="card-footer">

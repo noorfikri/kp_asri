@@ -40,17 +40,28 @@ Route::middleware(['auth'])->group(function(){
     Route::view('/admin','dashboard/index')->name('dashboard');
     Route::view('/admin/profile','profile/index')->name('profile');
 
-    Route::resource('/admin/items',ItemController::class);
     Route::resource('/admin/suppliers',SupplierController::class);
 
+    Route::resource('/admin/items',ItemController::class);
     Route::post('/admin/items/showDetail', [ItemController::class, 'showDetail'])->name('items.showDetail');
     Route::post('/admin/items/showCreate', [ItemController::class, 'showCreate'])->name('items.showCreate');
     Route::post('/admin/items/showEdit', [ItemController::class, 'showEdit'])->name('items.showEdit');
 
     Route::resource('/admin/categories',CategoryController::class);
+    Route::post('/admin/categories/showCreate', [CategoryController::class, 'showCreate'])->name('categories.showCreate');
+    Route::post('/admin/categories/showEdit', [CategoryController::class, 'showEdit'])->name('categories.showEdit');
+
     Route::resource('/admin/sizes',SizeController::class);
+    Route::post('/admin/sizes/showCreate', [SizeController::class, 'showCreate'])->name('sizes.showCreate');
+    Route::post('/admin/sizes/showEdit', [SizeController::class, 'showEdit'])->name('sizes.showEdit');
+
     Route::resource('/admin/colours',ColourController::class);
+    Route::post('/admin/colours/showCreate', [ColourController::class, 'showCreate'])->name('colours.showCreate');
+    Route::post('/admin/colours/showEdit', [ColourController::class, 'showEdit'])->name('colours.showEdit');
+
     Route::resource('/admin/brands',BrandController::class);
+    Route::post('/admin/brands/showCreate', [BrandController::class, 'showCreate'])->name('brands.showCreate');
+    Route::post('/admin/brands/showEdit', [BrandController::class, 'showEdit'])->name('brands.showEdit');
 
     Route::resource('/admin/users',UserController::class);
     Route::post('/admin/users/showDetail', [UserController::class, 'showDetail'])->name('users.showDetail');

@@ -72,9 +72,6 @@
                         </td>
                         <td>{{ $message->post_time }}</td>
                         <td class="project-actions text-right">
-                            <a class="btn btn-primary btn-sm" href="{{ url('admin/messages/' . $message->id) }}">
-                                <i class="fas fa-folder"></i> Lihat
-                            </a>
                             <a class="btn btn-danger btn-sm" href="#" data-target="#delete{{ $message->id }}" data-toggle="modal">
                                 <i class="fas fa-trash"></i> Hapus
                             </a>
