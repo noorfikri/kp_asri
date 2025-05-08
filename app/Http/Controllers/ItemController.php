@@ -56,11 +56,12 @@ class ItemController extends Controller
         $data = new Item();
         $data->name = $request->get('name');
         $data->category_id = $request->get('category_id');
-        $data->size_id = $request->get('size_id');
-        $data->colour_id = $request->get('colour_id');
+        $data->size()->sync($request->input('size_id', []));
+        $data->colour()->sync($request->input('colour_id', []));
         $data->brand_id = $request->get('brand_id');
         $data->price = $request->get('price');
         $data->stock = $request->get('stock');
+        $data->description = $request->get('description');
         $data->note = $request->get('note');
 
         $image = $request->file('image');
@@ -117,11 +118,12 @@ class ItemController extends Controller
     {
         $item->name = $request->get('name');
         $item->category_id = $request->get('category_id');
-        $item->size_id = $request->get('size_id');
-        $item->colour_id = $request->get('colour_id');
+        $item->size()->sync($request->input('size_id', []));
+        $item->colour()->sync($request->input('colour_id', []));
         $item->brand_id = $request->get('brand_id');
         $item->price = $request->get('price');
         $item->stock = $request->get('stock');
+        $item->description = $request->get('description');
         $item->note = $request->get('note');
 
         $image = $request->file('image');

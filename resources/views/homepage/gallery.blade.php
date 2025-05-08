@@ -14,6 +14,7 @@
                     <img class="card_img" src="{{asset($item->image) }}" alt="{{ $item->name }}">
                     <div class="card_content">
                         <h1>{{ $item->name }}</h1>
+                        <p>{{ $item->description }}</p>
                         <p>Harga: @toIDR($item->price)</p>
                     </div>
                 </div>

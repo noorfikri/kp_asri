@@ -15,7 +15,7 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        $categories = ['Hijab', 'Koko Shirt', 'Prayer Mat', 'Pecis', 'Abaya', 'Sarong', 'Thobe'];
+        $categories = ['Baju Koko', 'Hijab', 'Mukena', 'Sarung', 'Peci', 'Gamis', 'Sajadah'];
 
         foreach ($categories as $category) {
             DB::table('categories')->insert([

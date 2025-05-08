@@ -13,12 +13,24 @@ class Item extends Model
         return $this->belongsTo('App\Models\Category','category_id');
     }
 
-    public function size(){
-        return $this->belongsTo('App\Models\Size','size_id');
+    public function size()
+    {
+        return $this->belongsToMany(
+            'App\Models\Size',
+            'items_sizes',
+            'item_id',
+            'size_id'
+        );
     }
 
-    public function colour(){
-        return $this->belongsTo('App\Models\Colour','colour_id');
+    public function colour()
+    {
+        return $this->belongsToMany(
+            'App\Models\Colour',
+            'items_colours',
+            'item_id',
+            'colour_id'
+        );
     }
 
     public function brand(){

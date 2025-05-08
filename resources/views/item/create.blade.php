@@ -31,37 +31,40 @@
                 @endforeach
               <option>...</option>
             </select>
-          </div>
-          <div class="form-group">
-            <label for="inputSize">Ukuran</label>
-            <select id="inputSize" name="size_id" class="form-control custom-select">
-              <option selected="" disabled="">Pilih salah satu</option>
-              @foreach ($size as $s)
-              <option value="{{$s->id}}">{{$s->name}}</option>
-              @endforeach
-              <option>...</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="inputSize">Ukuran</label>
-            <select id="inputSize" name="size_id" class="form-control custom-select">
-              <option selected="" disabled="">Pilih salah satu</option>
-              @foreach ($size as $s)
-              <option value="{{$s->id}}">{{$s->name}}</option>
-              @endforeach
-              <option>...</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="inputColour">Warna</label>
-            <select id="inputColour" name="colour_id" class="form-control custom-select">
-              <option selected="" disabled="">Pilih salah satu</option>
-              @foreach ($colour as $co)
-              <option value="{{$co->id}}">{{$co->name}}</option>
-              @endforeach
-              <option>...</option>
-            </select>
-          </div>
+            </div>
+            <div class="form-group">
+                <label for="inputSize">Ukuran</label>
+                <div class="d-flex flex-wrap">
+                    @foreach ($size as $index => $s)
+                        @if ($index % 2 == 0 && $index != 0)
+                            </div><div class="d-flex flex-wrap">
+                        @endif
+                        <div class="form-check mr-3 mb-2">
+                            <input class="form-check-input" type="checkbox" name="size_id[]" value="{{$s->id}}" id="size{{$s->id}}">
+                            <label class="form-check-label" for="size{{$s->id}}">
+                                {{$s->name}}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputColour">Warna</label>
+                <div class="d-flex flex-wrap">
+                    @foreach ($colour as $index => $co)
+                        @if ($index % 2 == 0 && $index != 0)
+                            </div><div class="d-flex flex-wrap">
+                        @endif
+                        <div class="form-check mr-3 mb-2">
+                            <input class="form-check-input" type="checkbox" name="colour_id[]" value="{{$co->id}}" id="colour{{$co->id}}">
+                            <label class="form-check-label" for="colour{{$co->id}}">
+                                {{$co->name}}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
           <div class="form-group">
             <label for="inputBrand">Merek</label>
             <select id="inputBrand" name="brand_id" class="form-control custom-select">
@@ -79,6 +82,10 @@
           <div class="form-group">
             <label for="inputStock">Stok Barang</label>
             <input type="text" id="inputStock" name="stock" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="inputNote">Deskripsi</label>
+            <textarea id="inputNote" name="description" class="form-control" rows="4"></textarea>
           </div>
           <div class="form-group">
             <label for="inputNote">Catatan</label>

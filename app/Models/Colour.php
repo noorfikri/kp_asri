@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Colour extends Model
 {
-    public function items(){
-        return $this->hasMany('App\Models\Item');
+    public function items()
+    {
+        return $this->belongsToMany(
+            'App\Models\Item',
+            'items_colours',
+            'colour_id',
+            'item_id'
+        );
     }
 }

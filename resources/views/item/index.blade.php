@@ -157,7 +157,14 @@ function editPreviewImage(input) {
                         </a>
                         <br/>
                         <small>
-                            Ukuran: {{$d->size->name}}, Warna: {{$d->colour->name}}
+                            Ukuran: @foreach ($d->size as $size)
+                                        {{$size->name}} @if (!$loop->last), @endif
+                                    @endforeach
+                        </small><br>
+                        <small>
+                            Warna: @foreach ($d->colour as $colour)
+                                        {{$colour->name}} @if (!$loop->last), @endif
+                                    @endforeach
                         </small>
                     </td>
                     <td>

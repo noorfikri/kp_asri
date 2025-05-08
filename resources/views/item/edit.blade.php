@@ -38,31 +38,36 @@
           </div>
           <div class="form-group">
             <label for="inputSize">Ukuran</label>
-            <select id="inputSize" name="size_id" class="form-control custom-select">
-              @foreach ($size as $s)
-              @if ($s->id == $item->size_id)
-
-                    <option value="{{$s->id}}" selected>{{$s->name}}</option>
-                @else
-                    <option value="{{$s->id}}">{{$s->name}}</option>
-                @endif
-              @endforeach
-              <option>...</option>
-            </select>
-          </div>
-          <div class="form-group">
+            <div class="d-flex flex-wrap">
+                @foreach ($size as $index => $s)
+                    @if ($index % 2 == 0 && $index != 0)
+                        </div><div class="d-flex flex-wrap">
+                    @endif
+                    <div class="form-check mr-3 mb-2">
+                        <input class="form-check-input" type="checkbox" name="size_id[]" value="{{$s->id}}" id="size{{$s->id}}" @if($item->size->contains($s->id)) checked @endif>
+                        <label class="form-check-label" for="size{{$s->id}}">
+                            {{$s->name}}
+                        </label>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        <div class="form-group">
             <label for="inputColour">Warna</label>
-            <select id="inputColour" name="colour_id" class="form-control custom-select">
-              @foreach ($colour as $co)
-              @if ($co->id == $item->colour_id)
-                    <option value="{{$co->id}}" selected>{{$co->name}}</option>
-                @else
-                    <option value="{{$co->id}}">{{$co->name}}</option>
-              @endif
-              @endforeach
-              <option>...</option>
-            </select>
-          </div>
+            <div class="d-flex flex-wrap">
+                @foreach ($colour as $index => $co)
+                    @if ($index % 2 == 0 && $index != 0)
+                        </div><div class="d-flex flex-wrap">
+                    @endif
+                    <div class="form-check mr-3 mb-2">
+                        <input class="form-check-input" type="checkbox" name="colour_id[]" value="{{$co->id}}" id="colour{{$co->id}}" @if($item->colour->contains($co->id)) checked @endif>
+                        <label class="form-check-label" for="colour{{$co->id}}">
+                            {{$co->name}}
+                        </label>
+                    </div>
+                @endforeach
+            </div>
+        </div>
           <div class="form-group">
             <label for="inputBrand">Merek</label>
             <select id="inputBrand" name="brand_id" class="form-control custom-select">
@@ -85,8 +90,12 @@
             <input type="text" id="inputStock" name="stock" class="form-control" value="{{$item->stock}}">
           </div>
           <div class="form-group">
-            <label for="inputNote">Catatan</label>
-            <textarea id="inputNote" name="note" class="form-control" rows="4" value="{{$item->note}}">{{ $item->note }}</textarea>
+            <label for="inputNote">Description</label>
+            <textarea id="inputNote" name="note" class="form-control" rows="4" value="{{$item->description}}">{{ $item->description }}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="inputNote">Description</label>
+            <textarea id="inputNote" name="description" class="form-control" rows="4" value="{{$item->description}}">{{ $item->description }}</textarea>
           </div>
         </div>
         <div class="card-footer">

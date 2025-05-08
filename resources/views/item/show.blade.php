@@ -31,11 +31,19 @@
                     </tr>
                     <tr>
                         <th>Warna</th>
-                        <td>{{$data->colour->name}}</td>
+                        <td>
+                        @foreach ($data->colour as $colour)
+                            {{$colour->name}} @if (!$loop->last), @endif
+                        @endforeach
+                    </td>
                     </tr>
                     <tr>
                         <th>Ukuran</th>
-                        <td>{{$data->size->name}}</td>
+                        <td>
+                        @foreach ($data->size as $size)
+                            {{$size->name}} @if (!$loop->last), @endif
+                        @endforeach
+                        </td>
                     </tr>
                     <tr>
                         <th>Harga</th>
@@ -44,6 +52,10 @@
                     <tr>
                         <th>Stok</th>
                         <td>{{$data->stock}}</td>
+                    </tr>
+                    <tr>
+                        <th>Deskripsi</th>
+                        <td>{{$data->description}}</td>
                     </tr>
                     <tr>
                         <th>Catatan</th>

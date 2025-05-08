@@ -15,7 +15,7 @@ class SizeSeeder extends Seeder
      */
     public function run()
     {
-        $sizes = ['Small', 'Medium', 'Large', 'X-Large', 'XX-Large'];
+        $sizes = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 
         foreach ($sizes as $size) {
             DB::table('sizes')->insert([
