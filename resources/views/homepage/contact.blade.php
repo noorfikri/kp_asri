@@ -14,7 +14,7 @@
                 </div>
                 <div class="form-group">
                     <label for="inputContact" class="form-label">Kontak yang bisa dihubungi</label>
-                    <input type="text" id="inputContact" name="contact" class="form-control styled-input" placeholder="Masukkan email Anda" required>
+                    <input type="text" id="inputContact" name="contact" class="form-control styled-input" placeholder="Masukkan email atau nomor kontak Anda" required>
                 </div>
                 <div class="form-row">
                     <div class="form-group">

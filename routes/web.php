@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/admin/users/updateProfile/{user}', [UserController::class, 'updateProfile'])->name('users.updateProfile');
 
     Route::resource('/admin/messages',MessageController::class);
+    Route::post('/admin/messages/showDetail', [MessageController::class, 'showDetail'])->name('messages.showDetail');
 
     Route::resource('/admin/buyingtransactions',BuyingTranscationController::class);
     Route::resource('/admin/buyingtransactionitems',BuyingTranscationItemController::class);

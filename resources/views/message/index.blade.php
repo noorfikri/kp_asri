@@ -1,7 +1,20 @@
 @extends('layouts.adminlte3')
 
 @section('javascript')
-{{----}}
+<script>
+function showDetails(message_id){
+    $.ajax({
+        type:'POST',
+        url:'{{route("messages.showDetail")}}',
+        data:{'_token':'<?php echo csrf_token() ?>',
+            'id':message_id
+        },
+        success: function(data){
+            $('#messagedetail'+message_id).html(data.msg)
+        }
+    });
+}
+</script>
 @endsection
 
 @section('content')
@@ -55,6 +68,7 @@
                         <th style="width: 25%">Pesan</th>
                         <th style="width: 15%">Waktu Kirim</th>
                         <th style="width: 10%"></th>
+                        <th style="width: 1%"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,14 +81,30 @@
                         <td>{{ $message->category }}</td>
                         <td>
                             <div style="max-height: 100px; overflow-y: auto;">
-                                {{ $message->message }}
+                                {{ Str::words($message->message, 10, '...') }}
                             </div>
                         </td>
                         <td>{{ $message->post_time }}</td>
                         <td class="project-actions text-right">
+                            <a class="btn btn-primary btn-sm" href="{{url('admin/messages/'.$message->id)}}"
+                                data-target="#show{{$message->id}}" data-toggle='modal' onclick="showDetails({{$message->id}})">
+                                <i class="fas fa-folder">
+                                </i>
+                                Lihat
+                            </a>
                             <a class="btn btn-danger btn-sm" href="#" data-target="#delete{{ $message->id }}" data-toggle="modal">
                                 <i class="fas fa-trash"></i> Hapus
                             </a>
+                        </td>
+                        <td>
+                            <div class="modal fade" id="show{{$message->id}}" tabindex="-1" role="basic" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content" id="messagedetail{{$message->id}}">
+                                        <!-- put animated gif here -->
+                                        <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="modal fade" id="delete{{ $message->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">

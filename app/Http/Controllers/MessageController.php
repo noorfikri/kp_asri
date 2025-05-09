@@ -104,4 +104,12 @@ class MessageController extends Controller
         $reviews = Message::where('category','review')->get();
         return view('homepage/index',['reviews'=>$reviews]);
     }
+
+    public function showDetail(Request $request){
+        $data=Message::find($_POST['id']);
+        return response()->json(array(
+            'status'=>'ok',
+            'msg'=>view('message.show',compact('data'))->render()
+        ),200);
+    }
 }
