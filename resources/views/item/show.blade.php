@@ -1,4 +1,3 @@
-
     <div class="card modal-body card-primary shadow-lg p-0">
         <div class="card-header d-flex justify-content-between">
             <h3 class="card-title"><i class="fas fa-info-circle"></i> Detail || {{$data->name}}</h3>

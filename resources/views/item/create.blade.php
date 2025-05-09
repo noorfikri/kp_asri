@@ -1,5 +1,3 @@
-
-
 <div class="card card-primary shadow-lg">
     <div class="card-header">
       <h3 class="card-title">Buat Barang</h3>

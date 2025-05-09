@@ -41,6 +41,9 @@ Route::middleware(['auth'])->group(function(){
     Route::view('/admin/profile','profile/index')->name('profile');
 
     Route::resource('/admin/suppliers',SupplierController::class);
+    Route::post('/admin/suppliers/showDetail', [SupplierController::class, 'showDetail'])->name('suppliers.showDetail');
+    Route::post('/admin/suppliers/showCreate', [SupplierController::class, 'showCreate'])->name('suppliers.showCreate');
+    Route::post('/admin/suppliers/showEdit', [SupplierController::class, 'showEdit'])->name('suppliers.showEdit');
 
     Route::resource('/admin/items',ItemController::class);
     Route::post('/admin/items/showDetail', [ItemController::class, 'showDetail'])->name('items.showDetail');

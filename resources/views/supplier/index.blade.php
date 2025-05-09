@@ -1,7 +1,7 @@
 @extends('layouts.adminlte3')
 
 @section('javascript')
-{{-- <script>
+<script>
 function showDetails(supplier_id){
     $.ajax({
         type:'POST',
@@ -39,7 +39,27 @@ function showEdit(supplier_id){
         }
     });
 }
-</script> --}}
+
+function createPreviewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#create-preview-image').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function editPreviewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#edit-preview-image').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
 @endsection
 @section('content')
 @if (session('status'))
@@ -108,6 +128,7 @@ function showEdit(supplier_id){
                     </th>
                     <th style="width: 20%">
                     </th>
+                    <th style="width: 1%"></th>
                 </tr>
             </thead>
             <tbody>
@@ -134,6 +155,20 @@ function showEdit(supplier_id){
                             </i>
                             Lihat
                         </a>
+                        <a class="btn btn-info btn-sm" href="{{url('admin/suppliers/'.$d->id.'/edit')}}"
+                            data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                            Ubah
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="{{url('admin/suppliers/'.$d->id)}}"
+                            data-target="#delete{{$d->id}}" data-toggle='modal'>
+                            <i class="fas fa-trash">
+                            </i>
+                            Hapus
+                        </a>
+                    </td>
+                    <td>
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="supplierdetail{{$d->id}}">
@@ -142,12 +177,6 @@ function showEdit(supplier_id){
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-info btn-sm" href="{{url('admin/suppliers/'.$d->id.'/edit')}}"
-                            data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
-                            <i class="fas fa-pencil-alt">
-                            </i>
-                            Ubah
-                        </a>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="supplieredit{{$d->id}}">
@@ -156,12 +185,6 @@ function showEdit(supplier_id){
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-danger btn-sm" href="{{url('admin/suppliers/'.$d->id)}}"
-                            data-target="#delete{{$d->id}}" data-toggle='modal'>
-                            <i class="fas fa-trash">
-                            </i>
-                            Hapus
-                        </a>
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="supplierdelete{{$d->id}}">
