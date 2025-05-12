@@ -15,7 +15,7 @@
             <img class="img-fluid pad" id="edit-preview-image" src="{{asset($supplier->picture)}}" alt="Foto">
             <div class="form-group">
                 <label for="inputPicture">Gambar</label>
-                <input type="file" id="inputPictureEdit" name="picture" class="form-control">
+                <input type="file" id="inputImageEdit" name="picture" class="form-control">
             </div>
             <div class="form-group">
                 <label for="inputName">Nama Supplier</label>

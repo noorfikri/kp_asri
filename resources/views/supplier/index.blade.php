@@ -23,6 +23,10 @@ function showCreate(){
         },
         success: function(data){
             $('#createmodal').html(data.msg)
+
+            $("#inputImageCreate").change(function(){
+                createPreviewImage(this);
+            });
         }
     });
 }
@@ -36,6 +40,10 @@ function showEdit(supplier_id){
         },
         success: function(data){
             $('#supplieredit'+supplier_id).html(data.msg)
+
+            $("#inputImageEdit").change(function(){
+                editPreviewImage(this);
+            });
         }
     });
 }
