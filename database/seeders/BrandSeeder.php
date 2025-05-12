@@ -19,7 +19,9 @@ class BrandSeeder extends Seeder
 
         foreach ($brands as $brand) {
             DB::table('brands')->insert([
-            'name' => $brand
+            'name' => $brand,
+            'created_at' => now(),
+            'updated_at' => now(),
             ]);
         }
     }

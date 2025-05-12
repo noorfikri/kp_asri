@@ -30,7 +30,9 @@ class ColourSeeder extends Seeder
 
         foreach ($colours as $colour) {
             DB::table('colours')->insert([
-            'name' => $colour
+            'name' => $colour,
+            'created_at' => now(),
+            'updated_at' => now(),
             ]);
         }
     }

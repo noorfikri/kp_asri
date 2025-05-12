@@ -146,6 +146,8 @@ class ItemController extends Controller
     {
         try{
             $item->delete();
+            //$item->size()->detach();
+            //$item->colour()->detach();
             return redirect()->route('items.index')->with('status','Barang telah dihapus');
         }catch(\Exception $e){
             return redirect()->route('items.index')->with('error','Barang tidak dapat dihapus, Pesan Error: '.$e->getMessage());

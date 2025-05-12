@@ -19,7 +19,9 @@ class SizeSeeder extends Seeder
 
         foreach ($sizes as $size) {
             DB::table('sizes')->insert([
-            'name' => $size
+            'name' => $size,
+            'created_at' => now(),
+            'updated_at' => now(),
             ]);
         }
     }

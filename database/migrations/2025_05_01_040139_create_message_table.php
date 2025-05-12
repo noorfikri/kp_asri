@@ -16,11 +16,11 @@ class CreateMessageTable extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('contact');
-            $table->string('subject');
+            $table->string('contact')->default("");
+            $table->string('subject')->default("");
             $table->enum('category',['review','order','question','other']);
-            $table->string('message');
-            $table->dateTime('post_time');
+            $table->string('message')->default("");
+            $table->dateTime('post_time')->default(now());
             $table->timestamps();
         });
     }

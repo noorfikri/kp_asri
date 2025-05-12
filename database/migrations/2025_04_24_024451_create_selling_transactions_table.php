@@ -15,8 +15,10 @@ class CreateSellingTransactionsTable extends Migration
     {
         Schema::create('selling_transactions', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
+            $table->dateTime('date')->default(now());
+            $table->integer('discount_amount')->default(0);
             $table->integer('total_amount')->default(0);
+            $table->integer('sub_total')->default(0);
             $table->integer('total_count')->default(0);
             $table->timestamps();
         });

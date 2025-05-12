@@ -19,7 +19,7 @@ class SellingTransactionSeeder extends Seeder
         for ($i = 1; $i <= 10; $i++) {
             DB::table('selling_transactions')->insert([
                 'seller_id' => $users[array_rand($users)],
-                'date' => date('Y-m-d', strtotime('-' . rand(1, 30) . ' days')),
+                'date' => date('Y-m-d H:i:s', strtotime('-' . rand(1, 30) . ' days -' . rand(0, 23) . ' hours -' . rand(0, 59) . ' minutes -' . rand(0, 59) . ' seconds')),
                 'total_amount' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),

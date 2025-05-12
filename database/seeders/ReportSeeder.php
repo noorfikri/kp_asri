@@ -19,10 +19,10 @@ class ReportSeeder extends Seeder
             DB::table('reports')->insert([
                 'report_date' => now()->subMonths(rand(1, 12)),
                 'type' => rand(0, 1) ? 'monthly' : 'yearly',
-                'total_buying' => rand(100000, 1000000),
-                'total_selling' => rand(100000, 1000000),
-                'cash_flow' => rand(-500000, 500000),
                 'creator_id' => $users[array_rand($users)],
+                'total_buying' => 0,
+                'total_selling' => 0,
+                'cash_flow' => 0, 
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

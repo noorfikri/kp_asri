@@ -1,7 +1,15 @@
 @extends('layouts.adminlte3')
 
 @section('javascript')
-{{-- <script>
+<script>
+function formatToIDR(amount) {
+    return 'Rp. ' + parseFloat(amount).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ',00';
+}
+
+function parseIDRToInteger(value) {
+    return parseInt(value.replace(/Rp\.|,00|[^0-9]/g, ''), 10) || 0;
+}
+
 function showDetails(transaction_id){
     $.ajax({
         type:'POST',
@@ -22,10 +30,13 @@ function showCreate(){
         data:{'_token':'<?php echo csrf_token() ?>',
         },
         success: function(data){
-            $('#createmodal').html(data.msg)
+            $('#createmodal').html(data.msg);
+
+            initializeCreateModal();
         }
     });
 }
+
 
 function showEdit(transaction_id){
     $.ajax({
@@ -35,11 +46,252 @@ function showEdit(transaction_id){
             'id':transaction_id,
         },
         success: function(data){
-            $('#transactionedit'+transaction_id).html(data.msg)
+            $('#transactionedit'+transaction_id).html(data.msg);
+
+            initializeEditModal(transaction_id);
         }
     });
+} 
+
+function initializeCreateModal(){
+    
+    function calculateTotals() {
+        let subtotal = 0;
+        let totalCount = 0;
+        
+        document.querySelectorAll('#itemTable tbody tr').forEach(row => {
+            const quantity = parseInt(row.querySelector('.item-quantity').value) || 0;
+            const totalPrice = parseFloat(row.querySelector('.item-total-price').dataset.rawPrice) || 0;
+            
+            subtotal += totalPrice;
+            totalCount += quantity;
+        });
+        
+        const discount = parseIDRToInteger(document.getElementById('discount').value) || 0;
+        const sumTotal = subtotal - discount;
+        
+        document.getElementById('subtotal').value = formatToIDR(subtotal);
+        document.getElementById('totalCount').value = totalCount;
+        document.getElementById('sumTotal').value = formatToIDR(sumTotal);
+    }
+
+    let itemIndex = 1;
+    
+    calculateTotals();
+    
+    document.getElementById('addItem').addEventListener('click', function () {
+        const tableBody = document.querySelector('#itemTable tbody');
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+        <td>
+            <select name="items[${itemIndex}][item_id]" class="form-control item-select">
+                @foreach ($items as $item)
+                    <option value="{{ $item->id }}" data-price="{{ $item->price }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
+        </td>
+        <td><input type="text" class="form-control item-price" readonly></td>
+        <td><input type="number" name="items[${itemIndex}][quantity]" class="form-control item-quantity" placeholder="Jumlah" min="1"></td>
+        <td><input type="text" name="items[${itemIndex}][price]" class="form-control item-total-price" placeholder="Harga Total" readonly data-raw-price="0"></td>
+        <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
+        `;
+        tableBody.appendChild(newRow);
+        itemIndex++;
+    });
+    
+    document.querySelector('#itemTable').addEventListener('change', function (e) {
+        if (e.target.classList.contains('item-select')) {
+            const row = e.target.closest('tr');
+            const price = parseFloat(e.target.selectedOptions[0].getAttribute('data-price')) || 0;
+            
+            row.querySelector('.item-price').value = formatToIDR(price);
+            row.querySelector('.item-price').dataset.rawPrice = price;
+            row.querySelector('.item-quantity').value = '';
+            row.querySelector('.item-total-price').value = '';
+            row.querySelector('.item-total-price').dataset.rawPrice = 0;
+            
+            calculateTotals();
+        }
+        
+        if (e.target.classList.contains('item-quantity')) {
+            const row = e.target.closest('tr');
+            const price = parseFloat(row.querySelector('.item-price').dataset.rawPrice) || 0;
+            const quantity = parseInt(e.target.value) || 0;
+            const totalPrice = price * quantity;
+            
+            row.querySelector('.item-total-price').value = formatToIDR(totalPrice);
+            row.querySelector('.item-total-price').dataset.rawPrice = totalPrice; 
+            
+            calculateTotals();
+        }
+    });
+    
+    document.querySelector('#itemTable').addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-item')) {
+            e.target.closest('tr').remove();
+            calculateTotals();
+        }
+    });
+    
+    document.getElementById('discount').addEventListener('blur', function (e) {
+        const discountField = e.target;
+
+        // Get the raw value (remove formatting)
+        const rawValue = parseIDRToInteger(discountField.value);
+
+        // Allow the field to be empty
+            if (discountField.value === '' || isNaN(rawValue)) {
+            discountField.value = '';
+            calculateTotals();
+            return;
+        }
+
+        // Format the value back to IDR
+        discountField.value = formatToIDR(rawValue);
+
+        // Recalculate totals
+        calculateTotals();
+    });
+    
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const subtotalField = document.getElementById('subtotal');
+        const discountField = document.getElementById('discount');
+        const sumTotalField = document.getElementById('sumTotal');
+        
+        subtotalField.value = parseIDRToInteger(subtotalField.value);
+        discountField.value = parseIDRToInteger(discountField.value);
+        sumTotalField.value = parseIDRToInteger(sumTotalField.value);
+        
+        document.querySelectorAll('#itemTable tbody tr').forEach(row => {
+            const totalPriceField = row.querySelector('.item-total-price');
+            totalPriceField.value = parseIDRToInteger(totalPriceField.value);
+        });
+    });
 }
-</script> --}}
+
+function initializeEditModal(transaction_id) {
+    const itemTable = document.querySelector(`#transactionedit${transaction_id} #itemTable`);
+
+    function calculateTotals() {
+    let subtotal = 0;
+    let totalCount = 0;
+
+    // Iterate through each row in the item table
+    itemTable.querySelectorAll('tbody tr').forEach(row => {
+        const quantityField = row.querySelector('.item-quantity');
+        const totalPriceField = row.querySelector('.item-total-price');
+
+        if (quantityField && totalPriceField) {
+            const quantity = parseInt(quantityField.value) || 0;
+            const totalPrice = parseFloat(totalPriceField.dataset.rawPrice) || 0;
+
+            subtotal += totalPrice;
+            totalCount += quantity;
+        }
+    });
+
+    // Get the discount value
+    const discountField = document.querySelector(`#transactionedit${transaction_id} #discount`);
+    const discount = parseIDRToInteger(discountField.value) || 0;
+
+    // Calculate the sum total
+    const sumTotal = subtotal - discount;
+
+    // Update the fields in the modal
+    document.querySelector(`#transactionedit${transaction_id} #subtotal`).value = formatToIDR(subtotal);
+    document.querySelector(`#transactionedit${transaction_id} #totalCount`).value = totalCount;
+    document.querySelector(`#transactionedit${transaction_id} #sumTotal`).value = formatToIDR(sumTotal);
+}
+
+    // Add event listener for adding new items
+    document.querySelector(`#transactionedit${transaction_id} #addItem`).addEventListener('click', function () {
+        const tableBody = itemTable.querySelector('tbody');
+        const newRow = document.createElement('tr');
+        const itemIndex = tableBody.querySelectorAll('tr').length;
+
+        newRow.innerHTML = `
+            <td>
+                <select name="items[${itemIndex}][item_id]" class="form-control item-select">
+                    @foreach ($items as $availableItem)
+                        <option value="{{ $availableItem->id }}" data-price="{{ $availableItem->price }}">{{ $availableItem->name }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td><input type="text" class="form-control item-price" readonly></td>
+            <td><input type="number" name="items[${itemIndex}][quantity]" class="form-control item-quantity" placeholder="Jumlah" min="1"></td>
+            <td><input type="text" name="items[${itemIndex}][price]" class="form-control item-total-price" placeholder="Harga Total" readonly data-raw-price="0"></td>
+            <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
+        `;
+        tableBody.appendChild(newRow);
+
+        calculateTotals(); // Recalculate totals after adding a new row
+    });
+
+    // Add event listener for item selection changes
+    itemTable.addEventListener('change', function (e) {
+        if (e.target.classList.contains('item-select')) {
+            const row = e.target.closest('tr');
+            const price = parseFloat(e.target.selectedOptions[0].getAttribute('data-price')) || 0;
+
+            row.querySelector('.item-price').value = formatToIDR(price);
+            row.querySelector('.item-price').dataset.rawPrice = price;
+            row.querySelector('.item-quantity').value = '';
+            row.querySelector('.item-total-price').value = '';
+            row.querySelector('.item-total-price').dataset.rawPrice = 0;
+
+            calculateTotals();
+        }
+
+        if (e.target.classList.contains('item-quantity')) {
+            const row = e.target.closest('tr');
+            const price = parseFloat(row.querySelector('.item-price').dataset.rawPrice) || 0;
+            const quantity = parseInt(e.target.value) || 0;
+            const totalPrice = price * quantity;
+
+            row.querySelector('.item-total-price').value = formatToIDR(totalPrice);
+            row.querySelector('.item-total-price').dataset.rawPrice = totalPrice;
+
+            calculateTotals();
+        }
+    });
+
+    // Add event listener for removing items
+    itemTable.addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-item')) {
+            e.target.closest('tr').remove();
+            calculateTotals();
+        }
+    });
+
+    // Add event listener for discount field
+    const discountField = document.querySelector(`#transactionedit${transaction_id} #discount`);
+    discountField.addEventListener('blur', function () {
+        const rawValue = parseIDRToInteger(discountField.value);
+        discountField.value = formatToIDR(rawValue);
+        calculateTotals();
+    });
+
+    // Add event listener for form submission
+    document.querySelector(`#transactionedit${transaction_id} form`).addEventListener('submit', function () {
+        const subtotalField = document.querySelector(`#transactionedit${transaction_id} #subtotal`);
+        const discountField = document.querySelector(`#transactionedit${transaction_id} #discount`);
+        const sumTotalField = document.querySelector(`#transactionedit${transaction_id} #sumTotal`);
+
+        // Convert subtotal, discount, and sum total back to integers
+        subtotalField.value = parseIDRToInteger(subtotalField.value);
+        discountField.value = parseIDRToInteger(discountField.value);
+        sumTotalField.value = parseIDRToInteger(sumTotalField.value);
+
+        // Convert each item's total price back to an integer
+        itemTable.querySelectorAll('tbody tr').forEach(row => {
+            const totalPriceField = row.querySelector('.item-total-price');
+            if (totalPriceField) {
+                totalPriceField.value = parseIDRToInteger(totalPriceField.value);
+            }
+        });
+    });
+}
+</script>
 @endsection
 @section('content')
 @if (session('status'))
@@ -81,7 +333,7 @@ function showEdit(transaction_id){
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content" id="createmodal">
                         <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                     </div>
@@ -98,6 +350,7 @@ function showEdit(transaction_id){
                     <th style="width: 15%">Total Pendapatan</th>
                     <th style="width: 10%">Jumlah Barang</th>
                     <th style="width: 20%"></th>
+                    <th style="width: 1%"></th>
                 </tr>
             </thead>
             <tbody>
@@ -113,28 +366,30 @@ function showEdit(transaction_id){
                             data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                             <i class="fas fa-folder"></i> Lihat
                         </a>
+                        <a class="btn btn-info btn-sm" href="{{url('admin/sellingtransactions/'.$d->id.'/edit')}}"
+                            data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
+                            <i class="fas fa-pencil-alt"></i> Ubah
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="{{url('admin/sellingtransactions/'.$d->id)}}"
+                            data-target="#delete{{$d->id}}" data-toggle='modal'>
+                            <i class="fas fa-trash"></i> Hapus
+                        </a>
+                    </td>
+                    <td>
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content" id="transactiondetail{{$d->id}}">
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-info btn-sm" href="{{url('admin/sellingtransactions/'.$d->id.'/edit')}}"
-                            data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
-                            <i class="fas fa-pencil-alt"></i> Ubah
-                        </a>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-xl">
                                 <div class="modal-content" id="transactionedit{{$d->id}}">
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-danger btn-sm" href="{{url('admin/sellingtransactions/'.$d->id)}}"
-                            data-target="#delete{{$d->id}}" data-toggle='modal'>
-                            <i class="fas fa-trash"></i> Hapus
-                        </a>
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="transactiondelete{{$d->id}}">
@@ -148,7 +403,7 @@ function showEdit(transaction_id){
                                             </button>
                                           </div>
                                           <div class="modal-body">
-                                            <p>Apakah Anda yakin ingin menghapus transaksi "{{$d->transaction_code}}"?</p>
+                                            <p>Apakah Anda yakin ingin menghapus transaksi dengan tanggal "{{$d->date}}"?</p>
                                           </div>
                                           <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Tutup</button>

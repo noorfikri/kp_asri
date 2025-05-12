@@ -15,8 +15,8 @@ class CreateSellingTransactionsItemsTable extends Migration
     {
         Schema::create('selling_transactions_items', function (Blueprint $table) {
             $table->id();
-            $table->integer('total_price');
-            $table->integer('total_quantity');
+            $table->integer('total_price')->default(0);
+            $table->integer('total_quantity')->default(0);
             $table->timestamps();
         });
     }

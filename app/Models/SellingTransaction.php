@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SellingTransaction extends Model
 {
+    protected $fillable = ['seller_id'];
+
     public function seller(){
         return $this->belongsTo('App\Models\User','seller_id');
     }

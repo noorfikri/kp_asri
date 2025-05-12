@@ -17,9 +17,10 @@ class CreateReportTable extends Migration
             $table->id();
             $table->dateTime('report_date');
             $table->enum('type',['monthly','yearly']);
-            $table->integer('total_buying');
-            $table->integer('total_selling');
-            $table->integer('cash_flow');
+            $table->integer('total_buying')->default(0);
+            $table->integer('total_selling')->default(0);
+            $table->integer('other_cost')->default(0);
+            $table->integer('cash_flow')->default(0);
             $table->timestamps();
         });
     }

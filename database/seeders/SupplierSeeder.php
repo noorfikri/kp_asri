@@ -19,16 +19,22 @@ class SupplierSeeder extends Seeder
             'name' => 'Supplier A',
             'address' => 'Jl. Merdeka No. 123, Jakarta',
             'telephone' => '081234567890',
+            'created_at' => now(),
+            'updated_at' => now(),
             ],
             [
             'name' => 'Supplier B',
             'address' => 'Jl. Sudirman No. 456, Bandung',
             'telephone' => '082345678901',
+            'created_at' => now(),
+            'updated_at' => now(),
             ],
             [
             'name' => 'Supplier C',
             'address' => 'Jl. Diponegoro No. 789, Surabaya',
             'telephone' => '083456789012',
+            'created_at' => now(),
+            'updated_at' => now(),
             ],
         ]);
     }

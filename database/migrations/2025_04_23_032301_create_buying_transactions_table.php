@@ -15,9 +15,12 @@ class CreateBuyingTransactionsTable extends Migration
     {
         Schema::create('buying_transactions', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
+            $table->date('date')->default(now());
             $table->integer('total_amount')->default(0);
             $table->integer('total_count')->default(0);
+            $table->integer('sub_total')->default(0);
+            $table->integer('discount_amount')->default(0);
+            $table->integer('other_cost')->default(0);
             $table->string('reciept_image')->default('assets/img/Placeholder_Image.png');
             $table->timestamps();
         });

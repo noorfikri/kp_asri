@@ -21,28 +21,32 @@ class SellingTransactionItemSeeder extends Seeder
         foreach ($transactions as $transaction) {
             $totalAmount = 0;
             $totalCount = 0;
+            $discount = rand(50000, 500000);
 
             $itemCount = rand(2, 5);
             for ($i = 1; $i <= $itemCount; $i++) {
                 $itemId = $items[array_rand($items)];
                 $quantity = rand(1, 10);
-                $price = rand(50000, 200000);
-                $totalAmount += $quantity * $price;
+                $price = DB::table('items')->where('id',$itemId)->value('price');
+                $totalPrice = $quantity * $price;
+                $totalAmount += $totalPrice;
                 $totalCount += $quantity;
 
                 DB::table('selling_transactions_items')->insert([
                     'transaction_id' => $transaction->id,
                     'item_id' => $itemId,
                     'total_quantity' => $quantity,
-                    'total_price' => $price,
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'total_price' => $totalPrice
                 ]);
             }
 
             DB::table('selling_transactions')->where('id', $transaction->id)->update([
-                'total_amount' => $totalAmount,
-                'total_count' => $totalCount
+                'sub_total' => $totalAmount,
+                'total_amount' => $totalAmount - $discount,
+                'total_count' => $totalCount,
+                'discount_amount' => $discount,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }

@@ -80,6 +80,10 @@ Route::middleware(['auth'])->group(function(){
 
     Route::resource('/admin/sellingtransactions',SellingTransactionController::class);
     Route::resource('/admin/sellingtransactionitems',SellingTransactionItemController::class);
+    Route::delete('admin/sellingtransactions/{id}', [SellingTransactionController::class, 'destroy'])->name('sellingtransactions.destroy');
+    Route::post('/admin/sellingtransactions/showDetail', [SellingTransactionController::class, 'showDetail'])->name('sellingtransactions.showDetail');
+    Route::post('/admin/sellingtransactions/showCreate', [SellingTransactionController::class, 'showCreate'])->name('sellingtransactions.showCreate');
+    Route::post('/admin/sellingtransactions/showEdit', [SellingTransactionController::class, 'showEdit'])->name('sellingtransactions.showEdit');
 
     Route::resource('/admin/reports',ReportController::class);
 
