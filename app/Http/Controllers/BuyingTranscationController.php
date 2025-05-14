@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\BuyingTransaction;
+use App\Models\Item;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class BuyingTranscationController extends Controller
@@ -14,8 +16,9 @@ class BuyingTranscationController extends Controller
      */
     public function index()
     {
+        $items = Item::all();
         $queryBuilder = BuyingTransaction::all();
-        return view('buyingtransaction.index',['data'=>$queryBuilder]);
+        return view('buyingtransaction.index',['data'=>$queryBuilder,'items'=>$items]);
     }
 
     /**
@@ -82,5 +85,24 @@ class BuyingTranscationController extends Controller
     public function destroy(BuyingTransaction $buyingTransaction)
     {
         //
+    }
+
+    public function showDetail(Request $request){
+        $buyingTransaction = BuyingTransaction::with(['supplier','items'])->find($request->id);
+        return response()->json(array(
+            'status'=>'ok',
+            'msg'=>view('buyingtransaction.show',compact('buyingTransaction'))->render()
+        ),200);
+    }
+
+    public function showCreate(Request $request)
+    {
+        $suppliers = Supplier::all();
+        $items = Item::all();
+
+        return response()->json(array(
+            'status' => 'ok',
+            'msg' => view('buyingtransaction.create', compact('items', 'suppliers'))->render()
+        ), 200);
     }
 }

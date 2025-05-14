@@ -40,6 +40,14 @@ class SellingTransactionController extends Controller
      */
     public function store(Request $request)
     {
+        $items = $request->get('items');
+        foreach ($items as $item) {
+            $currentItem = Item::findOrFail($item['item_id']);
+            if($currentItem->stock < $item['quantity']){
+                return redirect()->route('sellingtransactions.index')->with('error', 'Transaksi tidak dapat dilakukan, Stok barang '.$currentItem->name.' tidak mencukupi untuk transaksi ini.');
+            }
+        }
+
         $transaction = new SellingTransaction();
         $transaction->seller_id = $request->get('seller_id');
         $transaction->date = $request->get('date');
@@ -50,16 +58,22 @@ class SellingTransactionController extends Controller
 
         $transaction->save();
 
-        $items = $request->get('items');
-    
+        $itemStr = "";
+
         foreach ($items as $item) {
+            $currentItem = Item::findOrFail($item['item_id']);
+            $itemStr = $itemStr.$currentItem->name.', ';
             $transaction->items()->attach($item['item_id'], [
                 'total_quantity' => $item['quantity'],
                 'total_price' => $item['price'],
             ]);
+            $currentItem->stock -= $item['quantity'];
+            $currentItem->save();
         }
-    
-        return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi dengan waktu '.$transaction->date.' berhasil dibuat.');
+
+        $transaction->save();
+
+        return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi penjualan mencakup barang: '.$itemStr.' dengan waktu '.$transaction->date.' berhasil dibuat.');
     }
 
     /**
@@ -93,9 +107,21 @@ class SellingTransactionController extends Controller
      */
     public function update(Request $request, SellingTransaction $sellingTransaction)
     {
-        Log::info('Request Data:', $request->all());
         $sellingTransaction = SellingTransaction::findOrFail($request->id);
-        Log::info('Selling Transaction Before Update:', ['id' => $sellingTransaction->id, 'object' => $sellingTransaction]);
+        $items = $request->get('items');
+
+        $transactionItemsPivotTable = $sellingTransaction->items->keyBy('id');
+
+        foreach ($items as $item) {
+            $currentItem = Item::with('SellingTransactions')->find($item['item_id']);
+            $transactionItem = $transactionItemsPivotTable->get($item['item_id']->pivot);
+
+            if($item['quantity'] > $transactionItem->total_quantity){
+                if($currentItem->stock < $item['quantity']){
+                    return redirect()->route('sellingtransactions.index')->with('error', 'Transaksi tidak dapat dilakukan, Stok barang '.$currentItem->name.' tidak mencukupi untuk transaksi ini.');
+                }
+            }
+        }
 
         $sellingTransaction->seller_id = $request->get('seller_id');
         $sellingTransaction->date = $request->get('date');
@@ -106,15 +132,28 @@ class SellingTransactionController extends Controller
 
         $sellingTransaction->save();
 
+        foreach ($items as $item) {
+            $currentItem = Item::with('SellingTransactions')->find($item['item_id']);
+            $transactionItem = $transactionItemsPivotTable->get($item['item_id'])->pivot;
+
+            if($item['quantity'] > $transactionItem->total_quantity){
+                $currentItem->stock -= $item['quantity'];
+            } else {
+                $currentItem->stock += ($transactionItem->total_quantity - $item['quantity']);
+            }
+
+            $currentItem->save();
+        }
+
         $sellingTransaction->items()->detach();
-    
-        foreach ($request->items as $item) {
+
+        foreach ($items as $item) {
             $sellingTransaction->items()->attach($item['item_id'], [
                 'total_quantity' => $item['quantity'],
                 'total_price' => $item['price'],
             ]);
         }
-    
+
         return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi dengan waktu '.$sellingTransaction->date.' berhasil diperbarui.');
     }
 
@@ -165,5 +204,22 @@ class SellingTransactionController extends Controller
         'status' => 'ok',
         'msg' => view('sellingtransaction.edit', compact('sellingTransaction', 'users', 'items'))->render()
     ], 200);
+    }
+
+    public function deleteAddStock($id){
+        try{
+            $sellingTransaction = SellingTransaction::findOrFail($id);
+            $items = $sellingTransaction->items->keyBy('id');
+            foreach($items as $item){
+                $transactionItems = $items->get($item->id)->pivot;
+                $item->stock+=$transactionItems->total_quantity;
+                $item->save();
+            }
+            $sellingTransaction->items()->detach();
+            $sellingTransaction->delete();
+            return redirect()->route('sellingtransactions.index')->with('status','Transaksi telah dihapus dan stock barang telah ditambakan kembali');
+        }catch(\Exception $e){
+            return redirect()->route('sellingtransactions.index')->with('error','Transaksi tidak dapat dihapus, Pesan Error: '.$e->getMessage());
+        }
     }
 }

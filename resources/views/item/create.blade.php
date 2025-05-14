@@ -82,8 +82,8 @@
             <input type="text" id="inputStock" name="stock" class="form-control">
           </div>
           <div class="form-group">
-            <label for="inputNote">Deskripsi</label>
-            <textarea id="inputNote" name="description" class="form-control" rows="4"></textarea>
+            <label for="inputDescription">Deskripsi</label>
+            <textarea id="inputDescription" name="description" class="form-control" rows="4"></textarea>
           </div>
           <div class="form-group">
             <label for="inputNote">Catatan</label>

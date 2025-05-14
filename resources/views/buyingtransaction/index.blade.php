@@ -1,7 +1,7 @@
 @extends('layouts.adminlte3')
 
 @section('javascript')
-{{-- <script>
+<script>
 function showDetails(transaction_id){
     $.ajax({
         type:'POST',
@@ -22,15 +22,18 @@ function showCreate(){
         data:{'_token':'<?php echo csrf_token() ?>',
         },
         success: function(data){
-            $('#createmodal').html(data.msg)
+            $('#createmodal').html(data.msg);
+
+            initializeCreateModal();
         }
     });
 }
 
+/*
 function showEdit(transaction_id){
     $.ajax({
         type:'POST',
-        url:'{{route("buyingtransactions.showEdit")}}',
+        url:'{{--route("buyingtransactions.showEdit")--}}',
         data:{'_token':'<?php echo csrf_token() ?>',
             'id':transaction_id,
         },
@@ -38,8 +41,108 @@ function showEdit(transaction_id){
             $('#transactionedit'+transaction_id).html(data.msg)
         }
     });
+} */
+
+function formatToIDR(amount) {
+    return 'Rp. ' + parseFloat(amount).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ',00';
 }
-</script> --}}
+
+function parseIDRToInteger(value) {
+    return parseInt(value.replace(/Rp\.|,00|[^0-9]/g, ''), 10) || 0;
+}
+
+function initializeCreateModal() {
+    let itemIndex = 1;
+
+    function calculateTotals() {
+        let subtotal = 0;
+        let totalCount = 0;
+
+        document.querySelectorAll('#itemTable tbody tr').forEach(row => {
+            const quantity = parseInt(row.querySelector('.item-quantity').value) || 0;
+            const totalPrice = parseFloat(row.querySelector('.item-total-price').dataset.rawPrice) || 0;
+
+            subtotal += totalPrice;
+            totalCount += quantity;
+        });
+
+        const otherCost = parseIDRToInteger(document.getElementById('otherCost').value) || 0;
+        const discount = parseIDRToInteger(document.getElementById('discount').value) || 0;
+        const sumTotal = subtotal + otherCost - discount;
+
+        document.getElementById('subtotal').value = formatToIDR(subtotal);
+        document.getElementById('totalCount').value = totalCount;
+        document.getElementById('sumTotal').value = formatToIDR(sumTotal);
+    }
+
+    document.getElementById('addItem').addEventListener('click', function () {
+        const tableBody = document.querySelector('#itemTable tbody');
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>
+                <select name="items[${itemIndex}][item_id]" class="form-control item-select">
+                    @foreach ($items as $item)
+                        <option value="{{ $item->id }}" data-price="{{ $item->price }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td><input type="text" class="form-control item-price" readonly></td>
+            <td><input type="number" name="items[${itemIndex}][quantity]" class="form-control item-quantity" placeholder="Jumlah" min="1"></td>
+            <td><input type="text" name="items[${itemIndex}][price]" class="form-control item-total-price" placeholder="Harga Total" readonly data-raw-price="0"></td>
+            <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
+        `;
+        tableBody.appendChild(newRow);
+        itemIndex++;
+    });
+
+    document.querySelector('#itemTable').addEventListener('change', function (e) {
+        if (e.target.classList.contains('item-select')) {
+            const row = e.target.closest('tr');
+            const price = parseFloat(e.target.selectedOptions[0].getAttribute('data-price')) || 0;
+
+            row.querySelector('.item-price').value = formatToIDR(price);
+            row.querySelector('.item-price').dataset.rawPrice = price;
+            row.querySelector('.item-quantity').value = '';
+            row.querySelector('.item-total-price').value = '';
+            row.querySelector('.item-total-price').dataset.rawPrice = 0;
+
+            calculateTotals();
+        }
+
+        if (e.target.classList.contains('item-quantity')) {
+            const row = e.target.closest('tr');
+            const price = parseFloat(row.querySelector('.item-price').dataset.rawPrice) || 0;
+            const quantity = parseInt(e.target.value) || 0;
+            const totalPrice = price * quantity;
+
+            row.querySelector('.item-total-price').value = formatToIDR(totalPrice);
+            row.querySelector('.item-total-price').dataset.rawPrice = totalPrice;
+
+            calculateTotals();
+        }
+    });
+
+    document.querySelector('#itemTable').addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-item')) {
+            e.target.closest('tr').remove();
+            calculateTotals();
+        }
+    });
+
+    document.getElementById('otherCost').addEventListener('blur', function () {
+        const field = document.getElementById('otherCost');
+        field.value = formatToIDR(parseIDRToInteger(field.value));
+        calculateTotals();
+    });
+
+    document.getElementById('discount').addEventListener('blur', function () {
+        const field = document.getElementById('discount');
+        field.value = formatToIDR(parseIDRToInteger(field.value));
+        calculateTotals();
+    });
+}
+
+</script>
 @endsection
 
 @section('content')
@@ -82,7 +185,7 @@ function showEdit(transaction_id){
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content" id="createmodal">
                         <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                     </div>
@@ -99,6 +202,7 @@ function showEdit(transaction_id){
                     <th style="width: 15%">Total Biaya</th>
                     <th style="width: 10%">Jumlah Barang</th>
                     <th style="width: 20%"></th>
+                    <th style="width: 1%"></th>
                 </tr>
             </thead>
             <tbody>
@@ -114,17 +218,23 @@ function showEdit(transaction_id){
                             data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                             <i class="fas fa-folder"></i> Lihat
                         </a>
+                        <a class="btn btn-info btn-sm" href="{{url('admin/buyingtransactions/'.$d->id.'/edit')}}"
+                            data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
+                            <i class="fas fa-pencil-alt"></i> Ubah
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="{{url('admin/buyingtransactions/'.$d->id)}}"
+                            data-target="#delete{{$d->id}}" data-toggle='modal'>
+                            <i class="fas fa-trash"></i> Hapus
+                        </a>
+                    </td>
+                    <td>
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content" id="transactiondetail{{$d->id}}">
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-info btn-sm" href="{{url('admin/buyingtransactions/'.$d->id.'/edit')}}"
-                            data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
-                            <i class="fas fa-pencil-alt"></i> Ubah
-                        </a>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="transactionedit{{$d->id}}">
@@ -132,10 +242,6 @@ function showEdit(transaction_id){
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-danger btn-sm" href="{{url('admin/buyingtransactions/'.$d->id)}}"
-                            data-target="#delete{{$d->id}}" data-toggle='modal'>
-                            <i class="fas fa-trash"></i> Hapus
-                        </a>
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="transactiondelete{{$d->id}}">

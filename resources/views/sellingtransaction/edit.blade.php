@@ -24,7 +24,7 @@
                 <label for="date">Tanggal</label>
                 <input type="datetime-local" name="date" class="form-control" value="{{ $sellingTransaction->date }}">
             </div>
-    
+
             <h4>Daftar Barang</h4>
             <table class="table table-bordered" id="itemTable">
                 <thead>
@@ -66,7 +66,7 @@
                 </tbody>
             </table>
             <button type="button" class="btn btn-success" id="addItem">Tambah Barang</button>
-    
+
             <div class="mt-4">
                 <div class="form-group">
                     <label for="subtotal">Sub Total</label>
@@ -87,8 +87,10 @@
             </div>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-            <input type="submit" value="Simpan Perubahan" class="btn btn-primary">
+            <div class="col-12">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <input type="submit" value="Ubah Data Transaksi" class="btn btn-success float-right">
+            </div>
         </div>
     </form>
 </div>

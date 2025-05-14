@@ -51,34 +51,34 @@ function showEdit(transaction_id){
             initializeEditModal(transaction_id);
         }
     });
-} 
+}
 
 function initializeCreateModal(){
-    
+
     function calculateTotals() {
         let subtotal = 0;
         let totalCount = 0;
-        
+
         document.querySelectorAll('#itemTable tbody tr').forEach(row => {
             const quantity = parseInt(row.querySelector('.item-quantity').value) || 0;
             const totalPrice = parseFloat(row.querySelector('.item-total-price').dataset.rawPrice) || 0;
-            
+
             subtotal += totalPrice;
             totalCount += quantity;
         });
-        
+
         const discount = parseIDRToInteger(document.getElementById('discount').value) || 0;
         const sumTotal = subtotal - discount;
-        
+
         document.getElementById('subtotal').value = formatToIDR(subtotal);
         document.getElementById('totalCount').value = totalCount;
         document.getElementById('sumTotal').value = formatToIDR(sumTotal);
     }
 
     let itemIndex = 1;
-    
+
     calculateTotals();
-    
+
     document.getElementById('addItem').addEventListener('click', function () {
         const tableBody = document.querySelector('#itemTable tbody');
         const newRow = document.createElement('tr');
@@ -98,70 +98,66 @@ function initializeCreateModal(){
         tableBody.appendChild(newRow);
         itemIndex++;
     });
-    
+
     document.querySelector('#itemTable').addEventListener('change', function (e) {
         if (e.target.classList.contains('item-select')) {
             const row = e.target.closest('tr');
             const price = parseFloat(e.target.selectedOptions[0].getAttribute('data-price')) || 0;
-            
+
             row.querySelector('.item-price').value = formatToIDR(price);
             row.querySelector('.item-price').dataset.rawPrice = price;
             row.querySelector('.item-quantity').value = '';
             row.querySelector('.item-total-price').value = '';
             row.querySelector('.item-total-price').dataset.rawPrice = 0;
-            
+
             calculateTotals();
         }
-        
+
         if (e.target.classList.contains('item-quantity')) {
             const row = e.target.closest('tr');
             const price = parseFloat(row.querySelector('.item-price').dataset.rawPrice) || 0;
             const quantity = parseInt(e.target.value) || 0;
             const totalPrice = price * quantity;
-            
+
             row.querySelector('.item-total-price').value = formatToIDR(totalPrice);
-            row.querySelector('.item-total-price').dataset.rawPrice = totalPrice; 
-            
+            row.querySelector('.item-total-price').dataset.rawPrice = totalPrice;
+
             calculateTotals();
         }
     });
-    
+
     document.querySelector('#itemTable').addEventListener('click', function (e) {
         if (e.target.classList.contains('remove-item')) {
             e.target.closest('tr').remove();
             calculateTotals();
         }
     });
-    
+
     document.getElementById('discount').addEventListener('blur', function (e) {
         const discountField = e.target;
 
-        // Get the raw value (remove formatting)
         const rawValue = parseIDRToInteger(discountField.value);
 
-        // Allow the field to be empty
             if (discountField.value === '' || isNaN(rawValue)) {
             discountField.value = '';
             calculateTotals();
             return;
         }
 
-        // Format the value back to IDR
         discountField.value = formatToIDR(rawValue);
 
-        // Recalculate totals
         calculateTotals();
     });
-    
+
     document.querySelector('form').addEventListener('submit', function (e) {
         const subtotalField = document.getElementById('subtotal');
         const discountField = document.getElementById('discount');
         const sumTotalField = document.getElementById('sumTotal');
-        
+
         subtotalField.value = parseIDRToInteger(subtotalField.value);
         discountField.value = parseIDRToInteger(discountField.value);
         sumTotalField.value = parseIDRToInteger(sumTotalField.value);
-        
+
         document.querySelectorAll('#itemTable tbody tr').forEach(row => {
             const totalPriceField = row.querySelector('.item-total-price');
             totalPriceField.value = parseIDRToInteger(totalPriceField.value);
@@ -176,7 +172,6 @@ function initializeEditModal(transaction_id) {
     let subtotal = 0;
     let totalCount = 0;
 
-    // Iterate through each row in the item table
     itemTable.querySelectorAll('tbody tr').forEach(row => {
         const quantityField = row.querySelector('.item-quantity');
         const totalPriceField = row.querySelector('.item-total-price');
@@ -190,20 +185,16 @@ function initializeEditModal(transaction_id) {
         }
     });
 
-    // Get the discount value
     const discountField = document.querySelector(`#transactionedit${transaction_id} #discount`);
     const discount = parseIDRToInteger(discountField.value) || 0;
 
-    // Calculate the sum total
     const sumTotal = subtotal - discount;
 
-    // Update the fields in the modal
     document.querySelector(`#transactionedit${transaction_id} #subtotal`).value = formatToIDR(subtotal);
     document.querySelector(`#transactionedit${transaction_id} #totalCount`).value = totalCount;
     document.querySelector(`#transactionedit${transaction_id} #sumTotal`).value = formatToIDR(sumTotal);
 }
 
-    // Add event listener for adding new items
     document.querySelector(`#transactionedit${transaction_id} #addItem`).addEventListener('click', function () {
         const tableBody = itemTable.querySelector('tbody');
         const newRow = document.createElement('tr');
@@ -224,10 +215,9 @@ function initializeEditModal(transaction_id) {
         `;
         tableBody.appendChild(newRow);
 
-        calculateTotals(); // Recalculate totals after adding a new row
+        calculateTotals();
     });
 
-    // Add event listener for item selection changes
     itemTable.addEventListener('change', function (e) {
         if (e.target.classList.contains('item-select')) {
             const row = e.target.closest('tr');
@@ -255,7 +245,6 @@ function initializeEditModal(transaction_id) {
         }
     });
 
-    // Add event listener for removing items
     itemTable.addEventListener('click', function (e) {
         if (e.target.classList.contains('remove-item')) {
             e.target.closest('tr').remove();
@@ -263,7 +252,6 @@ function initializeEditModal(transaction_id) {
         }
     });
 
-    // Add event listener for discount field
     const discountField = document.querySelector(`#transactionedit${transaction_id} #discount`);
     discountField.addEventListener('blur', function () {
         const rawValue = parseIDRToInteger(discountField.value);
@@ -271,18 +259,16 @@ function initializeEditModal(transaction_id) {
         calculateTotals();
     });
 
-    // Add event listener for form submission
     document.querySelector(`#transactionedit${transaction_id} form`).addEventListener('submit', function () {
         const subtotalField = document.querySelector(`#transactionedit${transaction_id} #subtotal`);
         const discountField = document.querySelector(`#transactionedit${transaction_id} #discount`);
         const sumTotalField = document.querySelector(`#transactionedit${transaction_id} #sumTotal`);
 
-        // Convert subtotal, discount, and sum total back to integers
         subtotalField.value = parseIDRToInteger(subtotalField.value);
         discountField.value = parseIDRToInteger(discountField.value);
         sumTotalField.value = parseIDRToInteger(sumTotalField.value);
 
-        // Convert each item's total price back to an integer
+
         itemTable.querySelectorAll('tbody tr').forEach(row => {
             const totalPriceField = row.querySelector('.item-total-price');
             if (totalPriceField) {
@@ -391,7 +377,7 @@ function initializeEditModal(transaction_id) {
                             </div>
                         </div>
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content" id="transactiondelete{{$d->id}}">
                                     <form method='POST' action="{{route('sellingtransactions.destroy', $d->id)}}">
                                         @csrf
@@ -404,12 +390,22 @@ function initializeEditModal(transaction_id) {
                                           </div>
                                           <div class="modal-body">
                                             <p>Apakah Anda yakin ingin menghapus transaksi dengan tanggal "{{$d->date}}"?</p>
+                                            <p>Anda dapat menghapus transaksi namun tetap tidak merubah perubahan barang yang terjadi dengan <strong>"Hapus Transaksi"</strong></p>
+                                            <p>Atau anda dapat menghapus transaksi dan mengembalikan perubahan barang yang telah terjadi dengan <strong>"Hapus Transaksi Dan Kembalikan Barang"</strong></p>
                                           </div>
                                           <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Tutup</button>
-                                            <button type="submit" class="btn btn-danger">Hapus Transaksi</button>
+                                            <form method='POST' action="{{route('sellingtransactions.destroy', $d->id)}}">
+                                            @csrf
+                                            @method('DELETE')
+                                                 <button type="submit" class="btn btn-danger">Hapus Transaksi</button>
+                                            </form>
+                                            <form method='POST' action="{{route('sellingtransactions.deleteAddStock', $d->id)}}">
+                                            @csrf
+                                            @method('POST')
+                                                <button type="submit" class="btn btn-danger">Hapus Transaksi Dan Kembalikan Barang</button>
+                                            </form>
                                           </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>

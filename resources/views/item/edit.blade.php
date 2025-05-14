@@ -90,8 +90,8 @@
             <input type="text" id="inputStock" name="stock" class="form-control" value="{{$item->stock}}">
           </div>
           <div class="form-group">
-            <label for="inputNote">Description</label>
-            <textarea id="inputNote" name="note" class="form-control" rows="4" value="{{$item->description}}">{{ $item->description }}</textarea>
+            <label for="inputDescription">Description</label>
+            <textarea id="inputDescription" name="description" class="form-control" rows="4" value="{{$item->description}}">{{ $item->description }}</textarea>
           </div>
           <div class="form-group">
             <label for="inputNote">Catatan</label>
