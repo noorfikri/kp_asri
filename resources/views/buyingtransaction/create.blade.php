@@ -34,18 +34,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr class="itemFields">
                         <td>
                             <select name="items[0][item_id]" class="form-control item-select">
+                                <option value="">Pilih Barang</option>
+                                <option value="new">Tambah Barang Baru</option>
                                 @foreach ($items as $item)
                                     <option value="{{ $item->id }}" data-price="{{ $item->price }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </td>
-                        <td><input type="text" class="form-control item-price" value="@toIDR($items[0]->price)" readonly data-raw-price="{{ $items[0]->price }}"></td>
+                        <td><input type="text" class="form-control item-price" value="0" readonly data-raw-price="0"></td>
                         <td><input type="number" name="items[0][quantity]" class="form-control item-quantity" placeholder="Jumlah" min="1"></td>
                         <td><input type="text" name="items[0][price]" class="form-control item-total-price" placeholder="Harga Total" readonly data-raw-price="0"></td>
                         <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
+                    </tr>
+                    <tr class="new-item-fields" style="display: none;">
+                        <td>
+                            <input type="text" name="items[0][new_name]" class="form-control" placeholder="Nama Barang Baru">
+                        </td>
+                        <td>
+                            <input type="number" name="items[0][new_price]" class="form-control" placeholder="Harga Barang Baru">
+                        </td>
+                        <td>
+                            <input type="number" name="items[0][new_stock]" class="form-control" placeholder="Stok Barang Baru">
+                        </td>
+                        <td colspan="2"></td>
                     </tr>
                 </tbody>
             </table>

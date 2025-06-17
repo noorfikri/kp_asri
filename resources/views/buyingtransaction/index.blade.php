@@ -52,14 +52,17 @@ function parseIDRToInteger(value) {
 }
 
 function initializeCreateModal() {
-    let itemIndex = 1;
+    let itemIndex = 0;
 
     function calculateTotals() {
         let subtotal = 0;
         let totalCount = 0;
 
-        document.querySelectorAll('#itemTable tbody tr').forEach(row => {
-            const quantity = parseInt(row.querySelector('.item-quantity').value) || 0;
+        document.querySelectorAll('#itemTable .itemFields').forEach(row => {
+            let quantity =  0;
+            if(row.querySelector('.item-quantity').value !== null){
+                quantity = parseInt(row.querySelector('.item-quantity').value) || 0;
+            }
             const totalPrice = parseFloat(row.querySelector('.item-total-price').dataset.rawPrice) || 0;
 
             subtotal += totalPrice;
@@ -81,6 +84,8 @@ function initializeCreateModal() {
         newRow.innerHTML = `
             <td>
                 <select name="items[${itemIndex}][item_id]" class="form-control item-select">
+                    <option value="">Pilih Barang</option>
+                    <option value="new">Tambah Barang Baru</option>
                     @foreach ($items as $item)
                         <option value="{{ $item->id }}" data-price="{{ $item->price }}">{{ $item->name }}</option>
                     @endforeach
@@ -93,20 +98,40 @@ function initializeCreateModal() {
         `;
         tableBody.appendChild(newRow);
         itemIndex++;
+
+        const newItemRow = document.createElement('tr');
+        newItemRow.classList.add('new-item-fields');
+        newItemRow.style.display = 'none';
+        newItemRow.innerHTML = `
+            <td><input type="text" name="items[${itemIndex}][new_name]" class="form-control" placeholder="Nama Barang Baru"></td>
+            <td><input type="number" name="items[${itemIndex}][new_price]" class="form-control" placeholder="Harga Barang Baru"></td>
+            <td><input type="number" name="items[${itemIndex}][new_stock]" class="form-control" placeholder="Stok Barang Baru"></td>
+            <td colspan="2"></td>
+        `;
+        tableBody.appendChild(newItemRow);
     });
 
     document.querySelector('#itemTable').addEventListener('change', function (e) {
         if (e.target.classList.contains('item-select')) {
             const row = e.target.closest('tr');
-            const price = parseFloat(e.target.selectedOptions[0].getAttribute('data-price')) || 0;
+            const newItemRow = row.nextElementSibling;
+            const priceField = row.querySelector('.item-price');
 
-            row.querySelector('.item-price').value = formatToIDR(price);
-            row.querySelector('.item-price').dataset.rawPrice = price;
-            row.querySelector('.item-quantity').value = '';
-            row.querySelector('.item-total-price').value = '';
-            row.querySelector('.item-total-price').dataset.rawPrice = 0;
+            if (e.target.value === 'new') {
+                newItemRow.style.display = 'table-row';
+                priceField.value = '';
+            } else {
+                newItemRow.style.display = 'none';
+                const price = parseFloat(e.target.selectedOptions[0].getAttribute('data-price')) || 0;
 
-            calculateTotals();
+                row.querySelector('.item-price').value = formatToIDR(price);
+                row.querySelector('.item-price').dataset.rawPrice = price;
+                row.querySelector('.item-quantity').value = '';
+                row.querySelector('.item-total-price').value = '';
+                row.querySelector('.item-total-price').dataset.rawPrice = 0;
+
+                calculateTotals();
+            }
         }
 
         if (e.target.classList.contains('item-quantity')) {
@@ -124,8 +149,12 @@ function initializeCreateModal() {
 
     document.querySelector('#itemTable').addEventListener('click', function (e) {
         if (e.target.classList.contains('remove-item')) {
-            e.target.closest('tr').remove();
-            calculateTotals();
+            const row = e.target.closest('tr');
+            const newItemRow = row.nextElementSibling;
+            row.remove();
+            if (newItemRow && newItemRow.classList.contains('new-item-fields')) {
+                newItemRow.remove();
+            }
         }
     });
 

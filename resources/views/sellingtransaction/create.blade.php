@@ -41,12 +41,13 @@
                     <tr>
                         <td>
                             <select name="items[0][item_id]" class="form-control item-select">
+                                <option value="" data-price="0">Pilih Barang</option>
                                 @foreach ($items as $item)
                                     <option value="{{ $item->id }}" data-price="{{ $item->price }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </td>
-                        <td><input type="text" class="form-control item-price" value="@toIDR($items[0]->price)" readonly data-raw-price="{{ $items[0]->price }}"></td>
+                        <td><input type="text" class="form-control item-price" value="@toIDR(0)" readonly data-raw-price="{{ $items[0]->price }}"></td>
                         <td><input type="number" name="items[0][quantity]" class="form-control item-quantity" placeholder="Jumlah" min="1"></td>
                         <td><input type="text" name="items[0][price]" class="form-control item-total-price" placeholder="Harga Total" readonly data-raw-price="0"></td>
                         <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>

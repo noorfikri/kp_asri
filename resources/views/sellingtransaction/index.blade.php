@@ -75,7 +75,7 @@ function initializeCreateModal(){
         document.getElementById('sumTotal').value = formatToIDR(sumTotal);
     }
 
-    let itemIndex = 1;
+    let itemIndex = 0;
 
     calculateTotals();
 
@@ -198,7 +198,7 @@ function initializeEditModal(transaction_id) {
     document.querySelector(`#transactionedit${transaction_id} #addItem`).addEventListener('click', function () {
         const tableBody = itemTable.querySelector('tbody');
         const newRow = document.createElement('tr');
-        const itemIndex = tableBody.querySelectorAll('tr').length;
+        const itemIndex = 0;
 
         newRow.innerHTML = `
             <td>
@@ -214,6 +214,8 @@ function initializeEditModal(transaction_id) {
             <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
         `;
         tableBody.appendChild(newRow);
+
+        itemIndex++
 
         calculateTotals();
     });
