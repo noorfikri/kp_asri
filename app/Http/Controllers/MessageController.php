@@ -4,112 +4,113 @@ namespace App\Http\Controllers;
 
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the messages.
      */
     public function index()
     {
-        $queryBuilder = Message::all();
-        return view('message.index',['data'=>$queryBuilder]);
+        $messages = Message::all();
+        return view('message.index', ['data' => $messages]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show the form for creating a new message.
      */
     public function create()
     {
-        //
+        // Not used, handled via contact page or AJAX modal
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Store a newly created message in storage.
      */
     public function store(Request $request)
     {
-        $data = new Message();
-        $data->name = $request->get('name');
-        $data->contact = $request->get('contact');
-        $data->subject = $request->get('subject');
-        $data->category = $request->get('category');
-        $data->message = $request->get('message');
-        $data->post_time = now();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'contact' => 'nullable|string|max:255',
+            'subject' => 'nullable|string|max:255',
+            'category' => 'required|in:review,order,question,other',
+            'message' => 'required|string',
+        ]);
 
+        try {
+            $message = new Message();
+            $message->name = $validated['name'];
+            $message->contact = $validated['contact'] ?? '';
+            $message->subject = $validated['subject'] ?? '';
+            $message->category = $validated['category'];
+            $message->message = $validated['message'];
+            $message->post_time = now();
+            $message->save();
 
-        $data->save();
-
-        return redirect('/contact')->with('status','Message has been sent');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Message $message)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Message $message)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Message $message)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Message $message)
-    {
-        try{
-            $message->delete();
-            return redirect()->route('messages.index')->with('status','Message has been deleted');
-        }catch(\Exception $e){
-            return redirect()->route('messages.index')->with('error','Message cannot be deleted');
+            return redirect('/contact')->with('status', 'Message has been sent');
+        } catch (\Exception $e) {
+            Log::error('Message store failed', ['error' => $e->getMessage()]);
+            return redirect('/contact')->with('error', 'Failed to send message: ' . $e->getMessage());
         }
     }
 
-    public function review(){
-        $reviews = Message::where('category','review')->get();
-        return view('homepage/index',['reviews'=>$reviews]);
+    /**
+     * Display the specified message.
+     */
+    public function show(Message $message)
+    {
+        return view('message.show', ['data' => $message]);
     }
 
-    public function showDetail(Request $request){
-        $data=Message::find($_POST['id']);
-        return response()->json(array(
-            'status'=>'ok',
-            'msg'=>view('message.show',compact('data'))->render()
-        ),200);
+    /**
+     * Show the form for editing the specified message.
+     */
+    public function edit(Message $message)
+    {
+        // Not used, messages are not edited
+    }
+
+    /**
+     * Update the specified message in storage.
+     */
+    public function update(Request $request, Message $message)
+    {
+        // Not used, messages are not updated
+    }
+
+    /**
+     * Remove the specified message from storage.
+     */
+    public function destroy(Message $message)
+    {
+        try {
+            $message->delete();
+            return redirect()->route('messages.index')->with('status', 'Message has been deleted');
+        } catch (\Exception $e) {
+            Log::error('Message delete failed', ['error' => $e->getMessage()]);
+            return redirect()->route('messages.index')->with('error', 'Message cannot be deleted');
+        }
+    }
+
+    /**
+     * Show only review messages for homepage.
+     */
+    public function review()
+    {
+        $reviews = Message::where('category', 'review')->get();
+        return view('homepage.index', ['reviews' => $reviews]);
+    }
+
+    /**
+     * Show the detail modal via AJAX.
+     */
+    public function showDetail(Request $request)
+    {
+        $message = Message::find($request->input('id'));
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('message.show', compact('data'))->render()
+        ], 200);
     }
 }

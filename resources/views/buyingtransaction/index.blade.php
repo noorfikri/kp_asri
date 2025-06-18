@@ -83,18 +83,32 @@ function initializeCreateModal() {
         const newRow = document.createElement('tr');
         newRow.innerHTML = `
             <td>
-                <select name="items[${itemIndex}][item_id]" class="form-control item-select">
-                    <option value="">Pilih Barang</option>
-                    <option value="new">Tambah Barang Baru</option>
-                    @foreach ($items as $item)
-                        <option value="{{ $item->id }}" data-price="{{ $item->price }}">{{ $item->name }}</option>
-                    @endforeach
-                </select>
+            <select name="items[${itemIndex}][item_id]" class="form-control item-select @error('items.${itemIndex}.item_id') is-invalid @enderror" required>
+                <option value="">Pilih Barang</option>
+                <option value="new">Tambah Barang Baru</option>
+                @foreach ($items as $item)
+                <option value="{{ $item->id }}" data-price="{{ $item->price }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
+            @error('items.${itemIndex}.item_id')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
             </td>
-            <td><input type="text" class="form-control item-price" readonly></td>
-            <td><input type="number" name="items[${itemIndex}][quantity]" class="form-control item-quantity" placeholder="Jumlah" min="1"></td>
-            <td><input type="text" name="items[${itemIndex}][price]" class="form-control item-total-price" placeholder="Harga Total" readonly data-raw-price="0"></td>
-            <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
+            <td>
+            <input type="text" class="form-control item-price" readonly>
+            </td>
+            <td>
+            <input type="number" name="items[${itemIndex}][quantity]" class="form-control item-quantity @error('items.${itemIndex}.quantity') is-invalid @enderror" placeholder="Jumlah" min="1" required>
+            @error('items.${itemIndex}.quantity')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+            </td>
+            <td>
+            <input type="text" name="items[${itemIndex}][price]" class="form-control item-total-price" placeholder="Harga Total" readonly data-raw-price="0">
+            </td>
+            <td>
+            <button type="button" class="btn btn-danger remove-item">Hapus</button>
+            </td>
         `;
         tableBody.appendChild(newRow);
         itemIndex++;
@@ -103,9 +117,24 @@ function initializeCreateModal() {
         newItemRow.classList.add('new-item-fields');
         newItemRow.style.display = 'none';
         newItemRow.innerHTML = `
-            <td><input type="text" name="items[${itemIndex}][new_name]" class="form-control" placeholder="Nama Barang Baru"></td>
-            <td><input type="number" name="items[${itemIndex}][new_price]" class="form-control" placeholder="Harga Barang Baru"></td>
-            <td><input type="number" name="items[${itemIndex}][new_stock]" class="form-control" placeholder="Stok Barang Baru"></td>
+            <td>
+            <input type="text" name="items[${itemIndex}][new_name]" class="form-control @error('items.${itemIndex}.new_name') is-invalid @enderror" placeholder="Nama Barang Baru" required>
+            @error('items.${itemIndex}.new_name')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+            </td>
+            <td>
+            <input type="number" name="items[${itemIndex}][new_price]" class="form-control @error('items.${itemIndex}.new_price') is-invalid @enderror" placeholder="Harga Barang Baru" min="0" required>
+            @error('items.${itemIndex}.new_price')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+            </td>
+            <td>
+            <input type="number" name="items[${itemIndex}][new_stock]" class="form-control @error('items.${itemIndex}.new_stock') is-invalid @enderror" placeholder="Stok Barang Baru" min="0" required>
+            @error('items.${itemIndex}.new_stock')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+            </td>
             <td colspan="2"></td>
         `;
         tableBody.appendChild(newItemRow);

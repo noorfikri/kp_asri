@@ -2,18 +2,27 @@
 
 namespace App\Services;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class FileUploadService
 {
-    public function uploadFile(UploadedFile $file, $filename, $folder){
-        $imgFolder = 'assets/uploaded/img/'.$folder;
-        $imgFile = $folder.'_'.$filename.'_'.time().'_'.$file->getClientOriginalName();
+    /**
+     * Upload a file to the specified folder and return its storage path.
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param string $filename
+     * @param string $folder
+     * @return string
+     */
+    public function uploadFile(UploadedFile $file, string $filename, string $folder): string
+    {
+        $safeFilename = preg_replace('/[^A-Za-z0-9_\-]/', '_', $filename);
+        $safeFolder = preg_replace('/[^A-Za-z0-9_\-]/', '_', $folder);
+        $imgFile = $safeFolder . '_' . $safeFilename . '_' . time() . '_' . $file->getClientOriginalName();
 
-        $file->move($imgFolder, $imgFile);
+        $path = $file->storeAs("public/assets/uploaded/img/{$safeFolder}", $imgFile);
 
-        $path = $imgFolder.'/'.$imgFile;
-
-        return $path;
+        return Storage::url($path);
     }
 }

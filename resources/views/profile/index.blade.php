@@ -103,48 +103,70 @@ $(document).ready(function(){
             <div class="card-body">
               <div class="tab-content">
                 <div class="tab-pane active" id="settings">
-                  <form class="form-horizontal" method="POST" action="{{route('users.updateProfile', Auth::user()->id)}}" enctype="multipart/form-data">
+                <form class="form-horizontal" method="POST" action="{{ route('users.updateProfile', Auth::user()->id) }}" enctype="multipart/form-data">
                     @csrf
                     @method('POST')
+
                     <div class="form-group row">
                         <img class="profile-user-img img-fluid img-circle" id="edit-preview-image" src="{{ asset(Auth::user()->profile_picture) }}" alt="User profile picture">
-                      </div>
+                    </div>
+
                     <div class="form-group row">
-                        <label for="inputProfilePicture" class="col-sm-2 col-form-label">Gambar Profil</label>
+                        <label for="inputImageEdit" class="col-sm-2 col-form-label">Gambar Profil</label>
                         <div class="col-sm-10">
-                          <input type="file" class="form-control" name="image" id="inputImageEdit" placeholder="Gambar Profil">
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" name="image" id="inputImageEdit" placeholder="Gambar Profil">
+                            @error('image')
+                                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
                         </div>
-                      </div>
-                    <div class="form-group row">
-                      <label for="inputName" class="col-sm-2 col-form-label">Nama</label>
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control" name="name" id="inputName" placeholder="Nama" value="{{Auth::user()->name}}">
-                      </div>
                     </div>
+
                     <div class="form-group row">
-                      <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                      <div class="col-sm-10">
-                        <input type="email" class="form-control" name="email" id="inputEmail" placeholder="Email" value="{{Auth::user()->email}}">
-                      </div>
+                        <label for="inputName" class="col-sm-2 col-form-label">Nama</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="inputName" placeholder="Nama" value="{{ old('name', Auth::user()->name) }}">
+                            @error('name')
+                                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
                     </div>
+
                     <div class="form-group row">
-                      <label for="inputContact" class="col-sm-2 col-form-label">Nomor Kontak</label>
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control" name="contact_number" id="inputContact" placeholder="Nomor Kontak" value="{{Auth::user()->contact_number}}">
-                      </div>
+                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="inputEmail" placeholder="Email" value="{{ old('email', Auth::user()->email) }}">
+                            @error('email')
+                                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
                     </div>
+
                     <div class="form-group row">
-                      <label for="inputAddress" class="col-sm-2 col-form-label">Alamat</label>
-                      <div class="col-sm-10">
-                        <textarea class="form-control" name="address" id="inputAddress" placeholder="Alamat">{{Auth::user()->address}}</textarea>
-                      </div>
+                        <label for="inputContact" class="col-sm-2 col-form-label">Nomor Kontak</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control @error('contact_number') is-invalid @enderror" name="contact_number" id="inputContact" placeholder="Nomor Kontak" value="{{ old('contact_number', Auth::user()->contact_number) }}">
+                            @error('contact_number')
+                                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
                     </div>
+
                     <div class="form-group row">
-                      <div class="offset-sm-2 col-sm-10">
-                        <button type="submit" class="btn btn-danger">Ubah</button>
-                      </div>
+                        <label for="inputAddress" class="col-sm-2 col-form-label">Alamat</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control @error('address') is-invalid @enderror" name="address" id="inputAddress" placeholder="Alamat">{{ old('address', Auth::user()->address) }}</textarea>
+                            @error('address')
+                                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
                     </div>
-                  </form>
+
+                    <div class="form-group row">
+                        <div class="offset-sm-2 col-sm-10">
+                            <button type="submit" class="btn btn-danger">Ubah</button>
+                        </div>
+                    </div>
+                </form>
                 </div>
                 <!-- /.tab-pane -->
               </div>

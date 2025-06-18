@@ -8,6 +8,24 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * App\Models\User
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string|null $contact_number
+ * @property string|null $address
+ * @property string $profile_picture
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string $password
+ * @property string $category
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SellingTransaction[] $sellingTransactions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Report[] $reports
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -20,7 +38,13 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'contact_number',
+        'address',
+        'profile_picture',
+        'email_verified_at',
         'password',
+        'category',
+        'remember_token',
     ];
 
     /**
@@ -42,11 +66,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function sellingTransaction(){
-        return $this->hasMany('App\Models\SellingTransaction');
+    /**
+     * Get the selling transactions for the user.
+     */
+    public function sellingTransactions()
+    {
+        return $this->hasMany(\App\Models\SellingTransaction::class, 'seller_id');
     }
 
-    public function report(){
-        return $this->hasMany('App\Models\Report');
+    /**
+     * Get the reports created by the user.
+     */
+    public function reports()
+    {
+        return $this->hasMany(\App\Models\Report::class, 'creator_id');
     }
 }

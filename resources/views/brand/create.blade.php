@@ -1,7 +1,6 @@
 <div class="card card-primary shadow-lg">
     <div class="card-header">
         <h3 class="card-title">Buat Brand</h3>
-
         <div class="card-tools">
             <button type="button" class="close" data-target="#showcreatemodal" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -13,7 +12,20 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="inputName">Nama Brand</label>
-                <input type="text" id="inputName" name="name" class="form-control" placeholder="Masukkan nama brand">
+                <input
+                    type="text"
+                    id="inputName"
+                    name="name"
+                    class="form-control @error('name') is-invalid @enderror"
+                    placeholder="Masukkan nama brand"
+                    value="{{ old('name') }}"
+                    required
+                >
+                @error('name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
         </div>
         <div class="card-footer">
@@ -24,3 +36,4 @@
         </div>
     </form>
 </div>
+

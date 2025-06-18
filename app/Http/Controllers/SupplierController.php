@@ -4,137 +4,160 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use App\Services\FileUploadService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the suppliers.
      */
     public function index()
     {
-        $queryBuilder = Supplier::all();
-        return view('supplier.index',['data'=>$queryBuilder]);
+        $suppliers = Supplier::all();
+        return view('supplier.index', ['data' => $suppliers]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show the form for creating a new supplier.
      */
     public function create()
     {
-        //
+        // Not used, handled via AJAX modal
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Store a newly created supplier in storage.
      */
-    public function store(Request $request)
+    public function store()
     {
-        $data = new Supplier();
-        $data->name = $request->get('name');
-        $data->address = $request->get('address');
-        $data->telephone = $request->get('telephone');
+        $validator = Validator::make(request()->all(), [
+            'name' => 'required|string|max:255|unique:suppliers,name',
+            'address' => 'required|string|max:255',
+            'telephone' => 'required|string|max:50',
+            'picture' => 'nullable|image|max:2048',
+        ]);
 
-        $image = $request->file('picture');
-        if($image){
-            $data->picture = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $data->name, 'folder' => 'supplier']);
+        if ($validator->fails()) {
+            return redirect()->route('suppliers.index')
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $data->save();
+        try {
+            $supplier = new Supplier();
+            $supplier->name = request('name');
+            $supplier->address = request('address');
+            $supplier->telephone = request('telephone');
 
-        return redirect()->route('suppliers.index')->with('status','Supplier dengan nama: '.$data->name.' berhasil dibuat');
+            if (request()->hasFile('picture')) {
+                $supplier->picture = App::call([new FileUploadService, 'uploadFile'], [
+                    'file' => request()->file('picture'),
+                    'filename' => $supplier->name,
+                    'folder' => 'supplier'
+                ]);
+            }
+
+            $supplier->save();
+
+            return redirect()->route('suppliers.index')->with('status', 'Supplier dengan nama: ' . $supplier->name . ' berhasil dibuat');
+        } catch (\Exception $e) {
+            return redirect()->route('suppliers.index')->with('error', 'Gagal membuat supplier: ' . $e->getMessage());
+        }
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Supplier  $supplier
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Supplier $supplier)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Supplier  $supplier
-     * @return \Illuminate\Http\Response
+     * Show the form for editing the specified supplier.
      */
     public function edit(Supplier $supplier)
     {
-        //
+        // Not used, handled via AJAX modal
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Supplier  $supplier
-     * @return \Illuminate\Http\Response
+     * Update the specified supplier in storage.
      */
-    public function update(Request $request, Supplier $supplier)
+    public function update(Supplier $supplier)
     {
-        $supplier->name = $request->get('name');
-        $supplier->address = $request->get('address');
-        $supplier->telephone = $request->get('telephone');
+        $validator = Validator::make(request()->all(), [
+            'name' => 'required|string|max:255|unique:suppliers,name,' . $supplier->id,
+            'address' => 'required|string|max:255',
+            'telephone' => 'required|string|max:50',
+            'picture' => 'nullable|image|max:2048',
+        ]);
 
-        $image = $request->file('picture');
-        if($image){
-            $supplier->picture = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $supplier->name, 'folder' => 'supplier']);
+        if ($validator->fails()) {
+            return redirect()->route('suppliers.index')
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $supplier->save();
+        try {
+            $supplier->name = request('name');
+            $supplier->address = request('address');
+            $supplier->telephone = request('telephone');
 
-        return redirect()->route('suppliers.index')->with('status','Supplier dengan nama: '.$supplier->name.' berhasil diperbarui');
+            if (request()->hasFile('picture')) {
+                $supplier->picture = App::call([new FileUploadService, 'uploadFile'], [
+                    'file' => request()->file('picture'),
+                    'filename' => $supplier->name,
+                    'folder' => 'supplier'
+                ]);
+            }
+
+            $supplier->save();
+
+            return redirect()->route('suppliers.index')->with('status', 'Supplier dengan nama: ' . $supplier->name . ' berhasil diperbarui');
+        } catch (\Exception $e) {
+            return redirect()->route('suppliers.index')->with('error', 'Gagal memperbarui supplier: ' . $e->getMessage());
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Supplier  $supplier
-     * @return \Illuminate\Http\Response
+     * Remove the specified supplier from storage.
      */
     public function destroy(Supplier $supplier)
     {
-        try{
+        try {
             $supplier->delete();
-            return redirect()->route('suppliers.index')->with('status','Supplier telah dihapus');
-        }catch(\Exception $e){
-            return redirect()->route('suppliers.index')->with('error','Supplier tidak dapat dihapus, Pesan Error: '.$e->getMessage());
+            return redirect()->route('suppliers.index')->with('status', 'Supplier telah dihapus');
+        } catch (\Exception $e) {
+            return redirect()->route('suppliers.index')->with('error', 'Supplier tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }
     }
 
-    public function showDetail(Request $request){
-        $data=Supplier::find($_POST['id']);
-        return response()->json(array(
-            'status'=>'ok',
-            'msg'=>view('supplier.show',compact('data'))->render()
-        ),200);
+    /**
+     * Show the detail modal via AJAX.
+     */
+    public function showDetail()
+    {
+        $supplier = Supplier::find(request('id'));
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('supplier.show', compact('supplier'))->render()
+        ], 200);
     }
 
-    public function showCreate(Request $request){
-        return response()->json(array(
-            'status'=>'ok',
-            'msg'=>view('supplier.create')->render()
-        ),200);
+    /**
+     * Show the create modal via AJAX.
+     */
+    public function showCreate()
+    {
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('supplier.create')->render()
+        ], 200);
     }
 
-    public function showEdit(Request $request){
-        $supplier=Supplier::find($_POST['id']);
-
-        return response()->json(array(
-            'status'=>'ok',
-            'msg'=>view('supplier.edit',['supplier'=>$supplier])->render()
-        ),200);
+    /**
+     * Show the edit modal via AJAX.
+     */
+    public function showEdit()
+    {
+        $supplier = Supplier::find(request('id'));
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('supplier.edit', ['supplier' => $supplier])->render()
+        ], 200);
     }
 }

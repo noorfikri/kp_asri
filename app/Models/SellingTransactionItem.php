@@ -5,13 +5,34 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SellingTransactionItem extends Model
+/**
+ * App\Models\Supplier
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $address
+ * @property string $telephone
+ * @property string $picture
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BuyingTransaction[] $buyingTransactions
+ */
+class Supplier extends Model
 {
-    public function sellingTransaction(){
-        return $this->belongsTo('App\Models\SellingTransaction','transaction_id');
-    }
+    use HasFactory;
 
-    public function item(){
-        return $this->belongsTo('App\Models\Item','item_id');
+    protected $fillable = [
+        'name',
+        'address',
+        'telephone',
+        'picture',
+    ];
+
+    /**
+     * Get the buying transactions for the supplier.
+     */
+    public function buyingTransactions()
+    {
+        return $this->hasMany(\App\Models\BuyingTransaction::class, 'supplier_id');
     }
 }

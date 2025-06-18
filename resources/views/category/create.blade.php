@@ -1,9 +1,8 @@
 <div class="card card-primary shadow-lg">
     <div class="card-header">
         <h3 class="card-title">Buat Kategori</h3>
-
         <div class="card-tools">
-            <button type="button" class="close" data-target="#showcreatemodal" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -13,13 +12,27 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="inputName">Nama Kategori</label>
-                <input type="text" id="inputName" name="name" class="form-control" placeholder="Masukkan nama kategori">
+                <input
+                    type="text"
+                    id="inputName"
+                    name="name"
+                    class="form-control @error('name') is-invalid @enderror"
+                    placeholder="Masukkan nama kategori"
+                    value="{{ old('name') }}"
+                    required
+                    autofocus
+                >
+                @error('name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
         </div>
         <div class="card-footer">
             <div class="col-12">
-                <a href="#" class="btn btn-secondary" data-target="#showcreatemodal" data-dismiss="modal">Batal</a>
-                <input type="submit" value="Buat" class="btn btn-success float-right">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-success float-right">Buat</button>
             </div>
         </div>
     </form>

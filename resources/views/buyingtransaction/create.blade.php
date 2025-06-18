@@ -8,18 +8,39 @@
     <form method="POST" action="{{ route('buyingtransactions.store') }}">
         @csrf
         <div class="card-body">
-            <h3><strong>Buat Transaksi Pembelian Baru</strong></h3>
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="form-group">
                 <label for="supplier">Supplier</label>
-                <select name="supplier_id" id="supplier" class="form-control">
+                <select name="supplier_id" id="supplier" class="form-control @error('supplier_id') is-invalid @enderror" required>
+                    <option value="">Pilih Supplier</option>
                     @foreach ($suppliers as $supplier)
-                        <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                        <option value="{{ $supplier->id }}" {{ old('supplier_id') == $supplier->id ? 'selected' : '' }}>
+                            {{ $supplier->name }}
+                        </option>
                     @endforeach
                 </select>
+                @error('supplier_id')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
             </div>
+
             <div class="form-group">
                 <label for="date">Tanggal</label>
-                <input type="datetime-local" name="date" class="form-control" value="{{ now() }}">
+                <input type="datetime-local" name="date" id="date" class="form-control @error('date') is-invalid @enderror"
+                    value="{{ old('date', now()->format('Y-m-d\TH:i')) }}" required>
+                @error('date')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
             </div>
 
             <h4>Daftar Barang</h4>
@@ -36,28 +57,54 @@
                 <tbody>
                     <tr class="itemFields">
                         <td>
-                            <select name="items[0][item_id]" class="form-control item-select">
+                            <select name="items[0][item_id]" class="form-control item-select @error('items.0.item_id') is-invalid @enderror" required>
                                 <option value="">Pilih Barang</option>
                                 <option value="new">Tambah Barang Baru</option>
                                 @foreach ($items as $item)
-                                    <option value="{{ $item->id }}" data-price="{{ $item->price }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}" data-price="{{ $item->price }}" {{ old('items.0.item_id') == $item->id ? 'selected' : '' }}>
+                                        {{ $item->name }}
+                                    </option>
                                 @endforeach
                             </select>
+                            @error('items.0.item_id')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </td>
-                        <td><input type="text" class="form-control item-price" value="0" readonly data-raw-price="0"></td>
-                        <td><input type="number" name="items[0][quantity]" class="form-control item-quantity" placeholder="Jumlah" min="1"></td>
-                        <td><input type="text" name="items[0][price]" class="form-control item-total-price" placeholder="Harga Total" readonly data-raw-price="0"></td>
-                        <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
+                        <td>
+                            <input type="text" class="form-control item-price" value="0" readonly data-raw-price="0">
+                        </td>
+                        <td>
+                            <input type="number" name="items[0][quantity]" class="form-control item-quantity @error('items.0.quantity') is-invalid @enderror"
+                                placeholder="Jumlah" min="1" value="{{ old('items.0.quantity') }}" required>
+                            @error('items.0.quantity')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </td>
+                        <td>
+                            <input type="text" name="items[0][price]" class="form-control item-total-price" placeholder="Harga Total" readonly data-raw-price="0">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger remove-item">Hapus</button>
+                        </td>
                     </tr>
                     <tr class="new-item-fields" style="display: none;">
                         <td>
-                            <input type="text" name="items[0][new_name]" class="form-control" placeholder="Nama Barang Baru">
+                            <input type="text" name="items[0][new_name]" class="form-control @error('items.0.new_name') is-invalid @enderror" placeholder="Nama Barang Baru">
+                            @error('items.0.new_name')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </td>
                         <td>
-                            <input type="number" name="items[0][new_price]" class="form-control" placeholder="Harga Barang Baru">
+                            <input type="number" name="items[0][new_price]" class="form-control @error('items.0.new_price') is-invalid @enderror" placeholder="Harga Barang Baru" min="0">
+                            @error('items.0.new_price')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </td>
                         <td>
-                            <input type="number" name="items[0][new_stock]" class="form-control" placeholder="Stok Barang Baru">
+                            <input type="number" name="items[0][new_stock]" class="form-control @error('items.0.new_stock') is-invalid @enderror" placeholder="Stok Barang Baru" min="0">
+                            @error('items.0.new_stock')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </td>
                         <td colspan="2"></td>
                     </tr>
@@ -69,23 +116,31 @@
             <div class="mt-4">
                 <div class="form-group">
                     <label for="subtotal">Sub Total</label>
-                    <input type="text" id="subtotal" class="form-control" name="sub_total" readonly>
+                    <input type="text" id="subtotal" class="form-control" name="sub_total" value="{{ old('sub_total') }}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="totalCount">Jumlah Barang</label>
-                    <input type="text" id="totalCount" class="form-control" name="total_count" readonly>
+                    <input type="text" id="totalCount" class="form-control" name="total_count" value="{{ old('total_count') }}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="otherCost">Biaya Lain</label>
-                    <input type="text" id="otherCost" class="form-control" name="other_cost" placeholder="Biaya Lain" value="0" min="0">
+                    <input type="number" id="otherCost" class="form-control @error('other_cost') is-invalid @enderror" name="other_cost"
+                        placeholder="Biaya Lain" value="{{ old('other_cost', 0) }}" min="0">
+                    @error('other_cost')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="discount">Diskon</label>
-                    <input type="text" id="discount" class="form-control" name="discount_amount" placeholder="Diskon" value="0" min="0">
+                    <input type="number" id="discount" class="form-control @error('discount_amount') is-invalid @enderror" name="discount_amount"
+                        placeholder="Diskon" value="{{ old('discount_amount', 0) }}" min="0">
+                    @error('discount_amount')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="sumTotal">Total Harga</label>
-                    <input type="text" id="sumTotal" class="form-control" name="total_amount" readonly>
+                    <input type="text" id="sumTotal" class="form-control" name="total_amount" value="{{ old('total_amount') }}" readonly>
                 </div>
             </div>
         </div>

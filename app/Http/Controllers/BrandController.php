@@ -4,114 +4,106 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the brands.
      */
     public function index()
     {
-        $queryBuilder = Brand::all();
-        return view('brand.index',['data'=>$queryBuilder]);
+        $brands = Brand::all();
+        return view('brand.index', compact('brands'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show the form for creating a new brand.
      */
     public function create()
     {
-        //
+        return view('brand.create');
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Store a newly created brand in storage.
      */
     public function store(Request $request)
     {
-        $data = new Brand();
-        $data->name = $request->get('name');
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:brands,name',
+        ]);
 
-        $data->save();
+        $brand = Brand::create($validated);
 
-        return redirect()->route('brands.index')->with('status','Brand dengan nama: '.$data->name.' berhasil dibuat');
+        return redirect()
+            ->route('brands.index')
+            ->with('status', "Brand dengan nama: {$brand->name} berhasil dibuat");
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Brand  $brand
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Brand $brand)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Brand  $brand
-     * @return \Illuminate\Http\Response
+     * Show the form for editing the specified brand.
      */
     public function edit(Brand $brand)
     {
-        //
+        return view('brand.edit', compact('brand'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Brand  $brand
-     * @return \Illuminate\Http\Response
+     * Update the specified brand in storage.
      */
     public function update(Request $request, Brand $brand)
     {
-        $brand->name = $request->get('name');
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:brands,name,' . $brand->id,
+        ]);
 
-        $brand->save();
+        $brand->update($validated);
 
-        return redirect()->route('brands.index')->with('status','Brand dengan nama: '.$brand->name.' berhasil diperbarui');
+        return redirect()
+            ->route('brands.index')
+            ->with('status', "Brand dengan nama: {$brand->name} berhasil diperbarui");
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Brand  $brand
-     * @return \Illuminate\Http\Response
+     * Remove the specified brand from storage.
      */
     public function destroy(Brand $brand)
     {
-        try{
+        try {
             $brand->delete();
-            return redirect()->route('brands.index')->with('status','Brand telah dihapus');
-        }catch(\Exception $e){
-            return redirect()->route('brands.index')->with('error','Brand tidak dapat dihapus, Pesan Error: '.$e->getMessage());
+            return redirect()
+                ->route('brands.index')
+                ->with('status', 'Brand telah dihapus');
+        } catch (\Exception $e) {
+            Log::error('Brand deletion failed', ['error' => $e->getMessage()]);
+            return redirect()
+                ->route('brands.index')
+                ->with('error', 'Brand tidak dapat dihapus. Pesan Error: ' . $e->getMessage());
         }
     }
 
-
-    public function showCreate(Request $request){
-        return response()->json(array(
-            'status'=>'ok',
-            'msg'=>view('brand.create')->render()
-        ),200);
+    /**
+     * Show the create modal via AJAX.
+     */
+    public function showCreate(Request $request)
+    {
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('brand.create')->render(),
+        ]);
     }
 
-    public function showEdit(Request $request){
-        $brand=Brand::find($_POST['id']);
+    /**
+     * Show the edit modal via AJAX.
+     */
+    public function showEdit(Request $request)
+    {
+        $brand = Brand::findOrFail($request->input('id'));
 
-        return response()->json(array(
-            'status'=>'ok',
-            'msg'=>view('brand.edit',['brand'=>$brand])->render()
-        ),200);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('brand.edit', compact('brand'))->render(),
+        ]);
     }
 }

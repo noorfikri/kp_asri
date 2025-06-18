@@ -8,15 +8,13 @@ use App\Models\Colour;
 use App\Models\Item;
 use App\Models\Size;
 use App\Services\FileUploadService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 
 class ItemController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the items.
      */
     public function index()
     {
@@ -24,176 +22,251 @@ class ItemController extends Controller
         $size = Size::all();
         $colour = Colour::all();
         $brand = Brand::all();
+        $items = Item::all();
 
-        $queryBuilder = Item::all();
-        return view('item.index',['data'=>$queryBuilder,'category'=>$category,'size'=>$size,'colour'=>$colour,'brand'=>$brand]);
+        return view('item.index', [
+            'data' => $items,
+            'category' => $category,
+            'size' => $size,
+            'colour' => $colour,
+            'brand' => $brand
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show the form for creating a new item.
      */
     public function create()
     {
-        //
         $category = Category::all();
         $size = Size::all();
         $colour = Colour::all();
         $brand = Brand::all();
 
-        return view('item.create',['category'=>$category,'size'=>$size,'colour'=>$colour,'brand'=>$brand]);
+        return view('item.create', [
+            'category' => $category,
+            'size' => $size,
+            'colour' => $colour,
+            'brand' => $brand
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Store a newly created item in storage.
      */
-    public function store(Request $request, FileUploadService $fileUpload)
+    public function store(\Illuminate\Http\Request $request, FileUploadService $fileUpload)
     {
-        $data = new Item();
-        $data->name = $request->get('name');
-        $data->category_id = $request->get('category_id');
-        $data->size()->sync($request->input('size_id', []));
-        $data->colour()->sync($request->input('colour_id', []));
-        $data->brand_id = $request->get('brand_id');
-        $data->price = $request->get('price');
-        $data->stock = $request->get('stock');
-        $data->description = $request->get('description');
-        $data->note = $request->get('note');
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'description' => 'nullable|string',
+            'note' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
+            'size_id' => 'nullable|array',
+            'size_id.*' => 'exists:sizes,id',
+            'colour_id' => 'nullable|array',
+            'colour_id.*' => 'exists:colours,id',
+        ]);
 
-        $image = $request->file('image');
-        if($image){
-            $data->image = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $data->name, 'folder' => 'item']);
+        try {
+            $item = new Item();
+            $item->name = $validated['name'];
+            $item->category_id = $validated['category_id'];
+            $item->brand_id = $validated['brand_id'] ?? null;
+            $item->price = $validated['price'];
+            $item->stock = $validated['stock'];
+            $item->description = $validated['description'] ?? null;
+            $item->note = $validated['note'] ?? null;
+
+            if ($request->hasFile('image')) {
+                $item->image = App::call([$fileUpload, 'uploadFile'], [
+                    'file' => $request->file('image'),
+                    'filename' => $item->name,
+                    'folder' => 'item'
+                ]);
+            }
+
+            $item->save();
+
+            $item->size()->sync($validated['size_id'] ?? []);
+            $item->colour()->sync($validated['colour_id'] ?? []);
+
+            return redirect()->route('items.index')->with('status', 'Barang dengan nama: ' . $item->name . ' berhasil dibuat');
+        } catch (\Exception $e) {
+            Log::error('Item store failed', ['error' => $e->getMessage()]);
+            return redirect()->route('items.index')->with('error', 'Gagal membuat barang: ' . $e->getMessage());
         }
-
-        $data->save();
-
-        return redirect()->route('items.index')->with('status','Barang dengan nama: '.$data->name.' berhasil dibuat');
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
+     * Display the specified item.
      */
     public function show(Item $item)
     {
-        $data=$item;
-
-        return view('item.show',compact('data'));
+        return view('item.show', ['data' => $item]);
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
+     * Show the form for editing the specified item (AJAX modal).
      */
-    public function edit(Request $request)
+    public function edit(\Illuminate\Http\Request $request)
     {
-        $item=Item::find($_POST['id']);
+        $item = Item::find($request->input('id'));
         $category = Category::all();
         $size = Size::all();
         $colour = Colour::all();
         $brand = Brand::all();
 
-        return response()->json(array(
-            'status'=>'ok',
-            'msg'=>view('item.edit',['item'=>$item,'category'=>$category,'size'=>$size,'colour'=>$colour,'brand'=>$brand])->render()
-        ),200);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('item.edit', [
+                'item' => $item,
+                'category' => $category,
+                'size' => $size,
+                'colour' => $colour,
+                'brand' => $brand
+            ])->render()
+        ], 200);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
+     * Update the specified item in storage.
      */
-    public function update(Request $request, Item $item)
+    public function update(\Illuminate\Http\Request $request, Item $item, FileUploadService $fileUpload)
     {
-        $item->name = $request->get('name');
-        $item->category_id = $request->get('category_id');
-        $item->size()->sync($request->input('size_id', []));
-        $item->colour()->sync($request->input('colour_id', []));
-        $item->brand_id = $request->get('brand_id');
-        $item->price = $request->get('price');
-        $item->stock = $request->get('stock');
-        $item->description = $request->get('description');
-        $item->note = $request->get('note');
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'description' => 'nullable|string',
+            'note' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
+            'size_id' => 'nullable|array',
+            'size_id.*' => 'exists:sizes,id',
+            'colour_id' => 'nullable|array',
+            'colour_id.*' => 'exists:colours,id',
+        ]);
 
-        $image = $request->file('image');
-        if ($image) {
-            $item->image = App::call([new FileUploadService, 'uploadFile'], ['file' => $image, 'filename' => $item->name, 'folder' => 'item']);
+        try {
+            $item->name = $validated['name'];
+            $item->category_id = $validated['category_id'];
+            $item->brand_id = $validated['brand_id'] ?? null;
+            $item->price = $validated['price'];
+            $item->stock = $validated['stock'];
+            $item->description = $validated['description'] ?? null;
+            $item->note = $validated['note'] ?? null;
+
+            if ($request->hasFile('image')) {
+                $item->image = App::call([$fileUpload, 'uploadFile'], [
+                    'file' => $request->file('image'),
+                    'filename' => $item->name,
+                    'folder' => 'item'
+                ]);
+            }
+
+            $item->save();
+
+            $item->size()->sync($validated['size_id'] ?? []);
+            $item->colour()->sync($validated['colour_id'] ?? []);
+
+            return redirect()->route('items.index')->with('status', 'Barang dengan nama: ' . $item->name . ' berhasil diperbarui');
+        } catch (\Exception $e) {
+            Log::error('Item update failed', ['error' => $e->getMessage()]);
+            return redirect()->route('items.index')->with('error', 'Gagal memperbarui barang: ' . $e->getMessage());
         }
-
-        $item->save();
-
-        return redirect()->route('items.index')->with('status','Barang dengan nama: '.$item->name.' berhasil diperbarui');
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
+     * Remove the specified item from storage.
      */
     public function destroy(Item $item)
     {
-        try{
+        try {
             $item->delete();
-            //$item->size()->detach();
-            //$item->colour()->detach();
-            return redirect()->route('items.index')->with('status','Barang telah dihapus');
-        }catch(\Exception $e){
-            return redirect()->route('items.index')->with('error','Barang tidak dapat dihapus, Pesan Error: '.$e->getMessage());
+            // Optionally detach relations if needed:
+            // $item->size()->detach();
+            // $item->colour()->detach();
+            return redirect()->route('items.index')->with('status', 'Barang telah dihapus');
+        } catch (\Exception $e) {
+            Log::error('Item delete failed', ['error' => $e->getMessage()]);
+            return redirect()->route('items.index')->with('error', 'Barang tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }
     }
 
-    public function showDetail(Request $request){
-        $data=Item::find($_POST['id']);
-        return response()->json(array(
-            'status'=>'ok',
-            'msg'=>view('item.show',compact('data'))->render()
-        ),200);
+    /**
+     * Show the detail modal via AJAX.
+     */
+    public function showDetail(\Illuminate\Http\Request $request)
+    {
+        $item = Item::find($request->input('id'));
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('item.show', compact('item'))->render()
+        ], 200);
     }
 
-    public function showCreate(Request $request){
+    /**
+     * Show the create modal via AJAX.
+     */
+    public function showCreate(\Illuminate\Http\Request $request)
+    {
         $category = Category::all();
         $size = Size::all();
         $colour = Colour::all();
         $brand = Brand::all();
 
-        return response()->json(array(
-            'status'=>'ok',
-            'msg'=>view('item.create',['category'=>$category,'size'=>$size,'colour'=>$colour,'brand'=>$brand])->render()
-        ),200);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('item.create', [
+                'category' => $category,
+                'size' => $size,
+                'colour' => $colour,
+                'brand' => $brand
+            ])->render()
+        ], 200);
     }
 
-    public function showEdit(Request $request){
-        $item=Item::find($_POST['id']);
+    /**
+     * Show the edit modal via AJAX.
+     */
+    public function showEdit(\Illuminate\Http\Request $request)
+    {
+        $item = Item::find($request->input('id'));
         $category = Category::all();
         $size = Size::all();
         $colour = Colour::all();
         $brand = Brand::all();
 
-        return response()->json(array(
-            'status'=>'ok',
-            'msg'=>view('item.edit',['item'=>$item,'category'=>$category,'size'=>$size,'colour'=>$colour,'brand'=>$brand])->render()
-        ),200);
+        return response()->json([
+            'status' => 'ok',
+            'msg' => view('item.edit', [
+                'item' => $item,
+                'category' => $category,
+                'size' => $size,
+                'colour' => $colour,
+                'brand' => $brand
+            ])->render()
+        ], 200);
     }
 
+    /**
+     * Show the gallery page.
+     */
     public function gallery()
     {
         $items = Item::all();
-        return view('homepage/gallery', ['items' => $items]);
+        return view('homepage.gallery', ['items' => $items]);
     }
 
-    public function search(Request $request)
+    /**
+     * Search items.
+     */
+    public function search(\Illuminate\Http\Request $request)
     {
         $query = $request->get('query');
         $items = Item::where('name', 'LIKE', "%{$query}%")
