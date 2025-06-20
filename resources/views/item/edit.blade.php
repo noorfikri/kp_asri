@@ -38,43 +38,57 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="inputSize">Ukuran</label>
-                <div class="d-flex flex-wrap">
-                    @foreach ($size as $index => $s)
-                        @if ($index % 2 == 0 && $index != 0)
-                            </div><div class="d-flex flex-wrap">
-                        @endif
-                        <div class="form-check mr-3 mb-2">
-                            <input class="form-check-input" type="checkbox" name="size_id[]" value="{{ $s->id }}" id="size{{ $s->id }}"
-                                {{ in_array($s->id, old('size_id', $item->size->pluck('id')->toArray())) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="size{{ $s->id }}">
-                                {{ $s->name }}
-                            </label>
-                        </div>
-                    @endforeach
-                </div>
-                @error('size_id')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="form-group">
-                <label for="inputColour">Warna</label>
-                <div class="d-flex flex-wrap">
-                    @foreach ($colour as $index => $co)
-                        @if ($index % 3 == 0 && $index != 0)
-                            </div><div class="d-flex flex-wrap">
-                        @endif
-                        <div class="form-check mr-3 mb-2">
-                            <input class="form-check-input" type="checkbox" name="colour_id[]" value="{{ $co->id }}" id="colour{{ $co->id }}"
-                                {{ in_array($co->id, old('colour_id', $item->colour->pluck('id')->toArray())) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="colour{{ $co->id }}">
-                                {{ $co->name }}
-                            </label>
-                        </div>
-                    @endforeach
-                </div>
-                @error('colour_id')
-                    <div class="text-danger">{{ $message }}</div>
+                <label>Stok per Warna dan Ukuran</label>
+                <table class="table table-bordered" id="stockTable">
+                    <thead>
+                        <tr>
+                            <th>Ukuran</th>
+                            <th>Warna</th>
+                            <th>Stok</th>
+                            <th>Opsi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($item->stocks as $idx => $stock)
+                        <tr>
+                            <td>
+                                <select name="stocks[{{ $idx }}][size_id]" class="form-control @error('stocks.'.$idx.'.size_id') is-invalid @enderror" required>
+                                    <option value="">Pilih Ukuran</option>
+                                    @foreach ($size as $sz)
+                                        <option value="{{ $sz->id }}" {{ $stock->size_id == $sz->id ? 'selected' : '' }}>{{ $sz->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('stocks.'.$idx.'.size_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </td>
+                            <td>
+                                <select name="stocks[{{ $idx }}][colour_id]" class="form-control @error('stocks.'.$idx.'.colour_id') is-invalid @enderror" required>
+                                    <option value="">Pilih Warna</option>
+                                    @foreach ($colour as $co)
+                                        <option value="{{ $co->id }}" {{ $stock->colour_id == $co->id ? 'selected' : '' }}>{{ $co->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('stocks.'.$idx.'.colour_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </td>
+                            <td>
+                                <input type="number" name="stocks[{{ $idx }}][stock]" class="form-control @error('stocks.'.$idx.'.stock') is-invalid @enderror" min="0" value="{{ $stock->stock }}" required>
+                                @error('stocks.'.$idx.'.stock')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger remove-row">Hapus</button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-success" id="addRow">Tambah Kombinasi</button>
+                @error('stocks')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
@@ -93,13 +107,6 @@
                 <label for="inputPrice">Harga Barang</label>
                 <input type="text" id="inputPrice" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price', $item->price) }}">
                 @error('price')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="form-group">
-                <label for="inputStock">Stok Barang</label>
-                <input type="text" id="inputStock" name="stock" class="form-control @error('stock') is-invalid @enderror" value="{{ old('stock', $item->stock) }}">
-                @error('stock')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>

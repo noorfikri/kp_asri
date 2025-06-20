@@ -33,7 +33,6 @@ class Item extends Model
     protected $fillable = [
         'name',
         'price',
-        'stock',
         'image',
         'description',
         'note',
@@ -51,14 +50,9 @@ class Item extends Model
         return $this->belongsTo(\App\Models\Brand::class);
     }
 
-    public function size()
+    public function stocks()
     {
-        return $this->belongsToMany(\App\Models\Size::class, 'items_sizes', 'item_id', 'size_id');
-    }
-
-    public function colour()
-    {
-        return $this->belongsToMany(\App\Models\Colour::class, 'items_colours', 'item_id', 'colour_id');
+        return $this->hasMany(\App\Models\ItemStock::class, 'item_id');
     }
 
     public function buyingTransactions()

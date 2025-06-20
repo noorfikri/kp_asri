@@ -16,4 +16,9 @@ class Size extends Model
             'item_id'
         );
     }
+
+    public function stocks()
+    {
+        return $this->hasMany(ItemStock::class, 'size_id');
+    }
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BuyingTransaction;
+use App\Models\BuyingTransactionItem;
 use App\Models\Item;
+use App\Models\ItemStock;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -15,9 +17,8 @@ class BuyingTranscationController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
-        $buyingTransactions = BuyingTransaction::all();
-        return view('buyingtransaction.index', compact('buyingTransactions', 'items'))->with('data', $buyingTransactions);
+        $buyingTransactions = BuyingTransaction::with(['supplier'])->get();
+        return view('buyingtransaction.index', compact('buyingTransactions'))->with('data', $buyingTransactions);
     }
 
     /**
@@ -37,7 +38,7 @@ class BuyingTranscationController extends Controller
             'supplier_id' => 'required|exists:suppliers,id',
             'date' => 'required|date',
             'items' => 'required|array|min:1',
-            'items.*.item_id' => 'required|exists:items,id',
+            'items.*.items_stock_id' => 'required|exists:items_stock,id',
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.price' => 'required|integer|min:0',
             'sub_total' => 'required|integer|min:0',
@@ -59,16 +60,16 @@ class BuyingTranscationController extends Controller
             $transaction->save();
 
             foreach ($validated['items'] as $item) {
-                $transaction->items()->attach($item['item_id'], [
+                BuyingTransactionItem::create([
+                    'transaction_id' => $transaction->id,
+                    'items_stock_id' => $item['items_stock_id'],
                     'total_quantity' => $item['quantity'],
                     'total_price' => $item['price'],
                 ]);
-                // Update item stock
-                $currentItem = Item::find($item['item_id']);
-                if ($currentItem) {
-                    $currentItem->stock += $item['quantity'];
-                    $currentItem->save();
-                }
+                // Update items_stock
+                $stock = ItemStock::find($item['items_stock_id']);
+                $stock->stock += $item['quantity'];
+                $stock->save();
             }
 
             return redirect()->route('buyingtransactions.index')->with('status', 'Transaksi pembelian berhasil dibuat.');
@@ -103,7 +104,7 @@ class BuyingTranscationController extends Controller
             'supplier_id' => 'required|exists:suppliers,id',
             'date' => 'required|date',
             'items' => 'required|array|min:1',
-            'items.*.item_id' => 'required|exists:items,id',
+            'items.*.items_stock_id' => 'required|exists:items_stock,id',
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.price' => 'required|integer|min:0',
             'sub_total' => 'required|integer|min:0',
@@ -114,6 +115,14 @@ class BuyingTranscationController extends Controller
         ]);
 
         try {
+            // Restore stock before updating
+            foreach ($buyingTransaction->itemsStocks as $itemStock) {
+                $pivot = $itemStock->pivot;
+                $itemStock->stock -= $pivot->total_quantity;
+                $itemStock->save();
+            }
+            $buyingTransaction->itemsStocks()->detach();
+
             $buyingTransaction->supplier_id = $validated['supplier_id'];
             $buyingTransaction->date = $validated['date'];
             $buyingTransaction->sub_total = $validated['sub_total'];
@@ -123,24 +132,16 @@ class BuyingTranscationController extends Controller
             $buyingTransaction->total_amount = $validated['total_amount'];
             $buyingTransaction->save();
 
-            // Detach old items and update stock
-            foreach ($buyingTransaction->items as $item) {
-                $item->stock -= $item->pivot->total_quantity;
-                $item->save();
-            }
-            $buyingTransaction->items()->detach();
-
-            // Attach new items and update stock
             foreach ($validated['items'] as $item) {
-                $buyingTransaction->items()->attach($item['item_id'], [
+                BuyingTransactionItem::create([
+                    'transaction_id' => $buyingTransaction->id,
+                    'items_stock_id' => $item['items_stock_id'],
                     'total_quantity' => $item['quantity'],
                     'total_price' => $item['price'],
                 ]);
-                $currentItem = Item::find($item['item_id']);
-                if ($currentItem) {
-                    $currentItem->stock += $item['quantity'];
-                    $currentItem->save();
-                }
+                $stock = ItemStock::find($item['items_stock_id']);
+                $stock->stock += $item['quantity'];
+                $stock->save();
             }
 
             return redirect()->route('buyingtransactions.index')->with('status', 'Transaksi pembelian berhasil diperbarui.');
@@ -157,11 +158,12 @@ class BuyingTranscationController extends Controller
     {
         try {
             // Restore stock before deleting
-            foreach ($buyingTransaction->items as $item) {
-                $item->stock -= $item->pivot->total_quantity;
-                $item->save();
+            foreach ($buyingTransaction->itemsStocks as $itemStock) {
+                $pivot = $itemStock->pivot;
+                $itemStock->stock -= $pivot->total_quantity;
+                $itemStock->save();
             }
-            $buyingTransaction->items()->detach();
+            $buyingTransaction->itemsStocks()->detach();
             $buyingTransaction->delete();
 
             return redirect()->route('buyingtransactions.index')->with('status', 'Transaksi telah dihapus');
@@ -189,11 +191,11 @@ class BuyingTranscationController extends Controller
     public function showCreate(Request $request)
     {
         $suppliers = Supplier::all();
-        $items = Item::all();
+        $itemsStock = ItemStock::with(['item', 'size', 'colour'])->get();
 
         return response()->json([
             'status' => 'ok',
-            'msg' => view('buyingtransaction.create', compact('items', 'suppliers'))->render()
+            'msg' => view('buyingtransaction.create', compact('itemStock', 'suppliers'))->render()
         ], 200);
     }
 }

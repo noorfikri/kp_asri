@@ -6,33 +6,36 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Supplier
+ * App\Models\SellingTransactionItem
  *
  * @property int $id
- * @property string $name
- * @property string $address
- * @property string $telephone
- * @property string $picture
+ * @property int $transaction_id
+ * @property int $item_id
+ * @property int $total_quantity
+ * @property int $total_price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BuyingTransaction[] $buyingTransactions
+ * @property-read \App\Models\SellingTransaction $sellingTransaction
+ * @property-read \App\Models\Item $item
  */
-class Supplier extends Model
+class SellingTransactionItem extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'address',
-        'telephone',
-        'picture',
+        'transaction_id',
+        'item_id',
+        'total_quantity',
+        'total_price',
     ];
 
-    /**
-     * Get the buying transactions for the supplier.
-     */
-    public function buyingTransactions()
+    public function sellingTransaction()
     {
-        return $this->hasMany(\App\Models\BuyingTransaction::class, 'supplier_id');
+        return $this->belongsTo(\App\Models\SellingTransaction::class, 'transaction_id');
+    }
+
+    public function itemsStock()
+    {
+        return $this->belongsTo('App\Models\ItemsStock', 'items_stock_id');
     }
 }

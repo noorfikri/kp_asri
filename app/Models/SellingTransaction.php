@@ -49,6 +49,18 @@ class SellingTransaction extends Model
         )->withPivot('total_quantity', 'total_price')->withTimestamps();
     }
 
+        public function itemsStocks()
+    {
+        return $this->hasManyThrough(
+            ItemStock::class,
+            SellingTransactionItem::class,
+            'transaction_id',
+            'id',
+            'id',
+            'items_stock_id'
+        );
+    }
+
     public function reports()
     {
         return $this->belongsToMany(

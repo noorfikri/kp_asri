@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Colour;
 use App\Models\Item;
+use App\Models\ItemStock;
 use App\Models\Size;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\App;
@@ -61,14 +62,13 @@ class ItemController extends Controller
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
             'description' => 'nullable|string',
             'note' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
-            'size_id' => 'nullable|array',
-            'size_id.*' => 'exists:sizes,id',
-            'colour_id' => 'nullable|array',
-            'colour_id.*' => 'exists:colours,id',
+            'stocks' => 'required|array|min:1',
+            'stocks.*.size_id' => 'required|exists:sizes,id',
+            'stocks.*.colour_id' => 'required|exists:colours,id',
+            'stocks.*.stock' => 'required|integer|min:0',
         ]);
 
         try {
@@ -77,7 +77,6 @@ class ItemController extends Controller
             $item->category_id = $validated['category_id'];
             $item->brand_id = $validated['brand_id'] ?? null;
             $item->price = $validated['price'];
-            $item->stock = $validated['stock'];
             $item->description = $validated['description'] ?? null;
             $item->note = $validated['note'] ?? null;
 
@@ -91,8 +90,14 @@ class ItemController extends Controller
 
             $item->save();
 
-            $item->size()->sync($validated['size_id'] ?? []);
-            $item->colour()->sync($validated['colour_id'] ?? []);
+            foreach ($validated['stocks'] as $stockCombo) {
+                ItemStock::create([
+                    'item_id' => $item->id,
+                    'size_id' => $stockCombo['size_id'],
+                    'colour_id' => $stockCombo['colour_id'],
+                    'stock' => $stockCombo['stock'],
+                ]);
+}
 
             return redirect()->route('items.index')->with('status', 'Barang dengan nama: ' . $item->name . ' berhasil dibuat');
         } catch (\Exception $e) {
@@ -142,14 +147,13 @@ class ItemController extends Controller
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
             'description' => 'nullable|string',
             'note' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
-            'size_id' => 'nullable|array',
-            'size_id.*' => 'exists:sizes,id',
-            'colour_id' => 'nullable|array',
-            'colour_id.*' => 'exists:colours,id',
+            'stocks' => 'required|array|min:1',
+            'stocks.*.size_id' => 'required|exists:sizes,id',
+            'stocks.*.colour_id' => 'required|exists:colours,id',
+            'stocks.*.stock' => 'required|integer|min:0',
         ]);
 
         try {
@@ -157,7 +161,6 @@ class ItemController extends Controller
             $item->category_id = $validated['category_id'];
             $item->brand_id = $validated['brand_id'] ?? null;
             $item->price = $validated['price'];
-            $item->stock = $validated['stock'];
             $item->description = $validated['description'] ?? null;
             $item->note = $validated['note'] ?? null;
 
@@ -171,8 +174,16 @@ class ItemController extends Controller
 
             $item->save();
 
-            $item->size()->sync($validated['size_id'] ?? []);
-            $item->colour()->sync($validated['colour_id'] ?? []);
+            $item->stocks()->delete();
+
+            foreach ($validated['stocks'] as $stockCombo) {
+                ItemStock::create([
+                    'item_id' => $item->id,
+                    'size_id' => $stockCombo['size_id'],
+                    'colour_id' => $stockCombo['colour_id'],
+                    'stock' => $stockCombo['stock'],
+                ]);
+            }
 
             return redirect()->route('items.index')->with('status', 'Barang dengan nama: ' . $item->name . ' berhasil diperbarui');
         } catch (\Exception $e) {
@@ -188,9 +199,6 @@ class ItemController extends Controller
     {
         try {
             $item->delete();
-            // Optionally detach relations if needed:
-            // $item->size()->detach();
-            // $item->colour()->detach();
             return redirect()->route('items.index')->with('status', 'Barang telah dihapus');
         } catch (\Exception $e) {
             Log::error('Item delete failed', ['error' => $e->getMessage()]);
@@ -206,7 +214,7 @@ class ItemController extends Controller
         $item = Item::find($request->input('id'));
         return response()->json([
             'status' => 'ok',
-            'msg' => view('item.show', compact('item'))->render()
+            'msg' => view('item.show', ['data' => $item])->render()
         ], 200);
     }
 

@@ -27,11 +27,13 @@ function showCreate(){
             $("#inputImageCreate").change(function(){
                 createPreviewImage(this);
             });
+
+            createAddStock();
         }
     });
 }
 
-function showEdit(item_id){
+function showEdit(item_id, row_id){
     $.ajax({
         type:'POST',
         url:'{{route("items.showEdit")}}',
@@ -44,6 +46,55 @@ function showEdit(item_id){
             $("#inputImageEdit").change(function(){
                 editPreviewImage(this);
             });
+
+            editAddStock(row_id);
+        }
+    });
+}
+
+function createAddStock(){
+    let rowIdx = 1;
+    document.getElementById('addRow').addEventListener('click', function () {
+        const table = document.getElementById('stockTable').getElementsByTagName('tbody')[0];
+        const newRow = table.rows[0].cloneNode(true);
+        Array.from(newRow.querySelectorAll('select, input')).forEach(function (el) {
+            el.name = el.name.replace(/\d+/, rowIdx);
+            el.value = '';
+            el.classList.remove('is-invalid');
+        });
+        table.appendChild(newRow);
+        rowIdx++;
+    });
+
+    document.getElementById('stockTable').addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-row')) {
+            const rows = this.getElementsByTagName('tbody')[0].rows;
+            if (rows.length > 1) {
+                e.target.closest('tr').remove();
+            }
+        }
+    });
+}
+
+function editAddStock(rowIdx) {
+    document.getElementById('addRow').addEventListener('click', function () {
+        const table = document.getElementById('stockTable').getElementsByTagName('tbody')[0];
+        const newRow = table.rows[0].cloneNode(true);
+        Array.from(newRow.querySelectorAll('select, input')).forEach(function (el) {
+            el.name = el.name.replace(/\d+/, rowIdx);
+            el.value = '';
+            el.classList.remove('is-invalid');
+        });
+        table.appendChild(newRow);
+        rowIdx++;
+    });
+
+    document.getElementById('stockTable').addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-row')) {
+            const rows = this.getElementsByTagName('tbody')[0].rows;
+            if (rows.length > 1) {
+                e.target.closest('tr').remove();
+            }
         }
     });
 }
@@ -129,12 +180,6 @@ function editPreviewImage(input) {
                         Nama
                     </th>
                     <th style="width: 10%">
-                        Kategori
-                    </th>
-                    <th style="width: 10%">
-                        Merek
-                    </th>
-                    <th style="width: 10%">
                         Harga
                     </th>
                     <th style="width: 10%" class="text-center">
@@ -156,28 +201,14 @@ function editPreviewImage(input) {
                             {{$d->name}}
                         </a>
                         <br/>
-                        <small>
-                            Ukuran: @foreach ($d->size as $size)
-                                        {{$size->name}} @if (!$loop->last), @endif
-                                    @endforeach
-                        </small><br>
-                        <small>
-                            Warna: @foreach ($d->colour as $colour)
-                                        {{$colour->name}} @if (!$loop->last), @endif
-                                    @endforeach
-                        </small>
-                    </td>
-                    <td>
-                        {{$d->category->name}}
-                    </td>
-                    <td>
-                        {{$d->brand->name}}
+                        <small>Kategori: {{$d->category->name}}</small><br>
+                         <small>Merek: {{$d->brand->name}}</small>
                     </td>
                     <td class="project_progress">
                         @toIDR($d->price)
                     </td>
-                    <td class="project-state">
-                        {{$d->stock}}
+                    <td class="text-center">
+                        {{ $d->stocks->sum('stock') }}
                     </td>
                     <td class="project-actions text-right">
                         <a class="btn btn-primary btn-sm" href="{{url('admin/items/'.$d->id)}}"
@@ -187,7 +218,7 @@ function editPreviewImage(input) {
                             Lihat
                         </a>
                         <a class="btn btn-info btn-sm" href="{{url('admin/items/'.$d->id.'/edit')}}"
-                            data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
+                            data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}},{{ $d->stocks->count() }})">
                             <i class="fas fa-pencil-alt">
                             </i>
                             Ubah

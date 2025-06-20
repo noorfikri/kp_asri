@@ -34,8 +34,8 @@ class BuyingTransactionItem extends Model
         return $this->belongsTo('App\Models\BuyingTransaction', 'transaction_id');
     }
 
-    public function item()
+    public function itemStock()
     {
-        return $this->belongsTo('App\Models\Item', 'item_id');
+        return $this->belongsTo('App\Models\ItemsStock', 'items_stock_id');
     }
 }

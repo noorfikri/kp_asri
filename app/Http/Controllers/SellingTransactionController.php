@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\ItemStock;
 use App\Models\SellingTransaction;
+use App\Models\SellingTransactionItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -15,9 +17,8 @@ class SellingTransactionController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
-        $sellingTransactions = SellingTransaction::all();
-        return view('sellingtransaction.index', ['data' => $sellingTransactions, 'items' => $items]);
+        $sellingTransactions = SellingTransaction::with(['seller'])->get();
+        return view('sellingtransaction.index', ['data' => $sellingTransactions]);
     }
 
     /**
@@ -37,7 +38,7 @@ class SellingTransactionController extends Controller
             'seller_id' => 'required|exists:users,id',
             'date' => 'required|date',
             'items' => 'required|array|min:1',
-            'items.*.item_id' => 'required|exists:items,id',
+            'items.*.items_stock_id' => 'required|exists:items_stock,id',
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.price' => 'required|integer|min:0',
             'sub_total' => 'required|integer|min:0',
@@ -48,9 +49,9 @@ class SellingTransactionController extends Controller
 
         // Check stock before proceeding
         foreach ($validated['items'] as $item) {
-            $currentItem = Item::findOrFail($item['item_id']);
-            if ($currentItem->stock < $item['quantity']) {
-                return redirect()->route('sellingtransactions.index')->with('error', 'Transaksi tidak dapat dilakukan, Stok barang ' . $currentItem->name . ' tidak mencukupi untuk transaksi ini.');
+            $stock = ItemStock::findOrFail($item['items_stock_id']);
+            if ($stock->stock < $item['quantity']) {
+                return redirect()->route('sellingtransactions.index')->with('error', 'Stok tidak cukup untuk transaksi.');
             }
         }
 
@@ -64,20 +65,19 @@ class SellingTransactionController extends Controller
             $transaction->total_count = $validated['total_count'];
             $transaction->save();
 
-            $itemStr = "";
-
             foreach ($validated['items'] as $item) {
-                $currentItem = Item::findOrFail($item['item_id']);
-                $itemStr .= $currentItem->name . ', ';
-                $transaction->items()->attach($item['item_id'], [
+                SellingTransactionItem::create([
+                    'transaction_id' => $transaction->id,
+                    'items_stock_id' => $item['items_stock_id'],
                     'total_quantity' => $item['quantity'],
                     'total_price' => $item['price'],
                 ]);
-                $currentItem->stock -= $item['quantity'];
-                $currentItem->save();
+                $stock = ItemStock::find($item['items_stock_id']);
+                $stock->stock -= $item['quantity'];
+                $stock->save();
             }
 
-            return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi penjualan mencakup barang: ' . $itemStr . ' dengan waktu ' . $transaction->date . ' berhasil dibuat.');
+            return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi penjualan berhasil dibuat.');
         } catch (\Exception $e) {
             Log::error('SellingTransaction store failed', ['error' => $e->getMessage()]);
             return redirect()->route('sellingtransactions.index')->with('error', 'Gagal membuat transaksi penjualan: ' . $e->getMessage());
@@ -90,11 +90,10 @@ class SellingTransactionController extends Controller
     public function update(Request $request, SellingTransaction $sellingTransaction)
     {
         $validated = $request->validate([
-            'id' => 'required|exists:selling_transactions,id',
             'seller_id' => 'required|exists:users,id',
             'date' => 'required|date',
             'items' => 'required|array|min:1',
-            'items.*.item_id' => 'required|exists:items,id',
+            'items.*.items_stock_id' => 'required|exists:items_stock,id',
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.price' => 'required|integer|min:0',
             'sub_total' => 'required|integer|min:0',
@@ -103,22 +102,30 @@ class SellingTransactionController extends Controller
             'total_amount' => 'required|integer|min:0',
         ]);
 
-        $sellingTransaction = SellingTransaction::findOrFail($validated['id']);
-        $items = $validated['items'];
-        $transactionItemsPivotTable = $sellingTransaction->items->keyBy('id');
+        // Restore previous stock
+        foreach ($sellingTransaction->itemsStocks as $itemStock) {
+            $pivot = $itemStock->pivot;
+            $itemStock->stock += $pivot->total_quantity;
+            $itemStock->save();
+        }
 
-        // Check stock for increased quantity
-        foreach ($items as $item) {
-            $currentItem = Item::findOrFail($item['item_id']);
-            $transactionItem = $transactionItemsPivotTable->get($item['item_id']);
-            $oldQty = $transactionItem ? $transactionItem->pivot->total_quantity : 0;
-            $qtyDiff = $item['quantity'] - $oldQty;
-            if ($qtyDiff > 0 && $currentItem->stock < $qtyDiff) {
-                return redirect()->route('sellingtransactions.index')->with('error', 'Transaksi tidak dapat dilakukan, Stok barang ' . $currentItem->name . ' tidak mencukupi untuk transaksi ini.');
+        // Check if new stock is available
+        foreach ($validated['items'] as $item) {
+            $stock = \App\Models\ItemStock::findOrFail($item['items_stock_id']);
+            if ($stock->stock < $item['quantity']) {
+                // Revert the stock restoration if you want to be extra safe
+                foreach ($sellingTransaction->itemsStocks as $itemStock) {
+                    $pivot = $itemStock->pivot;
+                    $itemStock->stock -= $pivot->total_quantity;
+                    $itemStock->save();
+                }
+                return redirect()->route('sellingtransactions.index')->with('error', 'Stok tidak cukup untuk transaksi.');
             }
         }
 
         try {
+            $sellingTransaction->itemsStocks()->detach();
+
             $sellingTransaction->seller_id = $validated['seller_id'];
             $sellingTransaction->date = $validated['date'];
             $sellingTransaction->discount_amount = $validated['discount_amount'] ?? 0;
@@ -127,26 +134,19 @@ class SellingTransactionController extends Controller
             $sellingTransaction->total_count = $validated['total_count'];
             $sellingTransaction->save();
 
-            // Update stock for all items
-            foreach ($transactionItemsPivotTable as $itemId => $item) {
-                $currentItem = Item::findOrFail($itemId);
-                $currentItem->stock += $item->pivot->total_quantity;
-                $currentItem->save();
-            }
-
-            $sellingTransaction->items()->detach();
-
-            foreach ($items as $item) {
-                $currentItem = Item::findOrFail($item['item_id']);
-                $sellingTransaction->items()->attach($item['item_id'], [
+            foreach ($validated['items'] as $item) {
+                \App\Models\SellingTransactionItem::create([
+                    'transaction_id' => $sellingTransaction->id,
+                    'items_stock_id' => $item['items_stock_id'],
                     'total_quantity' => $item['quantity'],
                     'total_price' => $item['price'],
                 ]);
-                $currentItem->stock -= $item['quantity'];
-                $currentItem->save();
+                $stock = \App\Models\ItemStock::find($item['items_stock_id']);
+                $stock->stock -= $item['quantity'];
+                $stock->save();
             }
 
-            return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi dengan waktu ' . $sellingTransaction->date . ' berhasil diperbarui.');
+            return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi penjualan berhasil diperbarui.');
         } catch (\Exception $e) {
             Log::error('SellingTransaction update failed', ['error' => $e->getMessage()]);
             return redirect()->route('sellingtransactions.index')->with('error', 'Gagal memperbarui transaksi penjualan: ' . $e->getMessage());
@@ -175,16 +175,17 @@ class SellingTransactionController extends Controller
     {
         try {
             $sellingTransaction = SellingTransaction::findOrFail($id);
-            $items = $sellingTransaction->items->keyBy('id');
-            foreach ($items as $item) {
-                $transactionItems = $items->get($item->id)->pivot;
-                $item->stock += $transactionItems->total_quantity;
-                $item->save();
+            foreach ($sellingTransaction->itemsStocks as $itemStock) {
+                $pivot = $itemStock->pivot;
+                $itemStock->stock += $pivot->total_quantity;
+                $itemStock->save();
             }
-            $sellingTransaction->items()->detach();
+            $sellingTransaction->itemsStocks()->detach();
             $sellingTransaction->delete();
-            return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi telah dihapus dan stock barang telah ditambakan kembali');
+
+            return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi telah dihapus');
         } catch (\Exception $e) {
+            Log::error('SellingTransaction delete failed', ['error' => $e->getMessage()]);
             return redirect()->route('sellingtransactions.index')->with('error', 'Transaksi tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }
     }
@@ -194,7 +195,7 @@ class SellingTransactionController extends Controller
      */
     public function showDetail(Request $request)
     {
-        $sellingTransaction = SellingTransaction::with(['seller', 'items'])->find($request->id);
+        $sellingTransaction = SellingTransaction::with(['seller', 'itemsStocks'])->find($request->id);
         return response()->json([
             'status' => 'ok',
             'msg' => view('sellingtransaction.show', compact('sellingTransaction'))->render()
@@ -207,11 +208,11 @@ class SellingTransactionController extends Controller
     public function showCreate(Request $request)
     {
         $users = User::all();
-        $items = Item::all();
+        $itemsStock = ItemStock::with(['item', 'size', 'colour'])->get();
 
         return response()->json([
             'status' => 'ok',
-            'msg' => view('sellingtransaction.create', compact('users', 'items'))->render()
+            'msg' => view('sellingtransaction.create', compact('users', 'itemsStock'))->render()
         ], 200);
     }
 

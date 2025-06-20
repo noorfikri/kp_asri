@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class SellingTransactionsItemFk extends Migration
+class SellingTransactionsItemsFk extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class SellingTransactionsItemFk extends Migration
     public function up()
     {
         Schema::table('selling_transactions_items', function (Blueprint $table) {
-            $table->foreignId('transaction_id')->constrained('selling_transactions');
-            $table->foreignId('item_id')->constrained('items');
+            $table->foreign('transaction_id')->references('id')->on('selling_transactions')->onDelete('cascade');
+            $table->foreign('items_stock_id')->references('id')->on('items_stock')->onDelete('cascade');
         });
     }
 
@@ -28,7 +28,7 @@ class SellingTransactionsItemFk extends Migration
     {
         Schema::table('selling_transactions_items', function (Blueprint $table) {
             $table->dropForeign(['transaction_id']);
-            $table->dropForeign(['item_id']);
+            $table->dropForeign(['items_stock_id']);
         });
     }
 }

@@ -4,15 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class ItemSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         $names = [
@@ -27,24 +21,9 @@ class ItemSeeder extends Seeder
             'Cocok untuk acara formal maupun santai.',
             'Terbuat dari bahan berkualitas tinggi.',
             'Tersedia dalam berbagai warna dan ukuran.',
-            'Ringan dan nyaman untuk digunakan sepanjang hari.',
-            'Dirancang untuk memenuhi kebutuhan fashion modern.',
-            'Mudah dirawat dan tahan lama.',
-            'Pilihan tepat untuk melengkapi gaya Anda.',
-            'Menggabungkan tradisi dengan gaya kontemporer.',
-            'Ideal untuk suasana formal dan kasual.',
-            'Bahan lembut dan tidak panas di kulit.',
-            'Cocok untuk digunakan sehari-hari.',
-            'Memberikan kesan anggun dan sopan.',
-            'Pilihan terbaik untuk busana muslimah.',
-            'Didesain dengan detail yang menarik.',
-            'Nyaman dipakai dalam berbagai aktivitas.'
-        ];
-
-        $descriptions = [
-            'Produk ini dibuat dengan bahan berkualitas tinggi untuk memberikan kenyamanan maksimal.',
-            'Dirancang dengan gaya modern yang cocok untuk berbagai kesempatan.',
-            'Memiliki detail unik yang menambah kesan elegan.',
+            'Pilihan tepat untuk tampil modis setiap hari.',
+            'Ringan dan mudah dipadupadankan.',
+            'Memberikan kesan anggun dan modern.',
             'Pilihan sempurna untuk melengkapi koleksi pakaian Anda.',
             'Tersedia dalam berbagai pilihan warna yang menarik.',
             'Produk ini mudah dirawat dan tahan lama.',
@@ -60,38 +39,61 @@ class ItemSeeder extends Seeder
             'Pilihan terbaik untuk Anda yang ingin tampil percaya diri.'
         ];
 
+        $descriptions = [
+            'Bahan katun premium, nyaman dipakai seharian.',
+            'Motif menarik dan warna tidak mudah pudar.',
+            'Cocok untuk acara formal maupun santai.',
+            'Mudah dicuci dan tidak mudah kusut.',
+            'Desain modern dan kekinian.',
+            'Jahitan rapi dan kuat.',
+            'Tersedia berbagai ukuran.',
+            'Pilihan warna lengkap.',
+            'Ringan dan adem di kulit.',
+            'Tidak panas saat dipakai.',
+            'Bahan berkualitas tinggi.',
+            'Cocok untuk hadiah keluarga.',
+            'Model terbaru tahun ini.',
+            'Harga terjangkau dengan kualitas terbaik.',
+            'Produk best seller di toko kami.',
+            'Limited edition, segera miliki sekarang!',
+        ];
+
         $sizeIds = DB::table('sizes')->pluck('id')->toArray();
         $colourIds = DB::table('colours')->pluck('id')->toArray();
         $categoryIds = DB::table('categories')->pluck('id')->toArray();
         $brandIds = DB::table('brands')->pluck('id')->toArray();
 
-
         for ($i = 1; $i <= 20; $i++) {
             $itemId = DB::table('items')->insertGetId([
                 'name' => $names[array_rand($names)],
                 'price' => rand(50000, 500000),
-                'stock' => rand(50, 500),
                 'note' => $notes[array_rand($notes)],
                 'description' => $descriptions[array_rand($descriptions)],
                 'category_id' => $categoryIds[array_rand($categoryIds)],
                 'brand_id' => $brandIds[array_rand($brandIds)],
+                'image' => 'assets/img/Placeholder_Image.png',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
 
-            $randomSizes = array_rand($sizeIds, rand(1, 3));
-            foreach ((array) $randomSizes as $sizeIndex) {
-                DB::table('items_sizes')->insert([
-                    'item_id' => $itemId,
-                    'size_id' => $sizeIds[$sizeIndex],
-                ]);
-            }
+            // Generate 2-4 random size/colour combinations for each item
+            $combCount = rand(2, 4);
+            $usedCombinations = [];
+            for ($j = 0; $j < $combCount; $j++) {
+                $sizeId = $sizeIds[array_rand($sizeIds)];
+                $colourId = $colourIds[array_rand($colourIds)];
+                $key = $sizeId . '-' . $colourId;
+                // Avoid duplicate combinations for the same item
+                if (isset($usedCombinations[$key])) continue;
+                $usedCombinations[$key] = true;
 
-            $randomColours = array_rand($colourIds, rand(1, 3));
-            foreach ((array) $randomColours as $colourIndex) {
-                DB::table('items_colours')->insert([
+                DB::table('items_stock')->insert([
                     'item_id' => $itemId,
-                    'colour_id' => $colourIds[$colourIndex],
+                    'size_id' => $sizeId,
+                    'colour_id' => $colourId,
+                    'stock' => rand(10, 100),
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ]);
             }
         }

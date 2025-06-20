@@ -29,19 +29,26 @@
                         <td>{{$data->category->name}}</td>
                     </tr>
                     <tr>
-                        <th>Warna</th>
+                        <th>Stok Per Warna dan Ukuran</th>
                         <td>
-                        @foreach ($data->colour as $colour)
-                            {{$colour->name}} @if (!$loop->last), @endif
-                        @endforeach
-                    </td>
-                    </tr>
-                    <tr>
-                        <th>Ukuran</th>
-                        <td>
-                        @foreach ($data->size as $size)
-                            {{$size->name}} @if (!$loop->last), @endif
-                        @endforeach
+                            <table class="table table-sm table-bordered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Ukuran</th>
+                                        <th>Warna</th>
+                                        <th>Stok</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data->stocks as $stock)
+                                    <tr>
+                                        <td>{{ $stock->size->name }}</td>
+                                        <td>{{ $stock->colour->name }}</td>
+                                        <td>{{ $stock->stock }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </td>
                     </tr>
                     <tr>
