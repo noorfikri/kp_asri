@@ -22,9 +22,11 @@ class BuyingTransactionItem extends Model
 {
     use HasFactory;
 
+    protected $table = 'buying_transactions_items';
+
     protected $fillable = [
         'transaction_id',
-        'item_id',
+        'items_stock_id',
         'total_quantity',
         'total_price',
     ];

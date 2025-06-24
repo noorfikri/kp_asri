@@ -8,19 +8,6 @@
     <form method="POST" action="{{ route('sellingtransactions.store') }}">
         @csrf
         <div class="card-body">
-            <h3><strong>Buat Transaksi Penjualan Baru</strong></h3>
-
-            {{-- Show global errors --}}
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <div class="form-group">
                 <label for="seller">Penjual</label>
                 <select name="seller_id" id="seller" class="form-control @error('seller_id') is-invalid @enderror">
@@ -47,7 +34,7 @@
             <table class="table table-bordered" id="itemTable">
                 <thead>
                     <tr>
-                        <th>Nama Barang</th>
+                        <th>Barang (Nama/Ukuran/Warna)</th>
                         <th>Harga Satuan</th>
                         <th>Jumlah</th>
                         <th>Harga Total</th>
@@ -57,21 +44,20 @@
                 <tbody>
                     <tr>
                         <td>
-                            <select name="items[0][item_id]" class="form-control item-select @error('items.0.item_id') is-invalid @enderror">
-                                <option value="" data-price="0">Pilih Barang</option>
-                                @foreach ($items as $item)
-                                    <option value="{{ $item->id }}" data-price="{{ $item->price }}"
-                                        {{ old('items.0.item_id') == $item->id ? 'selected' : '' }}>
-                                        {{ $item->name }}
+                            <select name="items[0][items_stock_id]" class="form-control item-select @error('items.0.items_stock_id') is-invalid @enderror" required>
+                                <option value="">Pilih Barang</option>
+                                @foreach ($itemsStock as $stock)
+                                    <option value="{{ $stock->id }}" data-price="{{ $stock->item->price }}">
+                                        {{ $stock->item->name }} / {{ $stock->size->name }} / {{ $stock->colour->name }} (Stok: {{ $stock->stock }})
                                     </option>
                                 @endforeach
                             </select>
-                            @error('items.0.item_id')
+                            @error('items.0.items_stock_id')
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </td>
                         <td>
-                            <input type="text" class="form-control item-price" value="@toIDR(0)" readonly data-raw-price="{{ $items[0]->price }}">
+                            <input type="text" class="form-control item-price" value="@toIDR(0)" readonly data-raw-price="0">
                         </td>
                         <td>
                             <input type="number" name="items[0][quantity]" class="form-control item-quantity @error('items.0.quantity') is-invalid @enderror"
@@ -89,7 +75,6 @@
                     </tr>
                 </tbody>
             </table>
-            <br>
             <button type="button" class="btn btn-success" id="addItem">Tambah Barang</button>
 
             <div class="mt-4">

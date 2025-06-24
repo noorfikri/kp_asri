@@ -39,26 +39,14 @@ class SellingTransaction extends Model
         return $this->belongsTo(\App\Models\User::class, 'seller_id');
     }
 
-    public function items()
+    public function itemsStocks()
     {
         return $this->belongsToMany(
-            \App\Models\Item::class,
+            ItemStock::class,
             'selling_transactions_items',
             'transaction_id',
-            'item_id'
-        )->withPivot('total_quantity', 'total_price')->withTimestamps();
-    }
-
-        public function itemsStocks()
-    {
-        return $this->hasManyThrough(
-            ItemStock::class,
-            SellingTransactionItem::class,
-            'transaction_id',
-            'id',
-            'id',
             'items_stock_id'
-        );
+            )->withPivot('total_quantity', 'total_price')->withTimestamps();
     }
 
     public function reports()

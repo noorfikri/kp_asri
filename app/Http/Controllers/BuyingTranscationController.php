@@ -157,7 +157,25 @@ class BuyingTranscationController extends Controller
     public function destroy(BuyingTransaction $buyingTransaction)
     {
         try {
-            // Restore stock before deleting
+            foreach ($buyingTransaction->itemsStocks as $itemStock) {
+                $pivot = $itemStock->pivot;
+                $itemStock->stock -= $pivot->total_quantity;
+                $itemStock->save();
+            }
+            $buyingTransaction->itemsStocks()->detach();
+            $buyingTransaction->delete();
+
+            return redirect()->route('buyingtransactions.index')->with('status', 'Transaksi telah dihapus');
+        } catch (\Exception $e) {
+            Log::error('BuyingTransaction delete failed', ['error' => $e->getMessage()]);
+            return redirect()->route('buyingtransactions.index')->with('error', 'Transaksi tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
+        }
+    }
+
+    public function deleteSubstractStock($id)
+    {
+        try {
+            $buyingTransaction = BuyingTransaction::findOrFail($id);
             foreach ($buyingTransaction->itemsStocks as $itemStock) {
                 $pivot = $itemStock->pivot;
                 $itemStock->stock -= $pivot->total_quantity;
@@ -178,7 +196,7 @@ class BuyingTranscationController extends Controller
      */
     public function showDetail(Request $request)
     {
-        $buyingTransaction = BuyingTransaction::with(['supplier', 'items'])->find($request->id);
+        $buyingTransaction = BuyingTransaction::with(['supplier', 'itemsStocks'])->find($request->id);
         return response()->json([
             'status' => 'ok',
             'msg' => view('buyingtransaction.show', compact('buyingTransaction'))->render()
@@ -195,7 +213,7 @@ class BuyingTranscationController extends Controller
 
         return response()->json([
             'status' => 'ok',
-            'msg' => view('buyingtransaction.create', compact('itemStock', 'suppliers'))->render()
+            'msg' => view('buyingtransaction.create', compact('itemsStock', 'suppliers'))->render()
         ], 200);
     }
 }

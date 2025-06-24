@@ -15,35 +15,36 @@
             <thead>
                 <tr>
                     <th>Nama Barang</th>
+                    <th>Ukuran</th>
+                    <th>Warna</th>
                     <th>Harga Per Barang</th>
                     <th>Jumlah</th>
                     <th>Harga</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($sellingTransaction->items as $item)
+                @foreach ($sellingTransaction->itemsStocks as $itemStock)
                 <tr>
-                    <td>{{ $item->name }}</td>
-                    <td>@toIDR($item->price)</td>
-                    <td>{{ $item->pivot->total_quantity }}</td>
-                    <td>@toIDR($item->pivot->total_price)</td>
+                    <td>{{ $itemStock->item->name }}</td>
+                    <td>{{ $itemStock->size->name }}</td>
+                    <td>{{ $itemStock->colour->name }}</td>
+                    <td>@toIDR($itemStock->item->price)</td>
+                    <td>{{ $itemStock->pivot->total_quantity }}</td>
+                    <td>@toIDR($itemStock->pivot->total_price)</td>
                 </tr>
                 @endforeach
                 <tr>
-                    <td></td>
-                    <td>Sub total : </td>
+                    <td colspan="4">Sub total :</td>
                     <td>{{ $sellingTransaction->total_count }}</td>
                     <td>@toIDR($sellingTransaction->sub_total)</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td>Discount : </td>
+                    <td colspan="4">Discount :</td>
                     <td></td>
                     <td>@toIDR($sellingTransaction->discount_amount)</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td>Total: </td>
+                    <td colspan="4">Total:</td>
                     <td></td>
                     <td>@toIDR($sellingTransaction->total_amount)</td>
                 </tr>

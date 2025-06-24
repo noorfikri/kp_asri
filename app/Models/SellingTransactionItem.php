@@ -24,10 +24,12 @@ class SellingTransactionItem extends Model
 
     protected $fillable = [
         'transaction_id',
-        'item_id',
+        'items_stock_id',
         'total_quantity',
         'total_price',
     ];
+
+    protected $table = 'selling_transactions_items';
 
     public function sellingTransaction()
     {

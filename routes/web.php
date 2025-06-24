@@ -79,14 +79,14 @@ Route::middleware(['auth'])->group(function(){
     Route::resource('/admin/buyingtransactionitems',BuyingTranscationItemController::class);
     Route::post('/admin/buyingtransactions/showDetail', [BuyingTranscationController::class, 'showDetail'])->name('buyingtransactions.showDetail');
     Route::post('/admin/buyingtransactions/showCreate', [BuyingTranscationController::class, 'showCreate'])->name('buyingtransactions.showCreate');
+    Route::delete('/admin/buyingtransactions/deleteSubstractStock/{id}', [BuyingTranscationController::class, 'deleteSubstractStock'])->name('buyingtransactions.deleteSubstractStock');
 
     Route::resource('/admin/sellingtransactions',SellingTransactionController::class);
     Route::resource('/admin/sellingtransactionitems',SellingTransactionItemController::class);
     Route::delete('admin/sellingtransactions/{id}', [SellingTransactionController::class, 'destroy'])->name('sellingtransactions.destroy');
     Route::post('/admin/sellingtransactions/showDetail', [SellingTransactionController::class, 'showDetail'])->name('sellingtransactions.showDetail');
     Route::post('/admin/sellingtransactions/showCreate', [SellingTransactionController::class, 'showCreate'])->name('sellingtransactions.showCreate');
-    Route::post('/admin/sellingtransactions/showEdit', [SellingTransactionController::class, 'showEdit'])->name('sellingtransactions.showEdit');
-    Route::post('/admin/sellingtransactions/deleteAddStock/{id}', [SellingTransactionController::class, 'deleteAddStock'])->name('sellingtransactions.deleteAddStock');
+    Route::delete('/admin/sellingtransactions/deleteAddStock/{id}', [SellingTransactionController::class, 'deleteAddStock'])->name('sellingtransactions.deleteAddStock');
 
     Route::resource('/admin/reports',ReportController::class);
 

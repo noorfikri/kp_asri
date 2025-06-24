@@ -10,49 +10,46 @@
         <h5><strong>Supplier:</strong> {{ $buyingTransaction->supplier->name }}</h5>
         <h5><strong>Waktu dan Tanggal:</strong> {{ $buyingTransaction->date }}</h5>
 
-        <h5><strong>Gambar Resi:</strong></h5>
-        <img src="{{ asset($buyingTransaction->reciept_image) }}" alt="Gambar Resi" class="img-fluid">
-
         <h5><strong>Daftar Barang</strong></h5>
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Nama Barang</th>
+                    <th>Ukuran</th>
+                    <th>Warna</th>
                     <th>Harga Per Barang</th>
                     <th>Jumlah</th>
                     <th>Harga</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($buyingTransaction->items as $item)
+                @foreach ($buyingTransaction->itemsStocks as $itemStock)
                 <tr>
-                    <td>{{ $item->name }}</td>
-                    <td>@toIDR($item->price)</td>
-                    <td>{{ $item->pivot->total_quantity }}</td>
-                    <td>@toIDR($item->pivot->total_price)</td>
+                    <td>{{ $itemStock->item->name }}</td>
+                    <td>{{ $itemStock->size->name }}</td>
+                    <td>{{ $itemStock->colour->name }}</td>
+                    <td>@toIDR($itemStock->item->price)</td>
+                    <td>{{ $itemStock->pivot->total_quantity }}</td>
+                    <td>@toIDR($itemStock->pivot->total_price)</td>
                 </tr>
                 @endforeach
                 <tr>
-                    <td></td>
-                    <td>Sub total : </td>
+                    <td colspan="4">Sub total :</td>
                     <td>{{ $buyingTransaction->total_count }}</td>
                     <td>@toIDR($buyingTransaction->sub_total)</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td>Discount : </td>
+                    <td colspan="4">Discount :</td>
                     <td></td>
                     <td>@toIDR($buyingTransaction->discount_amount)</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td>Biaya Lainnya : </td>
+                    <td colspan="4">Biaya Lainnya :</td>
                     <td></td>
                     <td>@toIDR($buyingTransaction->other_cost)</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td>Total: </td>
+                    <td colspan="4">Total:</td>
                     <td></td>
                     <td>@toIDR($buyingTransaction->total_amount)</td>
                 </tr>
