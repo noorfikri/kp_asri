@@ -31,6 +31,8 @@ class Report extends Model
         'type',
         'total_buying',
         'total_selling',
+        'total_bought_count',
+        'total_sold_count',
         'other_cost',
         'cash_flow',
         'creator_id',

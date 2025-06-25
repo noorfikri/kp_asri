@@ -29,6 +29,8 @@
 
 @yield('javascript')
 
+@stack('styles')
+
 </head>
 <!--
 `body` tag options:

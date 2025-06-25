@@ -161,7 +161,7 @@ function editPreviewImage(input) {
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content" id="createmodal">
                         <!-- put animated gif here -->
                         <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
@@ -232,7 +232,7 @@ function editPreviewImage(input) {
                     </td>
                     <td>
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content" id="itemdetail{{$d->id}}">
                                     <!-- put animated gif here -->
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
@@ -240,7 +240,7 @@ function editPreviewImage(input) {
                             </div>
                         </div>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content" id="itemedit{{$d->id}}">
                                     <!-- put animated gif here -->
                                     <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">

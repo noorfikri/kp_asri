@@ -19,6 +19,8 @@ class CreateReportTable extends Migration
             $table->enum('type',['monthly','yearly']);
             $table->integer('total_buying')->default(0);
             $table->integer('total_selling')->default(0);
+            $table->integer('total_bought_count')->default(0); // <-- add this
+            $table->integer('total_sold_count')->default(0);
             $table->integer('other_cost')->default(0);
             $table->integer('cash_flow')->default(0);
             $table->timestamps();

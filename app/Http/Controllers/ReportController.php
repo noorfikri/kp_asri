@@ -30,34 +30,60 @@ class ReportController extends Controller
     /**
      * Store a newly created report in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'report_date' => 'required|date',
-            'type' => 'required|in:monthly,yearly',
-            'creator_id' => 'required|exists:users,id',
-            'total_buying' => 'nullable|integer|min:0',
-            'total_selling' => 'nullable|integer|min:0',
-            'other_cost' => 'nullable|integer|min:0',
-            'cash_flow' => 'nullable|integer',
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'report_date' => 'required|date',
+        'type' => 'required|in:monthly,yearly',
+        'creator_id' => 'required|exists:users,id',
+        'buying_transactions' => 'nullable|array',
+        'buying_transactions.*' => 'required|distinct|exists:buying_transactions,id',
+        'selling_transactions' => 'nullable|array',
+        'selling_transactions.*' => 'required|distinct|exists:selling_transactions,id',
+        'other_cost' => 'nullable|integer|min:0',
+    ]);
+
+    try {
+        // Always use the authenticated user as creator for security
+        $creatorId = auth()->id();
+
+        $report = \App\Models\Report::create([
+            'report_date' => $validated['report_date'],
+            'type' => $validated['type'],
+            'creator_id' => $creatorId,
+            'other_cost' => $validated['other_cost'] ?? 0,
         ]);
 
-        try {
-            $report = Report::create([
-                'report_date' => $validated['report_date'],
-                'type' => $validated['type'],
-                'creator_id' => $validated['creator_id'],
-                'total_buying' => $validated['total_buying'] ?? 0,
-                'total_selling' => $validated['total_selling'] ?? 0,
-                'other_cost' => $validated['other_cost'] ?? 0,
-                'cash_flow' => $validated['cash_flow'] ?? 0,
-            ]);
-            return redirect()->route('reports.index')->with('status', 'Laporan berhasil dibuat');
-        } catch (\Exception $e) {
-            Log::error('Report store failed', ['error' => $e->getMessage()]);
-            return redirect()->route('reports.index')->with('error', 'Gagal membuat laporan: ' . $e->getMessage());
+        // Attach transactions before calculating totals
+        if (!empty($validated['buying_transactions'])) {
+            $report->buyingTransactions()->attach($validated['buying_transactions']);
         }
+        if (!empty($validated['selling_transactions'])) {
+            $report->sellingTransactions()->attach($validated['selling_transactions']);
+        }
+
+        // Calculate totals from attached transactions
+        $totalBuying = $report->buyingTransactions()->sum('total_amount');
+        $totalBoughtCount = $report->buyingTransactions()->sum('total_count');
+        $totalSelling = $report->sellingTransactions()->sum('total_amount');
+        $totalSoldCount = $report->sellingTransactions()->sum('total_count');
+        $otherCost = $report->other_cost;
+        $cashFlow = $totalSelling - $totalBuying - $otherCost;
+
+        $report->update([
+            'total_buying' => $totalBuying,
+            'total_bought_count' => $totalBoughtCount,
+            'total_selling' => $totalSelling,
+            'total_sold_count' => $totalSoldCount,
+            'cash_flow' => $cashFlow,
+        ]);
+
+        return redirect()->route('reports.index')->with('status', 'Laporan berhasil dibuat.');
+    } catch (\Exception $e) {
+        \Log::error('Report store failed', ['error' => $e->getMessage()]);
+        return redirect()->route('reports.index')->with('error', 'Gagal membuat laporan: ' . $e->getMessage());
     }
+}
 
     /**
      * Display the specified report.
@@ -115,6 +141,9 @@ class ReportController extends Controller
     public function destroy(Report $report)
     {
         try {
+            $report->buyingTransactions()->detach();
+            $report->sellingTransactions()->detach();
+
             $report->delete();
             return redirect()->route('reports.index')->with('status', 'Laporan berhasil dihapus');
         } catch (\Exception $e) {
@@ -140,11 +169,14 @@ class ReportController extends Controller
      */
     public function showCreate(Request $request)
     {
-        $users = User::all();
-        return response()->json([
-            'status' => 'ok',
-            'msg' => view('report.create', compact('users'))->render()
-        ], 200);
+    $users = \App\Models\User::all();
+    $buyingTransactions = \App\Models\BuyingTransaction::all();
+    $sellingTransactions = \App\Models\SellingTransaction::all();
+
+    return response()->json([
+        'status' => 'ok',
+        'msg' => view('report.create', compact('users', 'buyingTransactions', 'sellingTransactions'))->render()
+    ], 200);
     }
 
     /**

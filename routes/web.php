@@ -89,6 +89,8 @@ Route::middleware(['auth'])->group(function(){
     Route::delete('/admin/sellingtransactions/deleteAddStock/{id}', [SellingTransactionController::class, 'deleteAddStock'])->name('sellingtransactions.deleteAddStock');
 
     Route::resource('/admin/reports',ReportController::class);
+    Route::post('/admin/reports/showDetail', [ReportController::class, 'showDetail'])->name('reports.showDetail');
+    Route::post('/admin/reports/showCreate', [ReportController::class, 'showCreate'])->name('reports.showCreate');
 
     Route::resource('/admin/reportbuyingtransactions',ReportBuyingTransactionController::class);
     Route::resource('/admin/reportsellingtransactions',ReportSellingTransactionController::class);
