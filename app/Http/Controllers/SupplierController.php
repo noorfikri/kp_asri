@@ -131,10 +131,10 @@ class SupplierController extends Controller
      */
     public function showDetail()
     {
-        $supplier = Supplier::find(request('id'));
+        $data = Supplier::find(request('id'));
         return response()->json([
             'status' => 'ok',
-            'msg' => view('supplier.show', compact('supplier'))->render()
+            'msg' => view('supplier.show', compact('data'))->render()
         ], 200);
     }
 

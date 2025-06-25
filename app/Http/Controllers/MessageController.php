@@ -107,7 +107,7 @@ class MessageController extends Controller
      */
     public function showDetail(Request $request)
     {
-        $message = Message::find($request->input('id'));
+        $data = Message::find($request->input('id'));
         return response()->json([
             'status' => 'ok',
             'msg' => view('message.show', compact('data'))->render()
