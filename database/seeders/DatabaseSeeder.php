@@ -32,5 +32,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CalculateReportTable::class);
         $this->call(MessageSeeder::class);
         $this->call(TestLoginUserSeeder::class);
+        $this->call(StoreInfoSeeder::class);
     }
 }

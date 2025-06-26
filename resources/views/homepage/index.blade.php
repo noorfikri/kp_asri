@@ -7,12 +7,9 @@
             <img src="assets/img/ASRI Interior.jpeg" alt="Interior Toko Asri Busana Muslim">
         </div>
         <div id = "home_desc" class = "content_desc">
-            <h1 class = "title">Toko Asri Busana Muslim</h1>
+            <h1 class = "title">{{$storeInfo->name}}</h1>
             <p>
-                Kami adalah toko baju busana muslim yang terletak pada tengah Kota, Kota Kediri.
-                Kami menyediakan baju busana muslim baik untuk laki laki maupun perempuan. Selain
-                busana muslim, kami juga menyediakan peralatan sholat, kurma dan air zam zam.
-                Selain itu, kami juga menyediakan jasa pembuatan mahar nikah.
+                {{$storeInfo->description}}
             </p>
         </div>
     </article>
@@ -27,15 +24,15 @@
                 Kota Kediri dan beberapa meter dari Hotel Grand Surya Kota Kediri.
                 <br>
                 <br>
-                Jl. Raden Patah No.4, Kelurahan Kemasan, Kecamatan Kota, Kota Kediri, Jawa Timur
+                {{$storeInfo->address}}
 
             </p>
         </div>
         <div id = "address_map_card" class = "card">
             <img id="address_map" src="assets/img/Map ASRI.PNG" alt="Map Lokasi Toko Asri Busana Muslim">
             <div class = "card_content">
-                <h1>Lokasi Toko Asri</h1>
-                <p>Jl. Raden Patah No.4, Kelurahan Kemasan, Kecamatan Kota, Kota Kediri</p>
+                <h1>Lokasi {{$storeInfo->name}}</h1>
+                <p>{{$storeInfo->address}}</p>
             </div>
         </div>
     </article>
@@ -68,11 +65,11 @@
             <ul>
                 <li>
                     <i class = "fas fa-phone"></i>
-                    <h1> (0354) 689925 </h1>
+                    <h1> {{$storeInfo->phone}} </h1>
                 </li>
                 <li>
                     <i class = "fab fa-whatsapp"></i>
-                    <h1> (+62) 8145065711 </h1>
+                    <h1> {{$storeInfo->whatsapp}} </h1>
                 </li>
             </ul>
         </div>

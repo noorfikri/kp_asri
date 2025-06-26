@@ -15,6 +15,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ReportSellingTransactionController;
 use App\Http\Controllers\SellingTransactionController;
 use App\Http\Controllers\SellingTransactionItemController;
+use App\Http\Controllers\StoreInfoController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -38,6 +39,7 @@ Route::view('/contact','homepage/contact')->name('contact');
 
 Route::middleware(['auth'])->group(function(){
     Route::view('/admin','dashboard/index')->name('dashboard');
+Route::post('/admin/store-info', [StoreInfoController::class, 'update'])->name('storeinfo.update');
     Route::view('/admin/profile','profile/index')->name('profile');
 
     Route::resource('/admin/suppliers',SupplierController::class);

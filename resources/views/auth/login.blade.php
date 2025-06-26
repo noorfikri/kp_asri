@@ -5,8 +5,8 @@
     <!-- /.login-logo -->
     <div class="card card-outline card-primary">
       <div class="card-header text-center">
-        <img src="{{asset('assets/img/Banner ASRI.png')}}" class="card-img brand-image-xs" alt="ASRI Logo" style="opacity: .8">
-        <a href="{{route('home')}}" class="h1"><b>Admin Toko ASRI</b></a>
+        <img src="{{asset($storeInfo->banner)}}" class="card-img brand-image-xs" alt="Logo" style="opacity: .8">
+        <a href="{{route('home')}}" class="h1"><b>Admin {{$storeInfo->name}}</b></a>
       </div>
       <div class="card-body">
         <p class="login-box-msg">Masukkan email dan password untuk masuk ke halaman admin.</p>

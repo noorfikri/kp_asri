@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Administrasi Toko ASRI | Dashboard</title>
+  <title>Administrasi {{$storeInfo->name}}}}</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{asset('assets/img/favicon.ico')}}">
+    <link rel="icon" type="image/x-icon" href="{{ $storeInfo && $storeInfo->store_logo ? asset($storeInfo->store_logo) : asset('assets/img/favicon.ico') }}">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('assets/css/adminlte.css')}}">
+
+  <link rel="stylesheet" href="{{asset('assets/css/fix.css')}}">
 
   <!-- REQUIRED SCRIPTS -->
 
@@ -88,8 +90,8 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{url('/')}}" class="brand-link">
-      <img src="{{asset('assets/img/Logo ASRI.png')}}" alt="ASRI Logo" class="brand-image" style="opacity: .8">
-      <span class="brand-text font-weight-light">Administrasi Toko ASRI</span>
+      <img src="{{asset($storeInfo->logo)}}" alt="Logo" class="brand-image" style="opacity: .8">
+      <span class="brand-text font-weight-light">Administrasi {{$storeInfo->name}}</span>
     </a>
 
     <!-- Sidebar -->

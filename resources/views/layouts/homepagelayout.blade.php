@@ -4,13 +4,13 @@
     <!-- Viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda - Toko Asri Busana Muslim</title>
+    <title>Beranda - {{$storeInfo->name}}</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/styles.css')}}">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{asset('assets/img/favicon.ico')}}">
+    <link rel="icon" type="image/x-icon" href="{{ $storeInfo && $storeInfo->store_logo ? asset($storeInfo->store_logo) : asset('assets/img/favicon.ico') }}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,7 @@
 <body>
     <header class = "navbar_container">
         <div class = "logo">
-            <img src="{{asset('assets/img/Banner ASRI.png')}}" alt="Logo Toko Asri Kediri">
+            <img src="{{asset($storeInfo->banner)}}" alt="Logo">
         </div>
         <nav class = "navlist">
             <ul>
@@ -52,19 +52,19 @@
 
     <footer>
         <div id = "footer_logo">
-            <img src="{{asset('assets/img/Banner ASRI.png')}}" alt="Logo Toko Asri Kediri">
+            <img src="{{asset($storeInfo->banner)}}" alt="Logo">
         </div>
         <div id = "footer_info">
-            <h1>Toko Asri Busana Muslim</h1>
-            <p>Jalan Raden Patah No.4, Kelurahan Kemasan, Kecamatan Kota, Kota Kediri, Jawa Timur</p>
+            <h1>{{$storeInfo->name}}</h1>
+            <p>{{$storeInfo->address}}</p>
         </div>
         <div id = "footer_kontak">
             <h1>Kontak</h1>
             <i class = "fas fa-phone">
-                <p> (0354) 689925 </p>
+                <p> {{$storeInfo->phone}} </p>
             </i>
             <i class = "fab fa-whatsapp">
-                <p> (+62) 8145065711 </p>
+                <p> {{$storeInfo->whatsapp}} </p>
             </i>
         </div>
         <div id = "footer_menu">
@@ -75,7 +75,7 @@
                 <a href="{{url('/admin')}}">Masuk Karyawan</a>
         </div>
         <div id = "footer_credits">
-            <p><b>Website Toko Asri &#169; 2024,</b> Wildan Achmad Noorfikri</p>
+            <p><b>Website {{$storeInfo->name}} &#169; 2024,</b> Wildan Achmad Noorfikri</p>
         </div>
     </footer>
 </body>

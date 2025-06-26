@@ -7,6 +7,7 @@ use App\Models\BuyingTransactionItem;
 use App\Models\Item;
 use App\Models\ItemStock;
 use App\Models\Supplier;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -32,7 +33,7 @@ class BuyingTranscationController extends Controller
     /**
      * Store a newly created buying transaction in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, FileUploadService $fileUpload)
     {
         $validated = $request->validate([
             'supplier_id' => 'required|exists:suppliers,id',
@@ -46,6 +47,7 @@ class BuyingTranscationController extends Controller
             'discount_amount' => 'nullable|integer|min:0',
             'other_cost' => 'nullable|integer|min:0',
             'total_amount' => 'required|integer|min:0',
+            'reciept_image' => 'nullable|image|max:2048',
         ]);
 
         try {
@@ -57,6 +59,15 @@ class BuyingTranscationController extends Controller
             $transaction->discount_amount = $validated['discount_amount'] ?? 0;
             $transaction->other_cost = $validated['other_cost'] ?? 0;
             $transaction->total_amount = $validated['total_amount'];
+
+        if ($request->hasFile('reciept_image')) {
+            $validated['reciept_image'] = $fileUpload->uploadFile(
+                $request->file('reciept_image'),
+                'buying_transaction_' . now()->format('YmdHis'),
+                'receipts'
+            );
+            $transaction->reciept_image = $validated['reciept_image'];
+        }
             $transaction->save();
 
             foreach ($validated['items'] as $item) {

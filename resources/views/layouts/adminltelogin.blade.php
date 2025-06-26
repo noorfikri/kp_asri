@@ -1,10 +1,10 @@
 <html lang="en"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Administrasi Toko ASRI | Log in </title>
+    <title>Administrasi {{$storeInfo->name}} </title>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/x-icon" href="{{asset('assets/img/favicon.ico')}}">
+        <link rel="icon" type="image/x-icon" href="{{ $storeInfo && $storeInfo->store_logo ? asset($storeInfo->store_logo) : asset('assets/img/favicon.ico') }}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">

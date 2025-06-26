@@ -155,9 +155,8 @@ function editPreviewImage(input) {
     <div class="card">
         <div class="card-header">
             <div class="card-tools input-group">
-                <input type="search" class="form-control rounded m-auto" placeholder="Cari" aria-label="Cari" aria-describedby="search-addon" />
-                <button type="button" class="btn btn-outline-primary rounded" data-mdb-ripple-init>Cari</button>
-                <a href="{{url('admin/items/create')}}" class=" btn btn-primary rounded"
+                <div class="flex-grow-1"></div>
+                <a href="{{url('admin/items/create')}}" class=" btn btn-primary rounded float-right"
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">

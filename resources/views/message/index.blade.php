@@ -52,8 +52,7 @@ function showDetails(message_id){
     <div class="card">
         <div class="card-header">
             <div class="card-tools input-group">
-                <input type="search" class="form-control rounded m-auto" placeholder="Cari" aria-label="Cari" aria-describedby="search-addon" />
-                <button type="button" class="btn btn-outline-primary rounded" data-mdb-ripple-init>Cari</button>
+                <div class="flex-grow-1"></div>
             </div>
         </div>
         <div class="card-body p-0">

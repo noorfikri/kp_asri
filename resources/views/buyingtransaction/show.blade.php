@@ -6,6 +6,13 @@
         </button>
     </div>
     <div class="card-body">
+        @if($buyingTransaction->reciept_image)
+        <div class="mb-3 text-center">
+            <strong>Bukti Pembelian:</strong><br>
+            <img src="{{ asset($buyingTransaction->reciept_image) }}" alt="Bukti Pembelian" class="img-fluid rounded shadow" style="max-width:300px;max-height:300px;">
+        </div>
+        @endif
+
         <h3><strong>Detail Transaksi Pembelian Barang</strong></h3>
         <h5><strong>Supplier:</strong> {{ $buyingTransaction->supplier->name }}</h5>
         <h5><strong>Waktu dan Tanggal:</strong> {{ $buyingTransaction->date }}</h5>

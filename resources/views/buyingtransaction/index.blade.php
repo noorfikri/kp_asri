@@ -215,9 +215,8 @@ function initializeCreateModal() {
     <div class="card">
         <div class="card-header">
             <div class="card-tools input-group">
-                <input type="search" class="form-control rounded m-auto" placeholder="Cari" aria-label="Cari" />
-                <button type="button" class="btn btn-outline-primary rounded">Cari</button>
-                <a href="{{url('admin/buyingtransactions/create')}}" class="btn btn-primary rounded"
+                <div class="flex-grow-1"></div>
+                <a href="{{url('admin/buyingtransactions/create')}}" class="btn btn-primary rounded float-right"
                    data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">

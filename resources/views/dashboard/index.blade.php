@@ -20,67 +20,61 @@
       <!-- /.content-header -->
 
       <!-- Main content -->
-      <div class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-
-                  <p class="card-text">
-                    Some quick example text to build on the card title and make up the bulk of the card's
-                    content.
-                  </p>
-
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Edit Informasi Toko</h3>
+                    </div>
+                    <form method="POST" action="{{ route('storeinfo.update') }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('POST')
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="name">Nama Toko</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $storeInfo->name ?? '') }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Deskripsi</label>
+                                <textarea class="form-control" id="description" name="description" rows="3">{{ old('description', $storeInfo->description ?? '') }}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Alamat</label>
+                                <input type="text" class="form-control" id="address" name="address" value="{{ old('address', $storeInfo->address ?? '') }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="banner">Banner Toko</label>
+                                <input type="file" class="form-control" id="banner" name="banner">
+                                @if(!empty($storeInfo->banner))
+                                    <img src="{{ asset($storeInfo->banner) }}" alt="Banner" class="img-fluid mt-2" style="max-height:80px;">
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="logo">Logo Toko</label>
+                                <input type="file" class="form-control" id="logo" name="logo">
+                                @if(!empty($storeInfo->logo))
+                                    <img src="{{ asset($storeInfo->logo) }}" alt="Logo" class="img-fluid mt-2" style="max-height:80px;">
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Telepon</label>
+                                <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone', $storeInfo->phone ?? '') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="whatsapp">WhatsApp</label>
+                                <input type="text" class="form-control" id="whatsapp" name="whatsapp" value="{{ old('whatsapp', $storeInfo->whatsapp ?? '') }}">
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+                        </div>
+                    </form>
                 </div>
-              </div>
-
-              <div class="card card-primary card-outline">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-
-                  <p class="card-text">
-                    Some quick example text to build on the card title and make up the bulk of the card's
-                    content.
-                  </p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
-                </div>
-              </div><!-- /.card -->
             </div>
-            <!-- /.col-md-6 -->
-            <div class="col-lg-6">
-              <div class="card">
-                <div class="card-header">
-                  <h5 class="m-0">Featured</h5>
-                </div>
-                <div class="card-body">
-                  <h6 class="card-title">Special title treatment</h6>
-
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-
-              <div class="card card-primary card-outline">
-                <div class="card-header">
-                  <h5 class="m-0">Featured</h5>
-                </div>
-                <div class="card-body">
-                  <h6 class="card-title">Special title treatment</h6>
-
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-            </div>
-            <!-- /.col-md-6 -->
-          </div>
-          <!-- /.row -->
-        </div><!-- /.container-fluid -->
-      </div>
+        </div>
+    </div>
+</div>
       <!-- /.content -->
 @endsection
