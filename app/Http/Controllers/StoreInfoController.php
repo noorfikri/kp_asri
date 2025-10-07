@@ -68,19 +68,19 @@ class StoreInfoController extends Controller
      * @param  \App\Models\StoreInfo  $storeInfo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StoreInfo $storeInfo, FileUploadService $fileUpload)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'address' => 'required|string|max:255',
-            'banner' => 'nullable|image|max:2048',
-            'logo' => 'nullable|image|max:2048',
-            'phone' => 'nullable|string|max:50',
-            'whatsapp' => 'nullable|string|max:50',
-        ]);
+public function update(Request $request, StoreInfo $storeInfo, FileUploadService $fileUpload)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'address' => 'required|string|max:255',
+        'banner' => 'nullable|image|max:2048',
+        'logo' => 'nullable|image|max:2048',
+        'phone' => 'nullable|string|max:50',
+        'whatsapp' => 'nullable|string|max:50',
+    ]);
 
-        $storeInfo = StoreInfo::first();
+    $storeInfo = StoreInfo::first();
 
     if ($request->hasFile('logo')) {
         $validated['logo'] = $fileUpload->uploadFile(
@@ -98,10 +98,10 @@ class StoreInfoController extends Controller
         );
     }
 
-        $storeInfo->update($validated);
+    $storeInfo->update($validated);
 
-        return back()->with('status', 'Informasi toko berhasil diperbarui.');
-    }
+    return back()->with('status', 'Informasi toko berhasil diperbarui.');
+}
 
     /**
      * Remove the specified resource from storage.

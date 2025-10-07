@@ -12,8 +12,24 @@
         @csrf
         <div class="card-body">
             <div class="form-group">
-                <label for="inputName">Nama Ukuran</label>
-                <input type="text" id="inputName" name="name" class="form-control" placeholder="Masukkan nama ukuran">
+                            <div class="form-group">
+                <label for="name">Nama Ukuran</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control @error('name') is-invalid @enderror"
+                    placeholder="Masukkan nama ukuran"
+                    value="{{ old('name') }}"
+                    required
+                    autofocus
+                >
+                @error('name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
             </div>
         </div>
         <div class="card-footer">

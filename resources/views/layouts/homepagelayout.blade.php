@@ -50,33 +50,33 @@
         @yield('content')
     </main>
 
-    <footer>
-        <div id = "footer_logo">
-            <img src="{{asset($storeInfo->banner)}}" alt="Logo">
-        </div>
-        <div id = "footer_info">
-            <h1>{{$storeInfo->name}}</h1>
-            <p>{{$storeInfo->address}}</p>
-        </div>
-        <div id = "footer_kontak">
-            <h1>Kontak</h1>
-            <i class = "fas fa-phone">
-                <p> {{$storeInfo->phone}} </p>
-            </i>
-            <i class = "fab fa-whatsapp">
-                <p> {{$storeInfo->whatsapp}} </p>
-            </i>
-        </div>
-        <div id = "footer_menu">
-                <a href="{{url('/')}}">Beranda</a>
-                <a href="{{ route('gallery') }}">Galeri</a>
-                <a href="{{ route('contact') }}">Hubungi Kami</a>
-                <p></p>
-                <a href="{{url('/admin')}}">Masuk Karyawan</a>
-        </div>
-        <div id = "footer_credits">
-            <p><b>Website {{$storeInfo->name}} &#169; 2024,</b> Wildan Achmad Noorfikri</p>
-        </div>
-    </footer>
+<footer>
+    <div id = "footer_logo">
+        <img src="{{asset($storeInfo->banner)}}" alt="Logo">
+    </div>
+    <div id = "footer_info">
+        <h1>{{$storeInfo->name}}</h1>
+        <p>{{$storeInfo->address}}</p>
+    </div>
+    <div id = "footer_kontak">
+        <h1>Kontak</h1>
+        <i class = "fas fa-phone">
+            <p> {{$storeInfo->phone}} </p>
+        </i>
+        <i class = "fab fa-whatsapp">
+            <p> {{$storeInfo->whatsapp}} </p>
+        </i>
+    </div>
+    <div id = "footer_menu">
+        <a href="{{url('/')}}">Beranda</a>
+        <a href="{{ route('gallery') }}">Galeri</a>
+        <a href="{{ route('contact') }}">Hubungi Kami</a>
+        <p></p>
+        <a href="{{url('/admin')}}">Masuk Karyawan</a>
+    </div>
+    <div id = "footer_credits">
+        <p><b>Website {{$storeInfo->name}} &#169; 2024,</b> Wildan Achmad Noorfikri</p>
+    </div>
+</footer>
 </body>
 </html>

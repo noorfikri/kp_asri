@@ -15,7 +15,7 @@ class BuyingTransactionsItemsFk extends Migration
     {
         Schema::table('buying_transactions_items', function (Blueprint $table) {
             $table->foreign('transaction_id')->references('id')->on('buying_transactions')->onDelete('cascade');
-            $table->foreign('items_stock_id')->references('id')->on('items_stock')->onDelete('cascade');
+            $table->foreign('items_stock_id')->references('id')->on('items_stock')->onDelete('restrict');
         });
     }
 

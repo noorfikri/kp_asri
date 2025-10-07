@@ -36,8 +36,12 @@ class SizeController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:sizes,name',
+        ]);
+
         $data = new Size();
-        $data->name = $request->get('name');
+        $data->name = $validated;
 
         $data->save();
 

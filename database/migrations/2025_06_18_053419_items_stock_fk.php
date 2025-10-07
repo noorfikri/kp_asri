@@ -14,9 +14,9 @@ class ItemsStockFk extends Migration
     public function up()
     {
         Schema::table('items_stock', function (Blueprint $table) {
-            $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
-            $table->foreign('size_id')->references('id')->on('sizes')->onDelete('cascade');
-            $table->foreign('colour_id')->references('id')->on('colours')->onDelete('cascade');
+            $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('size_id')->references('id')->on('sizes');
+            $table->foreign('colour_id')->references('id')->on('colours');
         });
     }
 

@@ -25,10 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('*',function($view){
-            $storeInfo = StoreInfo::first();
-            $view->with('storeInfo',$storeInfo);
-        });
+view()->composer('*',function($view){
+    $storeInfo = StoreInfo::first();
+    $view->with('storeInfo',$storeInfo);
+});
 
         Blade::directive('toIDR', function ($amount){
             return "<?php echo 'Rp. '.number_format($amount,0,',','.').',00'; ?>";

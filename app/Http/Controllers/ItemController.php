@@ -198,6 +198,7 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         try {
+            $item->stocks()->delete();
             $item->delete();
             return redirect()->route('items.index')->with('status', 'Barang telah dihapus');
         } catch (\Exception $e) {
