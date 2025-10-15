@@ -1,9 +1,8 @@
-<div class="card card-primary shadow-lg">
-    <div class="card-header">
-        <h3 class="card-title">Buat Laporan Baru</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+<div class="card card-outline card-primary shadow-lg p-0">
+    <div class="card-header d-flex justify-content-between align-items-center my-0 py-0 border-0">
+        <div class="bg-primary py-2 px-3 my-0 rounded-bottom rounded-3">
+        <h3 class="card-title"> <i class="fa-solid fa-square-plus"></i> Buat Laporan Baru</h3>
+        </div>
     </div>
     <form method="POST" action="{{ route('reports.store') }}" id="reportCreateForm">
         @csrf
@@ -46,17 +45,17 @@
                         <tr>
                             <th>Transaksi</th>
                             <th>Tanggal</th>
-                            <th>Jumlah Terjual Barang</th>
+                            <th>Jumlah Barang Terjual</th>
                             <th>Total</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Selling transactions will be added here -->
+
                     </tbody>
-                </table>
-            </div>
-            <div class="form-group">
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">
                 <select id="sellingSelect" class="form-control">
                     <option value="">Pilih Transaksi Penjualan</option>
                     @foreach($sellingTransactions as $st)
@@ -68,9 +67,14 @@
                         </option>
                     @endforeach
                 </select>
-                <button type="button" class="btn btn-success mt-2" id="addSellingBtn">Tambah Transaksi Penjualan</button>
+                            </td>
+                            <td>
+                <button type="button" class="btn btn-success rounded-pill float-right mr-2" id="addSellingBtn"> <i class="fas fa-plus"></i>  Tambah</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
-
             <h5 class="mt-4">Transaksi Pembelian</h5>
             <div class="table-responsive">
                 <table class="table table-bordered table-sm" id="buyingTable">
@@ -78,17 +82,17 @@
                         <tr>
                             <th>Transaksi</th>
                             <th>Tanggal</th>
-                            <th>Jumlah Dibeli Barang</th>
+                            <th>Jumlah Barang Dibeli</th>
                             <th>Total</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Buying transactions will be added here -->
+
                     </tbody>
-                </table>
-            </div>
-            <div class="form-group">
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">
                 <select id="buyingSelect" class="form-control">
                     <option value="">Pilih Transaksi Pembelian</option>
                     @foreach($buyingTransactions as $bt)
@@ -100,9 +104,14 @@
                         </option>
                     @endforeach
                 </select>
-                <button type="button" class="btn btn-success mt-2" id="addBuyingBtn">Tambah Transaksi Pembelian</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success rounded-pill float-right mr-2" id="addBuyingBtn"> <i class="fas fa-plus"></i> Tambah </button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
-
             <div class="form-group mt-4">
                 <label for="other_cost">Biaya Lainnya</label>
                 <input type="text" id="other_cost" name="other_cost" class="form-control" value="0">
@@ -140,8 +149,9 @@
                 </table>
             </div>
         </div>
-        <div class="card-footer text-right">
-            <button type="submit" class="btn btn-primary">Simpan</button>
+        <div class="card-footer">
+            <a href="#" class="btn btn-outline-danger rounded-pill" data-target="#showcreatemodal" data-dismiss="modal"> <i class="fa-solid fa-xmark"></i> Batal</a>
+            <button type="submit" class="btn btn-success rounded-pill float-right"><i class="fas fa-save"></i> Simpan Laporan Baru</button>
         </div>
     </form>
 </div>

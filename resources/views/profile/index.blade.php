@@ -41,7 +41,7 @@ $(document).ready(function(){
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Beranda</a></li>
             <li class="breadcrumb-item active">Profil Akun</li>
           </ol>
         </div>
@@ -63,7 +63,7 @@ $(document).ready(function(){
               <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
                 <p class="text-muted text-center">{{ Auth::user()->email }}</p>
 
-              <p class="text-muted text-center">{{ Auth::user()->category }}</p>
+              <p class="text-muted text-center">Kategori Akun - {{ Auth::user()->category }}</p>
             </div>
             <!-- /.card-body -->
           </div>
@@ -94,11 +94,11 @@ $(document).ready(function(){
         </div>
         <!-- /.col -->
         <div class="col-md-9">
-          <div class="card">
-            <div class="card-header p-2">
-              <ul class="nav nav-pills">
-                <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Ubah Informasi Pengguna</a></li>
-              </ul>
+          <div class="card card-outline card-primary p-0">
+            <div class="card-header d-flex justify-content-between my-0 py-0 border-0">
+              <div class="bg-primary py-2 px-3 my-0 rounded-bottom rounded-3">
+                <h3 class="card-title"><i class="fa-solid fa-pen-to-square"></i> Ubah Informasi Pengguna</a></h3>
+              </div>
             </div><!-- /.card-header -->
             <div class="card-body">
               <div class="tab-content">
@@ -114,10 +114,15 @@ $(document).ready(function(){
                     <div class="form-group row">
                         <label for="inputImageEdit" class="col-sm-2 col-form-label">Gambar Profil</label>
                         <div class="col-sm-10">
-                            <input type="file" class="form-control @error('image') is-invalid @enderror" name="image" id="inputImageEdit" placeholder="Gambar Profil">
-                            @error('image')
-                                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
-                            @enderror
+            <div class="input-group">
+                      <div class="custom-file">
+                        <input  type="file" id="inputImageEdit" name="image" class="form-control @error('image') is-invalid @enderror" onchange="editPreviewImage(event)">
+                        <label class="custom-file-label" for="inputImageEdit">Masukkan Gambar Profil</label>
+                @error('image')
+                    <span class="invalid-feedback">{{ $message }}</span>
+            @enderror
+                      </div>
+            </div>
                         </div>
                     </div>
 
@@ -162,8 +167,8 @@ $(document).ready(function(){
                     </div>
 
                     <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                            <button type="submit" class="btn btn-danger">Ubah</button>
+                        <div class="offset-sm-2 col-sm-10 float-right">
+                            <button type="submit" class="btn btn-outline-primary rounded-pill"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Akun</button>
                         </div>
                     </div>
                 </form>

@@ -1,23 +1,25 @@
-<div class="card card-primary shadow-lg">
-    <div class="card-header">
-        <h3 class="card-title">Buat Barang</h3>
-        <div class="card-tools">
-            <button type="button" class="close" data-target="#showcreatemodal" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+<div class="card card-outline card-primary shadow-lg p-0">
+    <div class="card-header d-flex justify-content-between my-0 py-0 border-0">
+        <div class="bg-primary py-2 px-3 my-0 rounded-bottom rounded-3">
+        <h3 class="card-title"><i class="fa-solid fa-square-plus"></i> Buat Barang Baru</h3>
         </div>
     </div>
     <form method="POST" action="{{ route('items.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <img class="img-fluid pad mb-3" id="create-preview-image" src="{{ asset('assets/img/Placeholder_Image.png') }}" alt="Foto">
-            <div class="form-group">
-                <label for="inputImageCreate">Gambar</label>
-                <input type="file" id="inputImageCreate" name="image" class="form-control @error('image') is-invalid @enderror" onchange="createPreviewImage(event)">
+        <div class="form-group">
+            <label for="inputImageCreate">Gambar</label>
+            <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" id="inputImageCreate" name="image" class="form-control @error('image') is-invalid @enderror" onchange="createPreviewImage(event)">
+                        <label class="custom-file-label" for="inputImageCreate">Masukkan Gambar Barang</label>
                 @error('image')
                     <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
+                      </div>
             </div>
+        </div>
             <div class="form-group">
                 <label for="inputName">Nama Barang</label>
                 <input type="text" id="inputName" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
@@ -79,12 +81,19 @@
                                 @enderror
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger remove-row">Hapus</button>
+                                <button type="button" class="btn btn-outline-danger rounded-pill remove-row"> <i class="fas fa-trash"></i> Hapus</button>
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><button type="button" class="btn btn-success rounded-pill" id="addRow"><i class="fas fa-plus"></i> Tambah</button></td>
+                        </tr>
+                    </tfoot>
                 </table>
-                <button type="button" class="btn btn-success" id="addRow">Tambahkan</button>
                 @error('stocks')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
@@ -108,6 +117,9 @@
                         <span class="input-group-text">RP.</span>
                     </div>
                     <input type="text" id="inputPrice" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}">
+                    <div class="input-group-append">
+                    <span class="input-group-text">.00</span>
+                  </div>
                 </div>
                 @error('price')
                     <span class="invalid-feedback">{{ $message }}</span>
@@ -127,11 +139,9 @@
                     <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
             </div>
-        </div>
-        <div class="card-footer">
             <div class="col-12">
-                <a href="#" class="btn btn-secondary" data-target="#showcreatemodal" data-dismiss="modal">Batal</a>
-                <button type="submit" class="btn btn-success float-right">Buat</button>
+                <a href="#" class="btn btn-outline-danger rounded-pill" data-target="#showcreatemodal" data-dismiss="modal"> <i class="fa-solid fa-xmark"></i> Batal</a>
+                <button type="submit" class="btn btn-success float-right rounded-pill"><i class="fa-solid fa-floppy-disk"></i> Simpan Barang Baru</button>
             </div>
         </div>
     </form>

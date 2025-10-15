@@ -14,7 +14,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $reports = Report::with('creator')->get();
+        $reports = Report::with('creator')->orderBy('report_date', 'desc')->get();
         return view('report.index', ['data' => $reports]);
     }
 

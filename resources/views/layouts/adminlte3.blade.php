@@ -59,26 +59,27 @@
         <a href="{{url('/')}}" class="nav-link">Lihat Halaman Depan</a>
       </li>
     </ul>
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto navbar-light">
       <li class="nav-item dropdown user-menu">
-        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+        <a href="#" class="nav-link dropdown-toggle rounded-pill" data-toggle="dropdown">
           <img src="{{asset(Auth::user()->profile_picture)}}" class="user-image img-circle elevation-2" alt="User Image">
           <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <!-- User image -->
-          <li class="user-header bg-primary">
+          <li class="user-header bg-light">
             <img src="{{asset(Auth::user()->profile_picture)}}" class="img-circle elevation-2" alt="User Image">
 
             <p>
-              {{ Auth::user()->name }} - {{ Auth::user()->category}}
-              <small>Member since {{ Auth::user()->created_at->format('M. Y') }}</small>
+              {{ Auth::user()->name }} <br>
+              Kategori : {{ Auth::user()->category}}
+              <small>Akun dibuat pada {{ Auth::user()->created_at->format('M. Y') }}</small>
             </p>
           </li>
           <!-- Menu Footer-->
           <li class="user-footer">
-            <a href="#" class="btn btn-default btn-flat">Profil</a>
-            <a class="btn btn-default btn-flat float-right" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Keluar</a>
+            <a href="{{ route('profile') }}" class="btn btn-default btn-outline-dark rounded-pill"> <i class="fa-solid fa-user"></i> Profil</a>
+            <a class="btn btn-danger rounded-pill float-right" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa-solid fa-right-from-bracket"></i> Keluar</a>
           </li>
         </ul>
       </li>
@@ -87,7 +88,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-light-indigo elevation-4">
     <!-- Brand Logo -->
     <a href="{{url('/')}}" class="brand-link">
       <img src="{{asset($storeInfo->logo)}}" alt="Logo" class="brand-image" style="opacity: .8">
@@ -102,7 +103,7 @@
           <img src="{{asset(Auth::user()->profile_picture)}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+          <a href="{{ route('profile') }}" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
     <!-- Sidebar Menu -->
@@ -110,12 +111,12 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library -->
-        <li class="nav-header">DASHBOARD</li>
+        <li class="nav-header">Informasi Toko</li>
         <li class="nav-item">
         <a href="#" class="nav-link">
           <i class="nav-icon fa-solid fa-house"></i>
           <p>
-            Dashboard
+            Informasi Toko
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
@@ -123,7 +124,7 @@
           <li class="nav-item">
             <a href="{{url('/admin')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Dashboard</p>
+            <p>Informasi Toko</p>
             </a>
           </li>
         </ul>
@@ -290,7 +291,7 @@
       </li>
         <li class="nav-header">Keluar</li>
         <li class="nav-item">
-        <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <a class="nav-link bg-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
           <i class="nav-icon fa-solid fa-sign-out-alt"></i>
           <p>Keluar</p>
         </a>

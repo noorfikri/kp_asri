@@ -1,9 +1,8 @@
-<div class="card card-primary shadow-lg">
-    <div class="card-header">
-        <h3 class="card-title">Detail Laporan</h3>
-        <button type="button" class="close ml-auto" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+<div class="card card-outline card-primary shadow-lg p-0">
+    <div class="card-header d-flex justify-content-between align-items-center my-0 py-0 border-0">
+        <div class="bg-primary py-2 px-3 my-0 rounded-bottom rounded-3">
+        <h3 class="card-title"><i class="fas fa-info"> </i> Detail Laporan || {{ $report->report_date }} </h3>
+        </div>
     </div>
     <div class="card-body" id="report-detail-print">
         {{-- Info Section --}}
@@ -144,11 +143,11 @@
         </table>
     </div>
     <div class="card-footer">
-        <button type="button" class="btn btn-info btn-sm mr-2" onclick="printReportDetail(this)">
-            <i class="fas fa-print"></i> Print
+        <button type="button" class="btn btn-info rounded-pill float-left mr-2" onclick="printReportDetail(this)">
+            <i class="fas fa-print"></i> Cetak Laporan
         </button>
-        <button type="button" class="btn btn-secondary btn-sm float-right" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span> Tutup
+        <button type="button" class="btn btn-outline-danger rounded-pill float-right" data-dismiss="modal" aria-label="Close">
+            <i class="fas fa-times"></i> Tutup
         </button>
     </div>
 </div>

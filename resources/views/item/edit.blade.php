@@ -1,24 +1,26 @@
-<div class="card card-primary shadow-lg">
-    <div class="card-header">
-      <h3 class="card-title">Edit Barang</h3>
-      <div class="card-tools">
-        <button type="button" class="close" data-target="#edit{{$item->id}}" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+<div class="card card-outline card-info shadow-lg p-0">
+    <div class="card-header d-flex justify-content-between my-0 py-0 border-0">
+    <div class="bg-info py-2 px-3 my-0 rounded-bottom rounded-3">
+      <h3 class="card-title"><i class="fa-solid fa-pen-to-square"></i> Ubah Barang</h3>
+    </div>
     </div>
     <form method="POST" action="{{ url('admin/items/'.$item->id) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="card-body">
             <img class="img-fluid pad" id="edit-preview-image" src="{{ asset($item->image) }}" alt="Foto">
-            <div class="form-group">
-                <label for="inputImage">Gambar</label>
-                <input type="file" id="inputImageEdit" name="image" class="form-control @error('image') is-invalid @enderror">
+        <div class="form-group">
+            <label for="inputImageEdit">Gambar</label>
+            <div class="input-group">
+                      <div class="custom-file">
+                        <input  type="file" id="inputImageEdit" name="image" class="form-control @error('image') is-invalid @enderror" onchange="editPreviewImage(event)">
+                        <label class="custom-file-label" for="inputImageEdit">Masukkan Gambar Barang</label>
                 @error('image')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                    <span class="invalid-feedback">{{ $message }}</span>
+            @enderror
+                      </div>
             </div>
+        </div>
             <div class="form-group">
                 <label for="inputName">Nama Barang</label>
                 <input type="text" id="inputName" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $item->name) }}">
@@ -80,13 +82,20 @@
                                 @enderror
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger remove-row">Hapus</button>
+                                <button type="button" class="btn btn-outline-danger remove-row rounded-pill"><i class="fas fa-trash"></i> Hapus</button>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><button type="button" class="btn btn-success rounded-pill" id="addRow"><i class="fas fa-plus"></i> Tambah </button></td>
+                        </tr>
+                    </tfoot>
                 </table>
-                <button type="button" class="btn btn-success" id="addRow">Tambah Kombinasi</button>
                 @error('stocks')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
@@ -105,13 +114,21 @@
             </div>
             <div class="form-group">
                 <label for="inputPrice">Harga Barang</label>
-                <input type="text" id="inputPrice" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price', $item->price) }}">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">RP.</span>
+                    </div>
+                    <input type="text" id="inputPrice" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price', $item->price) }}">
+                    <div class="input-group-append">
+                        <span class="input-group-text">.00</span>
+                    </div>
+                </div>
                 @error('price')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="inputDescription">Description</label>
+                <label for="inputDescription">Deskripsi</label>
                 <textarea id="inputDescription" name="description" class="form-control @error('description') is-invalid @enderror" rows="4">{{ old('description', $item->description) }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -124,11 +141,9 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-        </div>
-        <div class="card-footer">
             <div class="col-12">
-                <a href="#" class="btn btn-secondary" data-target="#edit{{$item->id}}" data-dismiss="modal">Batal</a>
-                <input type="submit" value="Edit" class="btn btn-success float-right">
+                <a href="#" class="btn btn-outline-danger rounded-pill" data-target="#edit{{$item->id}}" data-dismiss="modal"> <i class="fa-solid fa-xmark"></i> Batal</a>
+                <button type="submit" class="btn btn-success float-right rounded-pill"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Barang</button>
             </div>
         </div>
     </form>

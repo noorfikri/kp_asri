@@ -13,7 +13,7 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $messages = Message::all();
+        $messages = Message::orderBy('post_time', 'desc')->get();
         return view('message.index', ['data' => $messages]);
     }
 

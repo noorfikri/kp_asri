@@ -1,9 +1,8 @@
-<div class="card card-primary shadow-lg">
-    <div class="card-header">
-        <h3 class="card-title">Buat Transaksi Penjualan Baru</h3>
-        <button type="button" class="close" data-target="#showcreatemodal" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+<div class="card card-outline card-primary shadow-lg p-0">
+    <div class="card-header d-flex justify-content-between align-items-center my-0 py-0 border-0">
+        <div class="bg-primary py-2 px-3 my-0 rounded-bottom rounded-3">
+        <h3 class="card-title"><i class="fa-solid fa-square-plus"></i> Buat Transaksi Penjualan Baru</h3>
+        </div>
     </div>
     <form method="POST" action="{{ route('sellingtransactions.store') }}">
         @csrf
@@ -22,7 +21,7 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="date">Tanggal</label>
+                <label for="date">Waktu Penjualan</label>
                 <input type="datetime-local" name="date" class="form-control @error('date') is-invalid @enderror"
                     value="{{ old('date', now()->format('Y-m-d\TH:i')) }}">
                 @error('date')
@@ -70,12 +69,20 @@
                             <input type="text" name="items[0][price]" class="form-control item-total-price" placeholder="Harga Total" readonly data-raw-price="0" value="{{ old('items.0.price') }}">
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger remove-item">Hapus</button>
+                            <button type="button" class="btn btn-outline-danger rounded-pill remove-item"><i class="fas fa-trash"></i> Hapus</button>
                         </td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button type="button" class="btn btn-success rounded-pill" id="addItem"><i class="fas fa-plus"></i> Tambah</button></td>
+                    </tr>
+                </tfoot>
             </table>
-            <button type="button" class="btn btn-success" id="addItem">Tambah Barang</button>
 
             <div class="mt-4">
                 <div class="form-group">
@@ -102,8 +109,8 @@
         </div>
         <div class="card-footer">
             <div class="col-12">
-                <a href="#" class="btn btn-secondary" data-target="#showcreatemodal" data-dismiss="modal">Batal</a>
-                <input type="submit" value="Buat Transaksi Baru" class="btn btn-success float-right">
+                <a href="#" class="btn btn-outline-danger rounded-pill" data-target="#showcreatemodal" data-dismiss="modal"><i class="fa-solid fa-xmark"></i> Batal</a>
+                <button type="submit" class="btn btn-success float-right rounded-pill"><i class="fa-solid fa-floppy-disk"></i> Simpan Transaksi Baru</button>
             </div>
         </div>
     </form>

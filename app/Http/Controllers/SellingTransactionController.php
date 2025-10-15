@@ -17,7 +17,7 @@ class SellingTransactionController extends Controller
      */
     public function index()
     {
-        $sellingTransactions = SellingTransaction::with(['seller'])->get();
+        $sellingTransactions = SellingTransaction::with(['seller'])->orderBy('date', 'desc')->get();
         return view('sellingtransaction.index', ['data' => $sellingTransactions]);
     }
 

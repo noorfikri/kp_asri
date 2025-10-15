@@ -185,7 +185,7 @@ function initializeCreateModal() {
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Beranda</a></li>
                     <li class="breadcrumb-item active">Daftar Transaksi Penjualan</li>
                 </ol>
             </div>
@@ -198,8 +198,8 @@ function initializeCreateModal() {
         <div class="card-header">
             <div class="card-tools input-group">
                 <div class="flex-grow-1"></div>
-                <a href="{{url('admin/sellingtransactions/create')}}" class="btn btn-primary rounded float-right"
-                   data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
+                <a href="{{url('admin/sellingtransactions/create')}}" class="btn btn-primary rounded float-right rounded-pill"
+                   data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()"><i class="fas fa-plus"></i> Buat Transaksi Baru </a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
@@ -210,7 +210,7 @@ function initializeCreateModal() {
             </div>
         </div>
         <div class="card-body p-0">
-            <table class="table table-striped projects">
+            <table class="table table-hover projects">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -231,11 +231,11 @@ function initializeCreateModal() {
                         <td>@toIDR($d->total_amount)</td>
                         <td>{{$d->total_count}}</td>
                         <td class="project-actions text-right">
-                            <a class="btn btn-primary btn-sm" href="{{url('admin/sellingtransactions/'.$d->id)}}"
+                            <a class="btn btn-outline-info rounded-pill" href="{{url('admin/sellingtransactions/'.$d->id)}}"
                                 data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                                 <i class="fas fa-folder"></i> Lihat
                             </a>
-                            <a class="btn btn-danger btn-sm" href="{{url('admin/sellingtransactions/'.$d->id)}}"
+                            <a class="btn btn-outline-danger rounded-pill" href="{{url('admin/sellingtransactions/'.$d->id)}}"
                                 data-target="#delete{{$d->id}}" data-toggle='modal'>
                                 <i class="fas fa-trash"></i> Hapus
                             </a>
@@ -251,14 +251,14 @@ function initializeCreateModal() {
                             <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content" id="transactiondelete{{$d->id}}">
+                                        <div class="card modal-body card-outline card-danger shadow-lg p-0">
                                         <form method='POST' action="{{route('sellingtransactions.deleteAddStock', $d->id)}}">
                                             @csrf
                                             @method('DELETE')
-                                            <div class="modal-header bg-danger">
-                                                <h4 class="modal-title">Hapus Transaksi</h4>
-                                                <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Tutup">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
+                                            <div class="modal-header d-flex justify-content-between my-0 py-0 border-0">
+                                                <div class="bg-danger py-2 px-3 my-0 rounded-bottom rounded-3">
+                                                <h4 class="modal-title"><i class="fa-solid fa-trash"></i> Hapus Transaksi</h4>
+                                                </div>
                                             </div>
                                             <div class="modal-body">
                                                 <p>Apakah Anda yakin ingin menghapus transaksi dengan tanggal "{{$d->date}}"?</p>
@@ -266,10 +266,11 @@ function initializeCreateModal() {
                                                 <p>Stok barang akan dikembalikan ke daftar barang</p>
                                             </div>
                                             <div class="modal-footer justify-content-between">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Tutup</button>
-                                                <button type="submit" class="btn btn-danger">Hapus Transaksi</button>
+                                                <button type="button" class="btn btn-outline-dark rounded-pill" data-dismiss="modal" data-target="delete{{$d->id}}"><i class="fa-solid fa-xmark"></i> Batal</button>
+                                                <button type="submit" class="btn btn-danger rounded-pill float-right"><i class="fas fa-trash"></i> Hapus Transaksi</button>
                                             </div>
                                         </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

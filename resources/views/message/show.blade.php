@@ -1,9 +1,8 @@
-<div class="card modal-body card-primary shadow-lg p-0">
-    <div class="card-header d-flex justify-content-between">
-        <h3 class="card-title"><i class="fas fa-info-circle"></i> Detail || {{$data->name}}</h3>
-        <button type="button" class="close ml-auto" data-dismiss="modal" data-target="show{{$data->id}}" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+<div class="card modal-body card-outline card-primary shadow-lg p-0">
+    <div class="card-header d-flex justify-content-between align-items-center my-0 py-0 border-0">
+        <div class="bg-primary py-2 px-3 my-0 rounded-bottom rounded-3">
+        <h3 class="card-title"><i class="fas fa-info"> </i> Detail || {{$data->name}}</h3>
+        </div>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
@@ -35,6 +34,9 @@
                 </tr>
             </tbody>
         </table>
+        <div class="pt-3 mt-3 pr-1 mr-1">
+                <a href="#" class="btn btn-outline-danger rounded-pill float-right" data-target="#show{{$data->id}}" data-dismiss="modal"> <i class="fa-solid fa-xmark"></i> Tutup</a>
+        </div>
     </div>
     <!-- /.card-body -->
 </div>

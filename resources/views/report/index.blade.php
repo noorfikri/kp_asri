@@ -79,7 +79,7 @@ function initializeCreateModal() {
             <td>${date}</td>
             <td class="selling-count">${total_count}</td>
             <td class="selling-amount" data-amount="${total_amount}">${formatToIDR(total_amount)}</td>
-            <td><button type="button" class="btn btn-danger btn-sm remove-selling" data-id="${id}">Hapus</button></td>
+            <td><button type="button" class="btn btn-outline-danger rounded-pill mr-2 float-right remove-selling" data-id="${id}"><i class="fas fa-trash"></i> Hapus</button></td>
         `;
         document.querySelector('#sellingTable tbody').appendChild(row);
         updateRecap();
@@ -116,7 +116,7 @@ function initializeCreateModal() {
             <td>${date}</td>
             <td class="buying-count">${total_count}</td>
             <td class="buying-amount" data-amount="${total_amount}">${formatToIDR(total_amount)}</td>
-            <td><button type="button" class="btn btn-danger btn-sm remove-buying" data-id="${id}">Hapus</button></td>
+            <td><button type="button" class="btn btn-outline-danger float-right rounded-pill mr-2 remove-buying" data-id="${id}"><i class="fas fa-trash"></i> Hapus</button></td>
         `;
         document.querySelector('#buyingTable tbody').appendChild(row);
         updateRecap();
@@ -179,7 +179,7 @@ function initializeCreateModal() {
                         <td>${option.dataset.date}</td>
                         <td class="selling-count">${option.dataset.total_count}</td>
                         <td class="selling-amount" data-amount="${option.dataset.total_amount}">${formatToIDR(option.dataset.total_amount)}</td>
-                        <td><button type="button" class="btn btn-danger btn-sm remove-selling" data-id="${id}">Hapus</button></td>
+                        <td><button type="button" class="btn btn-outline-danger remove-selling float-right mr-2 rounded-pill" data-id="${id}"><i class="fas fa-trash"></i> Hapus</button></td>
                     `;
                     document.querySelector('#sellingTable tbody').appendChild(row);
                 }
@@ -211,7 +211,7 @@ function initializeCreateModal() {
                         <td>${option.dataset.date}</td>
                         <td class="buying-count">${option.dataset.total_count}</td>
                         <td class="buying-amount" data-amount="${option.dataset.total_amount}">${formatToIDR(option.dataset.total_amount)}</td>
-                        <td><button type="button" class="btn btn-danger btn-sm remove-buying" data-id="${id}">Hapus</button></td>
+                        <td><button type="button" class="btn btn-outline-danger rounded-pill float-right mr-2 remove-buying" data-id="${id}"> <i class="fas fa-trash"></i> Hapus</button></td>
                     `;
                     document.querySelector('#buyingTable tbody').appendChild(row);
                 }
@@ -307,7 +307,7 @@ function printReportDetail(btn) {
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Beranda</a></li>
             <li class="breadcrumb-item active">Daftar Laporan</li>
           </ol>
         </div>
@@ -323,8 +323,8 @@ function printReportDetail(btn) {
         <div class="card-header">
             <div class="card-tools input-group">
                 <div class="flex-grow-1"></div>
-                <a href="{{url('admin/reports/create')}}" class=" btn btn-primary rounded float-right"
-                data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
+                <a href="{{url('admin/reports/create')}}" class=" btn btn-primary rounded-pill float-right"
+                data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()"><i class="fas fa-plus"></i> Buat Laporan Baru</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
@@ -336,7 +336,7 @@ function printReportDetail(btn) {
             </div>
         </div>
       <div class="card-body p-0">
-        <table class="table table-striped projects">
+        <table class="table table-hover projects">
             <thead>
                 <tr>
                     <th style="width: 1%">
@@ -392,13 +392,13 @@ function printReportDetail(btn) {
                         @toIDR($d->cash_flow)
                     </td>
                     <td class="project-actions text-right">
-                        <a class="btn btn-primary btn-sm" href="{{url('admin/reports/'.$d->id)}}"
+                        <a class="btn btn-outline-primary rounded-pill" href="{{url('admin/reports/'.$d->id)}}"
                             data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                             <i class="fas fa-folder">
                             </i>
                             Lihat
                         </a>
-                        <a class="btn btn-danger btn-sm" href="{{url('admin/reports/'.$d->id)}}"
+                        <a class="btn btn-outline-danger rounded-pill" href="{{url('admin/reports/'.$d->id)}}"
                             data-target="#delete{{$d->id}}" data-toggle='modal'>
                             <i class="fas fa-trash">
                             </i>
@@ -425,23 +425,24 @@ function printReportDetail(btn) {
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="reportdelete{{$d->id}}">
+                                    <div class="card modal-body card-outline card-danger shadow-lg p-0">
                                     <form method='POST' action="{{route('reports.destroy', $d->id)}}">
                                         @csrf
                                         @method('DELETE')
-                                        <div class="modal-header bg-danger">
-                                            <h4 class="modal-title">Hapus Laporan</h4>
-                                            <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Close">
-                                              <span aria-hidden="true">×</span>
-                                            </button>
+                                        <div class="modal-header d-flex justify-content-between my-0 py-0 border-0">
+                                            <div class="bg-danger py-2 px-3 my-0 rounded-bottom rounded-3">
+                                            <h4 class="modal-title"><i class="fa-solid fa-trash"></i> Hapus Laporan</h4>
+                                            </div>
                                           </div>
                                           <div class="modal-body">
                                             <p>Apakah Anda yakin ingin menghapus laporan bertanggal "{{$d->report_date}}"?</p>
                                           </div>
                                           <div class="modal-footer justify-content-between">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Tutup</button>
-                                            <button type="submit" class="btn btn-danger">Hapus Laporan</button>
+                                            <button type="button" class="btn btn-outline-dark rounded-pill" data-dismiss="modal" data-target="delete{{$d->id}}"><i class="fa-solid fa-xmark"></i> Batal</button>
+                                            <button type="submit" class="btn btn-danger rounded-pill float-right"><i class="fas fa-trash"></i> Hapus Laporan</button>
                                           </div>
                                     </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

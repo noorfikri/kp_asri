@@ -3,7 +3,7 @@
 @section('content')
 <div class="login-box">
     <!-- /.login-logo -->
-    <div class="card card-outline card-primary">
+    <div class="card card-outline rounded-5">
       <div class="card-header text-center">
         <img src="{{asset($storeInfo->banner)}}" class="card-img brand-image-xs" alt="Logo" style="opacity: .8">
         <a href="{{route('home')}}" class="h1"><b>Admin {{$storeInfo->name}}</b></a>
@@ -39,20 +39,9 @@
             </span>
             @enderror
           </div>
-          <div class="row">
-            <div class="col-8">
-              <div class="icheck-primary">
-                <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                <label for="remember">
-                    {{ __('Ingat Saya') }}
-                </label>
-              </div>
+            <div class="mt-4">
+              <button type="submit" class="btn btn-primary btn-lg rounded-pill btn-block">{{ __('Masuk') }} <i class="fa-solid fa-arrow-right-to-bracket"></i></button>
             </div>
-            <!-- /.col -->
-            <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block">{{ __('Masuk') }}</button>
-            </div>
-            <!-- /.col -->
           </div>
         </form>
       </div>

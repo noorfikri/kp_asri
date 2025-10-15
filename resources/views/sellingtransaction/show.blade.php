@@ -1,9 +1,8 @@
-<div class="card card-primary shadow-lg">
-    <div class="card-header">
-        <h3 class="card-title">Detail Transaksi Penjualan || {{ $sellingTransaction->date }} </h3>
-        <button type="button" class="close ml-auto" data-dismiss="modal" data-target="show{{$sellingTransaction->id}}" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+<div class="card card-outline card-info shadow-lg p-0">
+    <div class="card-header d-flex justify-content-between align-items-center my-0 py-0 border-0">
+        <div class="bg-info py-2 px-3 my-0 rounded-bottom rounded-3">
+        <h3 class="card-title"><i class="fas fa-info"> </i> Detail Transaksi Penjualan || {{ $sellingTransaction->date }} </h3>
+        </div>
     </div>
     <div class="card-body">
         <h3><strong>Detail Transaksi Penjualan Barang</strong></h3>
@@ -55,5 +54,8 @@
         <h6><strong>Sub Total:</strong> @toIDR($sellingTransaction->sub_total)</h6>
         <h6><strong>Discount:</strong> @toIDR($sellingTransaction->discount_amount)</h6>
         <h5><strong>Total Pendapatan : </strong> @toIDR($sellingTransaction->total_amount)</h5>
+        <div class="pt-3 mt-3 pr-1 mr-1">
+            <a href="#" class="btn btn-outline-danger rounded-pill float-right" data-target="#show{{$sellingTransaction->id}}" data-dismiss="modal"> <i class="fa-solid fa-xmark"></i> Tutup</a>
+        </div>
     </div>
 </div>

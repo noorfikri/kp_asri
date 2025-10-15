@@ -49,7 +49,7 @@ function showEdit(brand_id){
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
             <li class="breadcrumb-item active">Daftar Merek</li>
           </ol>
         </div>
@@ -65,8 +65,8 @@ function showEdit(brand_id){
         <div class="card-header">
             <div class="card-tools input-group">
                 <div class="flex-grow-1"></div>
-                <a href="{{url('admin/brands/create')}}" class=" btn btn-primary rounded float-right"
-                data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">Tambah</a>
+                <a href="{{url('admin/brands/create')}}" class=" btn btn-primary rounded float-right rounded-pill"
+                data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()"> <i class="fas fa-plus"></i> Tambah Merek Baru</a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog">
@@ -78,7 +78,7 @@ function showEdit(brand_id){
             </div>
         </div>
       <div class="card-body p-0">
-        <table class="table table-striped projects">
+        <table class="table table-hover projects">
             <thead>
                 <tr>
                     <th style="width: 1%">
@@ -110,13 +110,13 @@ function showEdit(brand_id){
                         {{$d->name}}
                     </td>
                     <td class="project-actions text-right">
-                        <a class="btn btn-info btn-sm" href="{{url('admin/brands/'.$d->id.'/edit')}}"
+                        <a class="btn btn-outline-info rounded-pill" href="{{url('admin/brands/'.$d->id.'/edit')}}"
                             data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}})">
                             <i class="fas fa-pencil-alt">
                             </i>
                             Ubah
                         </a>
-                        <a class="btn btn-danger btn-sm" href="{{url('admin/brands/'.$d->id)}}"
+                        <a class="btn btn-outline-danger rounded-pill" href="{{url('admin/brands/'.$d->id)}}"
                             data-target="#delete{{$d->id}}" data-toggle='modal'>
                             <i class="fas fa-trash">
                             </i>
@@ -135,23 +135,24 @@ function showEdit(brand_id){
                         <div class="modal fade" id="delete{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="branddelete{{$d->id}}">
+                                    <div class="card modal-body card-outline card-danger shadow-lg p-0">
                                     <form method='POST' action="{{route('brands.destroy', $d->id)}}">
                                         @csrf
                                         @method('DELETE')
-                                        <div class="modal-header bg-danger">
+                                        <div class="modal-header d-flex justify-content-between my-0 py-0 border-0">
+                                            <div class="bg-danger py-2 px-3 my-0 rounded-bottom rounded-3">
                                             <h4 class="modal-title">Hapus Merek</h4>
-                                            <button type="button" class="close" data-dismiss="modal" data-target="delete{{$d->id}}" aria-label="Close">
-                                              <span aria-hidden="true">×</span>
-                                            </button>
+                                            </div>
                                           </div>
                                           <div class="modal-body">
                                             <p>Apakah Anda yakin ingin menghapus merek "{{$d->name}}"?</p>
                                           </div>
                                           <div class="modal-footer justify-content-between">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="delete{{$d->id}}">Tutup</button>
-                                            <button type="submit" class="btn btn-danger">Hapus Merek</button>
+                                            <button type="button" class="btn btn-outline-dark rounded-pill" data-dismiss="modal" data-target="delete{{$d->id}}"> <i class="fa-solid fa-xmark"></i> Batal</button>
+                                            <button type="submit" class="btn btn-danger rounded-pill"><i class="fas fa-trash"></i> Hapus Merek</button>
                                           </div>
                                     </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -38,7 +38,7 @@ function showDetails(message_id){
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Beranda</a></li>
                     <li class="breadcrumb-item active">Daftar Pesan</li>
                 </ol>
             </div>
@@ -56,17 +56,17 @@ function showDetails(message_id){
             </div>
         </div>
         <div class="card-body p-0">
-            <table class="table table-striped projects">
+            <table class="table table-hover projects">
                 <thead>
                     <tr>
                         <th style="width: 1%">#</th>
-                        <th style="width: 15%">Nama</th>
-                        <th style="width: 15%">Kontak</th>
+                        <th style="width: 10%">Nama</th>
+                        <th style="width: 10%">Kontak</th>
                         <th style="width: 20%">Subjek</th>
-                        <th style="width: 15%">Kategori</th>
+                        <th style="width: 10%">Kategori</th>
                         <th style="width: 25%">Pesan</th>
-                        <th style="width: 15%">Waktu Kirim</th>
-                        <th style="width: 10%"></th>
+                        <th style="width: 10%">Waktu Kirim</th>
+                        <th style="width: 25%"></th>
                         <th style="width: 1%"></th>
                     </tr>
                 </thead>
@@ -85,13 +85,13 @@ function showDetails(message_id){
                         </td>
                         <td>{{ $message->post_time }}</td>
                         <td class="project-actions text-right">
-                            <a class="btn btn-primary btn-sm" href="{{url('admin/messages/'.$message->id)}}"
+                            <a class="btn btn-outline-primary rounded-pill btn-sm" href="{{url('admin/messages/'.$message->id)}}"
                                 data-target="#show{{$message->id}}" data-toggle='modal' onclick="showDetails({{$message->id}})">
                                 <i class="fas fa-folder">
                                 </i>
                                 Lihat
                             </a>
-                            <a class="btn btn-danger btn-sm" href="#" data-target="#delete{{ $message->id }}" data-toggle="modal">
+                            <a class="btn btn-outline-danger rounded-pill btn-sm" href="#" data-target="#delete{{ $message->id }}" data-toggle="modal">
                                 <i class="fas fa-trash"></i> Hapus
                             </a>
                         </td>
@@ -107,23 +107,24 @@ function showDetails(message_id){
                             <div class="modal fade" id="delete{{ $message->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
+                                        <div class="card modal-body card-outline card-danger shadow-lg p-0">
                                         <form method="POST" action="{{ route('messages.destroy', $message->id) }}">
                                             @csrf
                                             @method('DELETE')
-                                            <div class="modal-header bg-danger">
-                                                <h4 class="modal-title">Hapus Pesan</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
+                                            <div class="modal-header d-flex justify-content-between my-0 py-0 border-0">
+                                                <div class="bg-danger py-2 px-3 my-0 rounded-bottom rounded-3">
+                                                <h4 class="modal-title"><i class="fa-solid fa-trash"></i> Hapus Pesan</h4>
+                                                </div>
                                             </div>
                                             <div class="modal-body">
                                                 <p>Apakah Anda yakin ingin menghapus pesan dari "{{ $message->name }}"?</p>
                                             </div>
                                             <div class="modal-footer justify-content-between">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                                                <button type="submit" class="btn btn-danger">Hapus Pesan</button>
+                                                <button type="button" class="btn btn-outline-dark rounded-pill" data-dismiss="modal"><i class="fa-solid fa-xmark"></i> Batal</button>
+                                                <button type="submit" class="btn btn-danger rounded-pill float-right"><i class="fas fa-trash"></i> Hapus Pesan</button>
                                             </div>
                                         </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

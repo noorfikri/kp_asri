@@ -6,12 +6,11 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Dashboard</h1>
+              <h1 class="m-0">Informasi Toko</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
+                <li class="breadcrumb-item active">Beranda</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -24,15 +23,17 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Edit Informasi Toko</h3>
+                <div class="card card-outline card-primary p-0">
+                    <div class="card-header d-flex justify-content-between my-0 py-0 border-0">
+                        <div class="bg-primary py-2 px-3 my-0 rounded-bottom rounded-3">
+                            <h3 class="card-title"><i class="fa-solid fa-pen-to-square"></i> Ubah Informasi Toko</h3>
+                        </div>
                     </div>
 <form method="POST" action="{{ route('storeinfo.update') }}" enctype="multipart/form-data">
 @csrf
 @method('POST')
     <div class="card-body">
-        <div class="form-group">
+        <div class="form-group form-">
             <label for="name">Nama Toko</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $storeInfo->name ?? '') }}" required>
         </div>
@@ -46,14 +47,24 @@
         </div>
         <div class="form-group">
             <label for="banner">Banner Toko</label>
-            <input type="file" class="form-control" id="banner" name="banner">
+            <div class="input-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="banner" name="banner">
+                    <label class="custom-file-label" for="exampleInputFile">Masukkan Banner Toko</label>
+                </div>
+            </div>
             @if(!empty($storeInfo->banner))
                 <img src="{{ asset($storeInfo->banner) }}" alt="Banner" class="img-fluid mt-2" style="max-height:80px;">
             @endif
         </div>
         <div class="form-group">
             <label for="logo">Logo Toko</label>
-            <input type="file" class="form-control" id="logo" name="logo">
+            <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="logo" name="logo">
+                        <label class="custom-file-label" for="exampleInputFile">Masukkan Logo Toko</label>
+                      </div>
+            </div>
             @if(!empty($storeInfo->logo))
                 <img src="{{ asset($storeInfo->logo) }}" alt="Logo" class="img-fluid mt-2" style="max-height:80px;">
             @endif
@@ -66,9 +77,9 @@
             <label for="whatsapp">WhatsApp</label>
             <input type="text" class="form-control" id="whatsapp" name="whatsapp" value="{{ old('whatsapp', $storeInfo->whatsapp ?? '') }}">
         </div>
-    </div>
-    <div class="card-footer">
-        <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+        <div class="form-group">
+            <button type="submit" class="btn-lg btn-primary rounded-pill float-right"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
+        </div>
     </div>
 </form>
                 </div>

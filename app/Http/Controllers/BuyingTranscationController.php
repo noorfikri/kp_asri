@@ -18,7 +18,7 @@ class BuyingTranscationController extends Controller
      */
     public function index()
     {
-        $buyingTransactions = BuyingTransaction::with(['supplier'])->get();
+        $buyingTransactions = BuyingTransaction::with(['supplier'])->orderBy('date', 'desc')->get();
         return view('buyingtransaction.index', compact('buyingTransactions'))->with('data', $buyingTransactions);
     }
 
