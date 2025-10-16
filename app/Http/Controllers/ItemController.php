@@ -165,8 +165,6 @@ class ItemController extends Controller
 
 
             $item->stocks()->delete();
-            \Log::info($item->stocks());
-
 
             foreach ($validated['stocks'] as $stockCombo) {
                 ItemStock::create([
