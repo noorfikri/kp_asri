@@ -97,7 +97,7 @@ class ItemController extends Controller
                     'colour_id' => $stockCombo['colour_id'],
                     'stock' => $stockCombo['stock'],
                 ]);
-}
+            }
 
             return redirect()->route('items.index')->with('status', 'Barang dengan nama: ' . $item->name . ' berhasil dibuat');
         } catch (\Exception $e) {
@@ -174,9 +174,11 @@ class ItemController extends Controller
 
             $item->save();
 
+
             $item->stocks()->delete();
             \Log::info($item->stocks());
 
+<<<<<<< HEAD
             // #foreach ($validated['stocks'] as $stockCombo) {
             //     ItemStock::create([
             //         'item_id' => $item->id,
@@ -185,6 +187,17 @@ class ItemController extends Controller
             //         'stock' => $stockCombo['stock'],
             //     ]);
             // }
+=======
+
+            foreach ($validated['stocks'] as $stockCombo) {
+                ItemStock::create([
+                    'item_id' => $item->id,
+                    'size_id' => $stockCombo['size_id'],
+                    'colour_id' => $stockCombo['colour_id'],
+                    'stock' => $stockCombo['stock'],
+                ]);
+            }
+>>>>>>> 94cf715edbab435f1b79f40bc706a1b776414c72
 
             return redirect()->route('items.index')->with('status', 'Barang dengan nama: ' . $item->name . ' berhasil diperbarui');
         } catch (\Exception $e) {
