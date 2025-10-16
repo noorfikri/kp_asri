@@ -97,7 +97,7 @@ class ItemController extends Controller
                     'colour_id' => $stockCombo['colour_id'],
                     'stock' => $stockCombo['stock'],
                 ]);
-}
+            }
 
             return redirect()->route('items.index')->with('status', 'Barang dengan nama: ' . $item->name . ' berhasil dibuat');
         } catch (\Exception $e) {
@@ -176,14 +176,38 @@ class ItemController extends Controller
 
             $item->stocks()->delete();
 
-            foreach ($validated['stocks'] as $stockCombo) {
-                ItemStock::create([
-                    'item_id' => $item->id,
-                    'size_id' => $stockCombo['size_id'],
-                    'colour_id' => $stockCombo['colour_id'],
-                    'stock' => $stockCombo['stock'],
-                ]);
+            $existingStocks = $item->stocks()->get()->keyBy(function ($stock) {
+                return $stock->size_id . '-' . $stock->colour_id;
+            });
+
+            $newStocks = collect($validated['stocks'])->keyBy(function ($stock) {
+                return $stock['size_id'] . '-' . $stock['colour_id'];
+            });
+            foreach ($newStocks as $key => $stockCombo) {
+                if ($existingStocks->has($key)) {
+                    // Update stok jika sudah ada
+                    $existingStocks[$key]->update([
+                        'stock' => $stockCombo['stock'],
+                    ]);
+                } else {
+                    // Insert stok baru
+                    ItemStock::create([
+                        'item_id' => $item->id,
+                        'size_id' => $stockCombo['size_id'],
+                        'colour_id' => $stockCombo['colour_id'],
+                        'stock' => $stockCombo['stock'],
+                    ]);
+                }
             }
+
+            // foreach ($validated['stocks'] as $stockCombo) {
+            //     ItemStock::create([
+            //         'item_id' => $item->id,
+            //         'size_id' => $stockCombo['size_id'],
+            //         'colour_id' => $stockCombo['colour_id'],
+            //         'stock' => $stockCombo['stock'],
+            //     ]);
+            // }
 
             return redirect()->route('items.index')->with('status', 'Barang dengan nama: ' . $item->name . ' berhasil diperbarui');
         } catch (\Exception $e) {
