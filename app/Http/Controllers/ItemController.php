@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Colour;
 use App\Models\Item;
-use App\Models\ItemStock;
 use App\Models\Size;
+use App\Models\Brand;
+use App\Models\Colour;
+use App\Models\Category;
+use App\Models\ItemStock;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\UpdateItemRequest;
 
 class ItemController extends Controller
 {
@@ -140,21 +141,9 @@ class ItemController extends Controller
     /**
      * Update the specified item in storage.
      */
-    public function update(\Illuminate\Http\Request $request, Item $item, FileUploadService $fileUpload)
+    public function update(UpdateItemRequest $request, Item $item, FileUploadService $fileUpload)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'nullable|exists:brands,id',
-            'price' => 'required|numeric|min:0',
-            'description' => 'nullable|string',
-            'note' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
-            'stocks' => 'required|array|min:1',
-            'stocks.*.size_id' => 'required|exists:sizes,id',
-            'stocks.*.colour_id' => 'required|exists:colours,id',
-            'stocks.*.stock' => 'required|integer|min:0',
-        ]);
+        $validated = $request->validated();
 
         try {
             $item->name = $validated['name'];
