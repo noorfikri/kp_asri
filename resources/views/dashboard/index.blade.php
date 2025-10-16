@@ -29,6 +29,31 @@
                             <h3 class="card-title"><i class="fa-solid fa-pen-to-square"></i> Ubah Informasi Toko</h3>
                         </div>
                     </div>
+
+
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show mt-3 mx-3" role="alert">
+        {{ session('error') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show mt-3 mx-3" role="alert">
+        <ul class="mb-0">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+
 <form method="POST" action="{{ route('storeinfo.update') }}" enctype="multipart/form-data">
 @csrf
 @method('POST')

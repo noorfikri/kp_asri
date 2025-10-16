@@ -68,40 +68,47 @@ class StoreInfoController extends Controller
      * @param  \App\Models\StoreInfo  $storeInfo
      * @return \Illuminate\Http\Response
      */
-public function update(Request $request, StoreInfo $storeInfo, FileUploadService $fileUpload)
-{
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'address' => 'required|string|max:255',
-        'banner' => 'nullable|image|max:2048',
-        'logo' => 'nullable|image|max:2048',
-        'phone' => 'nullable|string|max:50',
-        'whatsapp' => 'nullable|string|max:50',
-    ]);
+    public function update(Request $request, StoreInfo $storeInfo, FileUploadService $fileUpload)
+    {
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'address' => 'required|string|max:255',
+                'banner' => 'nullable|image|max:2048',
+                'logo' => 'nullable|image|max:2048',
+                'phone' => 'nullable|string|max:255',
+                'whatsapp' => 'nullable|string|max:255',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return back()
+                ->withErrors($e->validator)
+                ->withInput()
+                ->with('error', 'Validasi gagal. Silakan periksa kembali data yang Anda masukkan.');
+        }
 
-    $storeInfo = StoreInfo::first();
+        $storeInfo = StoreInfo::first();
 
-    if ($request->hasFile('logo')) {
-        $validated['logo'] = $fileUpload->uploadFile(
-            $request->file('logo'),
-            $validated['name'] ?? $storeInfo->name,
-            'store_logo'
-        );
+        if ($request->hasFile('logo')) {
+            $validated['logo'] = $fileUpload->uploadFile(
+                $request->file('logo'),
+                $validated['name'] ?? $storeInfo->name,
+                'store_logo'
+            );
+        }
+
+        if ($request->hasFile('banner')) {
+            $validated['banner'] = $fileUpload->uploadFile(
+                $request->file('banner'),
+                $validated['name'] ?? $storeInfo->name,
+                'store_banner'
+            );
+        }
+
+        $storeInfo->update($validated);
+
+        return back()->with('status', 'Informasi toko berhasil diperbarui.');
     }
-
-    if ($request->hasFile('banner')) {
-        $validated['banner'] = $fileUpload->uploadFile(
-            $request->file('banner'),
-            $validated['name'] ?? $storeInfo->name,
-            'store_banner'
-        );
-    }
-
-    $storeInfo->update($validated);
-
-    return back()->with('status', 'Informasi toko berhasil diperbarui.');
-}
 
     /**
      * Remove the specified resource from storage.
