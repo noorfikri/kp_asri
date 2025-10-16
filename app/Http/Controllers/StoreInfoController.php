@@ -93,7 +93,7 @@ class StoreInfoController extends Controller
             $validated['logo'] = $fileUpload->uploadFile(
                 $request->file('logo'),
                 $validated['name'] ?? $storeInfo->name,
-                'store_logo'
+                'logo'
             );
         }
 

@@ -8,9 +8,11 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/styles.css')}}">
-
+@php
+$storeInfo = \App\Models\StoreInfo::first();
+@endphp
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ $storeInfo && $storeInfo->store_logo ? asset($storeInfo->store_logo) : asset('assets/img/favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ $storeInfo && $storeInfo->store_logo ? asset($storeInfo->store_logo) : asset($storeInfo->logo) }}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,6 +47,7 @@
             </ul>
         </nav>
     </header>
+
 
     <main>
         @yield('content')
