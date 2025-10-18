@@ -141,9 +141,21 @@ class ItemController extends Controller
     /**
      * Update the specified item in storage.
      */
-    public function update(UpdateItemRequest $request, Item $item, FileUploadService $fileUpload)
+    public function update(\Illuminate\Http\Request $request, Item $item, FileUploadService $fileUpload)
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
+            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'note' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
+            'stocks' => 'required|array|min:1',
+            'stocks.*.size_id' => 'required|exists:sizes,id',
+            'stocks.*.colour_id' => 'required|exists:colours,id',
+            'stocks.*.stock' => 'required|integer|min:0',
+        ]);
 
         try {
             $item->name = $validated['name'];

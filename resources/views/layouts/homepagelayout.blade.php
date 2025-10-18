@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/styles.css')}}">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ $storeInfo && $storeInfo->store_logo ? asset($storeInfo->store_logo) : asset('assets/img/favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset($storeInfo->logo) }}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

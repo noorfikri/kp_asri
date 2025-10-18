@@ -6,7 +6,7 @@
   <title>Administrasi {{$storeInfo->name}}}}</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ $storeInfo && $storeInfo->store_logo ? asset($storeInfo->store_logo) : asset('assets/img/favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset($storeInfo->logo) }}">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
