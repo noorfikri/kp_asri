@@ -140,6 +140,7 @@ public function store(Request $request)
      */
     public function destroy(Report $report)
     {
+        $this->authorize('delete', $report);
         try {
             $report->buyingTransactions()->detach();
             $report->sellingTransactions()->detach();

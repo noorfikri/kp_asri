@@ -47,14 +47,16 @@
                             <th>Ukuran</th>
                             <th>Warna</th>
                             <th>Stok</th>
+                            @can('updateStock', App\Models\Item::class)
                             <th>Opsi</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($item->stocks as $idx => $stock)
                         <tr>
                             <td>
-                                <select name="stocks[{{ $idx }}][size_id]" class="form-control @error('stocks.'.$idx.'.size_id') is-invalid @enderror" required>
+                                <select name="stocks[{{ $idx }}][size_id]" class="form-control @error('stocks.'.$idx.'.size_id') is-invalid @enderror" required @cannot('updateStock', App\Models\Item::class) disabled @endcannot>
                                     <option value="">Pilih Ukuran</option>
                                     @foreach ($size as $sz)
                                         <option value="{{ $sz->id }}" {{ $stock->size_id == $sz->id ? 'selected' : '' }}>{{ $sz->name }}</option>
@@ -65,7 +67,7 @@
                                 @enderror
                             </td>
                             <td>
-                                <select name="stocks[{{ $idx }}][colour_id]" class="form-control @error('stocks.'.$idx.'.colour_id') is-invalid @enderror" required>
+                                <select name="stocks[{{ $idx }}][colour_id]" class="form-control @error('stocks.'.$idx.'.colour_id') is-invalid @enderror" required @cannot('updateStock', App\Models\Item::class) disabled @endcannot>
                                     <option value="">Pilih Warna</option>
                                     @foreach ($colour as $co)
                                         <option value="{{ $co->id }}" {{ $stock->colour_id == $co->id ? 'selected' : '' }}>{{ $co->name }}</option>
@@ -76,17 +78,20 @@
                                 @enderror
                             </td>
                             <td>
-                                <input type="number" name="stocks[{{ $idx }}][stock]" class="form-control @error('stocks.'.$idx.'.stock') is-invalid @enderror" min="0" value="{{ $stock->stock }}" required>
+                                <input type="number" name="stocks[{{ $idx }}][stock]" class="form-control @error('stocks.'.$idx.'.stock') is-invalid @enderror" min="0" value="{{ $stock->stock }}" required @cannot('updateStock', App\Models\Item::class) disabled @endcannot>
                                 @error('stocks.'.$idx.'.stock')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </td>
+                            @can('updateStock', App\Models\Item::class)
                             <td>
                                 <button type="button" class="btn btn-outline-danger remove-row rounded-pill"><i class="fas fa-trash"></i> Hapus</button>
                             </td>
+                            @endcan
                         </tr>
                         @endforeach
                     </tbody>
+                    @can('updateStock', App\Models\Item::class)
                     <tfoot>
                         <tr>
                             <td></td>
@@ -95,6 +100,7 @@
                             <td><button type="button" class="btn btn-success rounded-pill" id="addRow"><i class="fas fa-plus"></i> Tambah </button></td>
                         </tr>
                     </tfoot>
+                    @endcan
                 </table>
                 @error('stocks')
                     <div class="invalid-feedback d-block">{{ $message }}</div>

@@ -167,6 +167,7 @@ class BuyingTranscationController extends Controller
      */
     public function destroy(BuyingTransaction $buyingTransaction)
     {
+        $this->authorize('delete', $buyingTransaction);
         try {
             foreach ($buyingTransaction->itemsStocks as $itemStock) {
                 $pivot = $itemStock->pivot;
@@ -185,8 +186,9 @@ class BuyingTranscationController extends Controller
 
     public function deleteSubstractStock($id)
     {
+        $buyingTransaction = BuyingTransaction::findOrFail($id);
+        $this->authorize('delete', $buyingTransaction);
         try {
-            $buyingTransaction = BuyingTransaction::findOrFail($id);
             foreach ($buyingTransaction->itemsStocks as $itemStock) {
                 $pivot = $itemStock->pivot;
                 $itemStock->stock -= $pivot->total_quantity;

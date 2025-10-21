@@ -42,8 +42,7 @@ function showEdit(category_id){
 @endif
  <!-- Content Header (Page header) -->
  <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
+    <div class="row mb-2">
         <div class="col-sm-6">
           <h1>Daftar Kategori</h1>
         </div>
@@ -54,7 +53,6 @@ function showEdit(category_id){
           </ol>
         </div>
       </div>
-    </div><!-- /.container-fluid -->
   </section>
 
   <!-- Main content -->

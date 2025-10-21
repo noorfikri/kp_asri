@@ -98,8 +98,9 @@ class SellingTransactionController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        $sellingTransaction = SellingTransaction::findOrFail($id);
+        $this->authorize('delete', $sellingTransaction);
         try {
-            $sellingTransaction = SellingTransaction::findOrFail($id);
             $sellingTransaction->itemsStocks()->detach();
             $sellingTransaction->delete();
             return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi telah dihapus');
@@ -113,8 +114,9 @@ class SellingTransactionController extends Controller
      */
     public function deleteAddStock($id)
     {
+        $sellingTransaction = SellingTransaction::findOrFail($id);
+        $this->authorize('delete', $sellingTransaction);
         try {
-            $sellingTransaction = SellingTransaction::findOrFail($id);
             foreach ($sellingTransaction->itemsStocks as $itemStock) {
                 $pivot = $itemStock->pivot;
                 $itemStock->stock += $pivot->total_quantity;

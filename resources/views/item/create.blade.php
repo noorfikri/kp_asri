@@ -39,6 +39,7 @@
                     <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
             </div>
+            @can('updateStock', App\Models\Item::class)
             <div class="form-group">
                 <label>Stok per Warna dan Ukuran</label>
                 <table class="table table-bordered" id="stockTable">
@@ -98,6 +99,7 @@
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
+            @endcan
             <div class="form-group">
                 <label for="inputBrand">Merek</label>
                 <select id="inputBrand" name="brand_id" class="form-control custom-select @error('brand_id') is-invalid @enderror">

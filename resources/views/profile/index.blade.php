@@ -167,7 +167,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10 float-right">
+                        <div class="offset-sm-2 col-sm-10 button-center">
                             <button type="submit" class="btn btn-outline-primary rounded-pill"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Akun</button>
                         </div>
                     </div>

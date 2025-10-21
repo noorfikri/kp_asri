@@ -19,5 +19,13 @@ class StoreInfo extends Model
         'logo',
         'phone',
         'whatsapp',
+        'navbar_color',
+        'bottom_bar_color',
+        'text_color',
+        'text_secondary_color',
+        'home_image',
+        'storefront_image',
+        'map_image',
+        'address_description',
     ];
 }

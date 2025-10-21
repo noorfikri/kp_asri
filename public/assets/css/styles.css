@@ -20,7 +20,8 @@ header.navbar_container {
     padding-block: 1rem;
     margin-inline: auto;
 
-    background-color: #e4ff84;
+    /* use CSS variable injected from Blade layout when available */
+    background-color: var(--navbar-color, #e4ff84);
 
     box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
 
@@ -64,7 +65,7 @@ header.navbar_container .navlist li a {
     font-family: 'ubuntu', 'sans-serif';
     font-size: 2rem;
     font-weight: bold;
-    color: #64d64d;
+    color: var(--text-color, #64d64d);
     transition: all 0.4s ease-in-out;
     -webkit-transition: all 0.4s ease-in-out;
     -moz-transition: all 0.4s ease-in-out;
@@ -73,8 +74,8 @@ header.navbar_container .navlist li a {
 }
 
 header.navbar_container .navlist li:hover a {
-    color: white;
-    background-color: #449b22;
+    color: var(--navbar-color);
+    background-color: var(--text-color);
 }
 
 main {
@@ -466,7 +467,7 @@ main .content #contact .content_desc p {
 main .content #contact .content_desc a {
     text-decoration: none;
     font-size: 2.5rem;
-    color: #64d64d;
+    color: var(--text-color);
     transition: all 0.4s ease-in-out;
     -webkit-transition: all 0.4s ease-in-out;
     -moz-transition: all 0.4s ease-in-out;
@@ -605,16 +606,17 @@ main .content #contact-form .styled-button {
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: bold;
-    color: #fff;
-    background-color: #64d64d;
-    border: none;
+    color: var(--text-color);
+    background-color: transparent;
+    border: 1px solid var(--text-color);
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 main .content #contact-form .styled-button:hover {
-    background-color: #52b452;
+    background-color: var(--text-color);
+    color: #fff;
 }
 
 main aside {

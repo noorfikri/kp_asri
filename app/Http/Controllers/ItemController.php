@@ -12,6 +12,7 @@ use App\Services\FileUploadService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\UpdateItemRequest;
+use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
@@ -40,6 +41,7 @@ class ItemController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Item::class);
         $category = Category::all();
         $size = Size::all();
         $colour = Colour::all();
@@ -56,9 +58,11 @@ class ItemController extends Controller
     /**
      * Store a newly created item in storage.
      */
-    public function store(\Illuminate\Http\Request $request, FileUploadService $fileUpload)
+    public function store(Request $request, FileUploadService $fileUpload)
     {
-        $validated = $request->validate([
+        $this->authorize('create', Item::class);
+
+        $validationRules = [
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
@@ -66,11 +70,16 @@ class ItemController extends Controller
             'description' => 'nullable|string',
             'note' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
-            'stocks' => 'required|array|min:1',
-            'stocks.*.size_id' => 'required|exists:sizes,id',
-            'stocks.*.colour_id' => 'required|exists:colours,id',
-            'stocks.*.stock' => 'required|integer|min:0',
-        ]);
+        ];
+
+        if (auth()->user()->can('updateStock', Item::class)) {
+            $validationRules['stocks'] = 'required|array|min:1';
+            $validationRules['stocks.*.size_id'] = 'required|exists:sizes,id';
+            $validationRules['stocks.*.colour_id'] = 'required|exists:colours,id';
+            $validationRules['stocks.*.stock'] = 'required|integer|min:0';
+        }
+
+        $validated = $request->validate($validationRules);
 
         try {
             $item = new Item();
@@ -91,13 +100,15 @@ class ItemController extends Controller
 
             $item->save();
 
-            foreach ($validated['stocks'] as $stockCombo) {
-                ItemStock::create([
-                    'item_id' => $item->id,
-                    'size_id' => $stockCombo['size_id'],
-                    'colour_id' => $stockCombo['colour_id'],
-                    'stock' => $stockCombo['stock'],
-                ]);
+            if (isset($validated['stocks'])) {
+                foreach ($validated['stocks'] as $stockCombo) {
+                    ItemStock::create([
+                        'item_id' => $item->id,
+                        'size_id' => $stockCombo['size_id'],
+                        'colour_id' => $stockCombo['colour_id'],
+                        'stock' => $stockCombo['stock'],
+                    ]);
+                }
             }
 
             return redirect()->route('items.index')->with('status', 'Barang dengan nama: ' . $item->name . ' berhasil dibuat');
@@ -118,9 +129,10 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified item (AJAX modal).
      */
-    public function edit(\Illuminate\Http\Request $request)
+    public function edit(Request $request)
     {
         $item = Item::find($request->input('id'));
+        $this->authorize('update', $item);
         $category = Category::all();
         $size = Size::all();
         $colour = Colour::all();
@@ -141,9 +153,11 @@ class ItemController extends Controller
     /**
      * Update the specified item in storage.
      */
-    public function update(\Illuminate\Http\Request $request, Item $item, FileUploadService $fileUpload)
+    public function update(Request $request, Item $item, FileUploadService $fileUpload)
     {
-        $validated = $request->validate([
+        $this->authorize('update', $item);
+
+        $validationRules = [
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
@@ -151,11 +165,16 @@ class ItemController extends Controller
             'description' => 'nullable|string',
             'note' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
-            'stocks' => 'required|array|min:1',
-            'stocks.*.size_id' => 'required|exists:sizes,id',
-            'stocks.*.colour_id' => 'required|exists:colours,id',
-            'stocks.*.stock' => 'required|integer|min:0',
-        ]);
+        ];
+
+        if (auth()->user()->can('updateStock', $item)) {
+            $validationRules['stocks'] = 'required|array|min:1';
+            $validationRules['stocks.*.size_id'] = 'required|exists:sizes,id';
+            $validationRules['stocks.*.colour_id'] = 'required|exists:colours,id';
+            $validationRules['stocks.*.stock'] = 'required|integer|min:0';
+        }
+
+        $validated = $request->validate($validationRules);
 
         try {
             $item->name = $validated['name'];
@@ -175,18 +194,16 @@ class ItemController extends Controller
 
             $item->save();
 
-
-            $item->stocks()->delete();
-            \Log::info($item->stocks());
-
-
-            foreach ($validated['stocks'] as $stockCombo) {
-                ItemStock::create([
-                    'item_id' => $item->id,
-                    'size_id' => $stockCombo['size_id'],
-                    'colour_id' => $stockCombo['colour_id'],
-                    'stock' => $stockCombo['stock'],
-                ]);
+            if (isset($validated['stocks'])) {
+                $item->stocks()->delete();
+                foreach ($validated['stocks'] as $stockCombo) {
+                    ItemStock::create([
+                        'item_id' => $item->id,
+                        'size_id' => $stockCombo['size_id'],
+                        'colour_id' => $stockCombo['colour_id'],
+                        'stock' => $stockCombo['stock'],
+                    ]);
+                }
             }
 
             return redirect()->route('items.index')->with('status', 'Barang dengan nama: ' . $item->name . ' berhasil diperbarui');
@@ -201,6 +218,7 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
+        $this->authorize('delete', $item);
         try {
             $item->stocks()->delete();
             $item->delete();
@@ -214,7 +232,7 @@ class ItemController extends Controller
     /**
      * Show the detail modal via AJAX.
      */
-    public function showDetail(\Illuminate\Http\Request $request)
+    public function showDetail(Request $request)
     {
         $item = Item::find($request->input('id'));
         return response()->json([
@@ -226,8 +244,9 @@ class ItemController extends Controller
     /**
      * Show the create modal via AJAX.
      */
-    public function showCreate(\Illuminate\Http\Request $request)
-    {
+    public function showCreate(Request $request)
+    { 
+        $this->authorize('create', Item::class);
         $category = Category::all();
         $size = Size::all();
         $colour = Colour::all();
@@ -247,9 +266,10 @@ class ItemController extends Controller
     /**
      * Show the edit modal via AJAX.
      */
-    public function showEdit(\Illuminate\Http\Request $request)
+    public function showEdit(Request $request)
     {
         $item = Item::find($request->input('id'));
+        $this->authorize('update', $item);
         $category = Category::all();
         $size = Size::all();
         $colour = Colour::all();
@@ -279,7 +299,7 @@ class ItemController extends Controller
     /**
      * Search items.
      */
-    public function search(\Illuminate\Http\Request $request)
+    public function search(Request $request)
     {
         $query = $request->get('query');
         $items = Item::where('name', 'LIKE', "%{$query}%")

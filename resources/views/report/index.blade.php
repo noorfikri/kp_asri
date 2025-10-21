@@ -324,7 +324,9 @@ function printReportDetail(btn) {
             <div class="card-tools input-group">
                 <div class="flex-grow-1"></div>
                 <a href="{{url('admin/reports/create')}}" class=" btn btn-primary rounded-pill float-right"
-                data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()"><i class="fas fa-plus"></i> Buat Laporan Baru</a>
+                data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">
+                    <i class="fas fa-plus"></i> Buat Laporan Baru
+                </a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
@@ -398,12 +400,14 @@ function printReportDetail(btn) {
                             </i>
                             Lihat
                         </a>
+                        @can('delete', $d)
                         <a class="btn btn-outline-danger rounded-pill" href="{{url('admin/reports/'.$d->id)}}"
                             data-target="#delete{{$d->id}}" data-toggle='modal'>
                             <i class="fas fa-trash">
                             </i>
                             Hapus
                         </a>
+                        @endcan
                     </td>
                     <td>
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">

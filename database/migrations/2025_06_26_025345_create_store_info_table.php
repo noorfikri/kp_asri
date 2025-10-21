@@ -22,6 +22,14 @@ class CreateStoreInfoTable extends Migration
             $table->string('logo')->nullable();
             $table->string('phone')->default('');
             $table->string('whatsapp')->default('');
+            $table->string('navbar_color', 20)->default('#ffffff');
+            $table->string('bottom_bar_color', 20)->default('#f8f9fa');
+            $table->string('text_color', 20)->default('#000000');
+            $table->string('text_secondary_color', 20)->default('#666666');
+            $table->string('home_image')->nullable();
+            $table->string('storefront_image')->nullable();
+            $table->string('map_image')->nullable();
+            $table->text('address_description')->nullable();
             $table->timestamps();
         });
     }

@@ -199,7 +199,9 @@ function initializeCreateModal() {
             <div class="card-tools input-group">
                 <div class="flex-grow-1"></div>
                 <a href="{{url('admin/sellingtransactions/create')}}" class="btn btn-primary rounded float-right rounded-pill"
-                   data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()"><i class="fas fa-plus"></i> Buat Transaksi Baru </a>
+                   data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">
+                    <i class="fas fa-plus"></i> Buat Transaksi Baru
+                </a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
@@ -235,10 +237,12 @@ function initializeCreateModal() {
                                 data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                                 <i class="fas fa-folder"></i> Lihat
                             </a>
+                            @can('delete', $d)
                             <a class="btn btn-outline-danger rounded-pill" href="{{url('admin/sellingtransactions/'.$d->id)}}"
                                 data-target="#delete{{$d->id}}" data-toggle='modal'>
                                 <i class="fas fa-trash"></i> Hapus
                             </a>
+                            @endcan
                         </td>
                         <td>
                             <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">

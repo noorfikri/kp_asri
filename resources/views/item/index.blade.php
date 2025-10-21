@@ -54,7 +54,11 @@ function showEdit(item_id, row_id){
 
 function createAddStock(){
     let rowIdx = 1;
-    document.getElementById('addRow').addEventListener('click', function () {
+    const addRowButton = document.getElementById('addRow');
+    if (!addRowButton) {
+        return;
+    }
+    addRowButton.addEventListener('click', function () {
         const table = document.getElementById('stockTable').getElementsByTagName('tbody')[0];
         const newRow = table.rows[0].cloneNode(true);
         Array.from(newRow.querySelectorAll('select, input')).forEach(function (el) {
@@ -68,6 +72,10 @@ function createAddStock(){
 
     document.getElementById('stockTable').addEventListener('click', function (e) {
         if (e.target.classList.contains('remove-row')) {
+            const removeRowButton = e.target;
+            if (!removeRowButton) {
+                return;
+            }
             const rows = this.getElementsByTagName('tbody')[0].rows;
             if (rows.length > 1) {
                 e.target.closest('tr').remove();
@@ -77,7 +85,11 @@ function createAddStock(){
 }
 
 function editAddStock(rowIdx) {
-    document.getElementById('addRow').addEventListener('click', function () {
+    const addRowButton = document.getElementById('addRow');
+    if (!addRowButton) {
+        return;
+    }
+    addRowButton.addEventListener('click', function () {
         const table = document.getElementById('stockTable').getElementsByTagName('tbody')[0];
         const newRow = table.rows[0].cloneNode(true);
         Array.from(newRow.querySelectorAll('select, input')).forEach(function (el) {
@@ -91,6 +103,10 @@ function editAddStock(rowIdx) {
 
     document.getElementById('stockTable').addEventListener('click', function (e) {
         if (e.target.classList.contains('remove-row')) {
+            const removeRowButton = e.target;
+            if (!removeRowButton) {
+                return;
+            }
             const rows = this.getElementsByTagName('tbody')[0].rows;
             if (rows.length > 1) {
                 e.target.closest('tr').remove();
@@ -133,8 +149,7 @@ function editPreviewImage(input) {
 @endif
  <!-- Content Header (Page header) -->
  <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
+    <div class="row mb-2">
         <div class="col-sm-6">
           <h1>Daftar Barang</h1>
         </div>
@@ -145,7 +160,6 @@ function editPreviewImage(input) {
           </ol>
         </div>
       </div>
-    </div><!-- /.container-fluid -->
   </section>
 
   <!-- Main content -->
@@ -156,11 +170,13 @@ function editPreviewImage(input) {
         <div class="card-header">
             <div class="card-tools input-group">
                 <div class="flex-grow-1"></div>
+                @can('create', App\Models\Item::class)
                 <a href="{{url('admin/items/create')}}" class=" btn btn-primary rounded float-right rounded-pill"
                 data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">
                 <i class="fas fa-plus"></i>
                 Tambah Barang Baru
-            </a>
+                </a>
+                @endcan
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -219,18 +235,22 @@ function editPreviewImage(input) {
                             </i>
                             Lihat
                         </a>
+                        @can('update', $d)
                         <a class="btn btn-outline-info rounded-pill" href="{{url('admin/items/'.$d->id.'/edit')}}"
                             data-target="#edit{{$d->id}}" data-toggle='modal' onclick="showEdit({{$d->id}},{{ $d->stocks->count() }})">
                             <i class="fas fa-pencil-alt">
                             </i>
                             Ubah
                         </a>
+                        @endcan
+                        @can('delete', $d)
                         <a class="btn btn-outline-danger rounded-pill" href="{{url('admin/items/'.$d->id)}}"
                             data-target="#delete{{$d->id}}" data-toggle='modal'>
                             <i class="fas fa-trash">
                             </i>
                             Hapus
                         </a>
+                        @endcan
                     </td>
                     <td>
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">

@@ -20,7 +20,20 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-@yield('javascript')
+    <!-- Theme colors injected from DB -->
+    <style>
+        :root{
+            --navbar-color: {{ $storeInfo->navbar_color ?? '#ffffff' }};
+            --bottom-bar-color: {{ $storeInfo->bottom_bar_color ?? '#f8f9fa' }};
+            --text-color: {{ $storeInfo->text_color ?? '#000000' }};
+            --text-secondary-color: {{ $storeInfo->text_secondary_color ?? '#666666' }};
+        }
+        .navbar_container{ background: var(--navbar-color); }
+        .navbar_container a{ color: var(--text-color); }
+        footer{ background: var(--bottom-bar-color); color: var(--text-color); }
+        body{ color: var(--text-color); }
+        .content_desc p, .card_content, .title { color: var(--text-secondary-color); }
+    </style>
 
 </head>
 <body>
@@ -78,5 +91,12 @@
         <p><b>Website {{$storeInfo->name}} &#169; 2024,</b> Wildan Achmad Noorfikri</p>
     </div>
 </footer>
+    <!-- Scripts (loaded at end so page scripts run after DOM) -->
+    <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('public/js/app.js') }}"></script>
+
+    @yield('javascript')
+
 </body>
 </html>

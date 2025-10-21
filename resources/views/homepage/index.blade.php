@@ -4,7 +4,7 @@
 <div class = "content">
     <article id = "home">
         <div id = "home_img" class = "content_img">
-            <img src="assets/img/ASRI Interior.jpeg" alt="Interior Toko Asri Busana Muslim">
+            <img src="{{ asset($storeInfo->home_image ?? 'assets/img/placeholder_interior.jpg') }}" alt="Interior Toko Asri Busana Muslim">
         </div>
         <div id = "home_desc" class = "content_desc">
             <h1 class = "title">{{$storeInfo->name}}</h1>
@@ -15,13 +15,12 @@
     </article>
     <article id = "address">
         <div id = "address_storefront_img" class = "content_img">
-            <img src="assets/img/ASRI Front.jpeg" alt="Depan Toko Asri Busana Muslim">
+            <img src="{{asset($storeInfo->storefront_image ?? 'assets/img/placeholder_exterior.jpg')}}" alt="Depan Toko Asri Busana Muslim">
         </div>
         <div id = "address_desc" class = "content_desc">
             <h1 class = "title">Alamat</h1>
             <p>
-                Toko Asri berada tepat di tengah kota Kota Kediri, Beberapa ratus meter dari Stasiun
-                Kota Kediri dan beberapa meter dari Hotel Grand Surya Kota Kediri.
+                {{$storeInfo->address_description}}
                 <br>
                 <br>
                 {{$storeInfo->address}}
@@ -29,7 +28,7 @@
             </p>
         </div>
         <div id = "address_map_card" class = "card">
-            <img id="address_map" src="assets/img/Map ASRI.PNG" alt="Map Lokasi Toko Asri Busana Muslim">
+            <img id="address_map" src="{{ asset($storeInfo->map_image ?? 'assets/img/placeholder_map.jpg') }}" alt="Map Lokasi Toko Asri Busana Muslim">
             <div class = "card_content">
                 <h1>Lokasi {{$storeInfo->name}}</h1>
                 <p>{{$storeInfo->address}}</p>

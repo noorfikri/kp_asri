@@ -196,17 +196,15 @@ function initializeCreateModal() {
 @endif
 
 <section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Daftar Transaksi Pembelian</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-                    <li class="breadcrumb-item active">Daftar Transaksi Pembelian</li>
-                </ol>
-            </div>
+    <div class="row mb-2">
+        <div class="col-sm-6">
+            <h1>Daftar Transaksi Pembelian</h1>
+        </div>
+        <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
+                <li class="breadcrumb-item active">Daftar Transaksi Pembelian</li>
+            </ol>
         </div>
     </div>
 </section>
@@ -217,7 +215,9 @@ function initializeCreateModal() {
             <div class="card-tools input-group">
                 <div class="flex-grow-1"></div>
                 <a href="{{url('admin/buyingtransactions/create')}}" class="btn btn-primary rounded-pill float-right"
-                   data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()"><i class="fas fa-plus"></i> Buat Transaksi Baru</a>
+                   data-target="#showcreatemodal" data-toggle='modal' onclick="showCreate()">
+                    <i class="fas fa-plus"></i> Buat Transaksi Baru
+                </a>
             </div>
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
@@ -253,10 +253,12 @@ function initializeCreateModal() {
                                 data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                                 <i class="fas fa-folder"></i> Lihat
                             </a>
+                            @can('delete', $d)
                             <a class="btn btn-outline-danger rounded-pill" href="{{url('admin/buyingtransactions/'.$d->id)}}"
                                 data-target="#delete{{$d->id}}" data-toggle='modal'>
                                 <i class="fas fa-trash"></i> Hapus
                             </a>
+                            @endcan
                         </td>
                         <td>
                             <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">

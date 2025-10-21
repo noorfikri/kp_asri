@@ -6,7 +6,7 @@
         <div id="gallery_desc" class="content_desc">
             <h1 class="title" id="gallery_title">Galeri</h1>
             <p>
-                Beberapa koleksi barang yang tersedia di Toko Asri:
+                Beberapa koleksi barang yang tersedia di {{$storeInfo->name}}:
             </p>
             <div id="gallery_container" class="card_container">
                 @foreach ($items as $item)
