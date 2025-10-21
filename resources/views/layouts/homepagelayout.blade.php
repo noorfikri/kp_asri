@@ -8,7 +8,9 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/styles.css')}}">
-
+@php
+$storeInfo = \App\Models\StoreInfo::first();
+@endphp
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset($storeInfo->logo) }}">
 
@@ -58,6 +60,7 @@
             </ul>
         </nav>
     </header>
+
 
     <main>
         @yield('content')

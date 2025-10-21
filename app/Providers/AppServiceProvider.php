@@ -25,12 +25,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-view()->composer('*',function($view){
-    $storeInfo = StoreInfo::first();
-    $view->with('storeInfo',$storeInfo);
-});
+        $appUrl = env('APP_URL');
+        if (
+            (env('APP_SCHEME') === 'https') ||
+            (env('FORCE_HTTPS', false)) ||
+            (is_string($appUrl) && stripos($appUrl, 'https://') === 0)
+        ) {
+            \URL::forceScheme('https');
+        }
 
-        Blade::directive('toIDR', function ($amount){
+
+        view()->composer('*', function ($view) {
+            $storeInfo = StoreInfo::first();
+            $view->with('storeInfo', $storeInfo);
+        });
+
+        Blade::directive('toIDR', function ($amount) {
             return "<?php echo 'Rp. '.number_format($amount,0,',','.').',00'; ?>";
         });
     }

@@ -245,7 +245,7 @@ class ItemController extends Controller
      * Show the create modal via AJAX.
      */
     public function showCreate(Request $request)
-    { 
+    {
         $this->authorize('create', Item::class);
         $category = Category::all();
         $size = Size::all();
