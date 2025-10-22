@@ -9,7 +9,7 @@
                 Beberapa koleksi barang yang tersedia di {{$storeInfo->name}}:
             </p>
             <div id="gallery_container" class="card_container">
-                @foreach ($items as $item)
+                @forelse ($items as $item)
                 <div class="card">
                     <img class="card_img" src="{{asset($item->image) }}" alt="{{ $item->name }}">
                     <div class="card_content">
@@ -18,7 +18,9 @@
                         <p>Harga: @toIDR($item->price)</p>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <p>Belum Ada Barang Tersedia</p>
+                @endforelse
             </div>
         </div>
     </article>

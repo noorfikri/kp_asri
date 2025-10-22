@@ -63,7 +63,11 @@ function createAddStock(){
         const newRow = table.rows[0].cloneNode(true);
         Array.from(newRow.querySelectorAll('select, input')).forEach(function (el) {
             el.name = el.name.replace(/\d+/, rowIdx);
-            el.value = '';
+            if (el.name.includes('stock')) {
+                el.value = '0';
+            } else {
+                el.value = '';
+            }
             el.classList.remove('is-invalid');
         });
         table.appendChild(newRow);
@@ -94,9 +98,20 @@ function editAddStock(rowIdx) {
         const newRow = table.rows[0].cloneNode(true);
         Array.from(newRow.querySelectorAll('select, input')).forEach(function (el) {
             el.name = el.name.replace(/\d+/, rowIdx);
-            el.value = '';
+            if (el.tagName === 'SELECT') {
+                el.disabled = false;
+                el.value = '';
+            } else if (el.name.includes('stock')) {
+                el.value = '0';
+            } else {
+                el.value = '';
+            }
             el.classList.remove('is-invalid');
         });
+        const removeButton = newRow.querySelector('.remove-row');
+        if (removeButton) {
+            removeButton.disabled = false;
+        }
         table.appendChild(newRow);
         rowIdx++;
     });
@@ -104,12 +119,11 @@ function editAddStock(rowIdx) {
     document.getElementById('stockTable').addEventListener('click', function (e) {
         if (e.target.classList.contains('remove-row')) {
             const removeRowButton = e.target;
-            if (!removeRowButton) {
-                return;
-            }
-            const rows = this.getElementsByTagName('tbody')[0].rows;
-            if (rows.length > 1) {
-                e.target.closest('tr').remove();
+            if (!removeRowButton.disabled) {
+                const rows = this.getElementsByTagName('tbody')[0].rows;
+                if (rows.length > 1) {
+                    e.target.closest('tr').remove();
+                }
             }
         }
     });
@@ -209,6 +223,13 @@ function editPreviewImage(input) {
                 </tr>
             </thead>
             <tbody>
+                @if ($data->isEmpty())
+                <tr>
+                    <td colspan="6" class="text-center">
+                        Tidak ada data yang tersedia dalam daftar barang.
+                    </td>
+                </tr>
+                @else
                 @foreach ($data as $d)
                 <tr id='tr{{$d->id}}'>
                     <td>
@@ -296,6 +317,7 @@ function editPreviewImage(input) {
                     </td>
                 </tr>
                 @endforeach
+                @endif
             </tbody>
         </table>
       </div>

@@ -368,6 +368,13 @@ function printReportDetail(btn) {
                 </tr>
             </thead>
             <tbody>
+                @if ($data->isEmpty())
+                <tr>
+                    <td colspan="9" class="text-center">
+                        Tidak ada data yang tersedia dalam daftar laporan.
+                    </td>
+                </tr>
+                @else
                 @foreach ($data as $d)
                 <tr id='tr{{$d->id}}'>
                     <td>
@@ -453,6 +460,7 @@ function printReportDetail(btn) {
                     </td>
                 </tr>
                 @endforeach
+                @endif
             </tbody>
         </table>
       </div>

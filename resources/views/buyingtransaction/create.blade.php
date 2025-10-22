@@ -4,9 +4,22 @@
         <h3 class="card-title"><i class="fa-solid fa-square-plus"></i> Buat Transaksi Pembelian Baru</h3>
         </div>
     </div>
-    <form method="POST" action="{{ route('buyingtransactions.store') }}">
+    <form method="POST" action="{{ route('buyingtransactions.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
+            <img class="img-fluid pad mb-3" id="create-preview-image" src="{{ asset('assets/img/Placeholder_Image.png') }}" alt="Foto">
+            <div class="form-group">
+                <label for="inputImageCreate">Upload Bukti Pembelian (Struk/Nota)</label>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" id="inputImageCreate" name="reciept_image" class="form-control @error('reciept_image') is-invalid @enderror">
+                        <label class="custom-file-label" for="inputImageCreate">Masukkan Gambar Bukti</label>
+                    </div>
+                </div>
+                @error('reciept_image')
+                    <span class="invalid-feedback d-block">{{ $message }}</span>
+                @enderror
+            </div>
             <div class="form-group">
                 <label for="supplier">Supplier</label>
                 <select name="supplier_id" id="supplier" class="form-control @error('supplier_id') is-invalid @enderror">

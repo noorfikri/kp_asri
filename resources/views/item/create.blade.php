@@ -39,7 +39,6 @@
                     <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
             </div>
-            @can('updateStock', App\Models\Item::class)
             <div class="form-group">
                 <label>Stok per Warna dan Ukuran</label>
                 <table class="table table-bordered" id="stockTable">
@@ -76,7 +75,7 @@
                                 @enderror
                             </td>
                             <td>
-                                <input type="number" name="stocks[0][stock]" class="form-control @error('stocks.0.stock') is-invalid @enderror" min="0" required>
+                                <input type="number" name="stocks[0][stock]" class="form-control @error('stocks.0.stock') is-invalid @enderror" min="0" value="0" required @cannot('updateStock', App\Models\Item::class) readonly @endcannot>
                                 @error('stocks.0.stock')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -99,7 +98,6 @@
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
-            @endcan
             <div class="form-group">
                 <label for="inputBrand">Merek</label>
                 <select id="inputBrand" name="brand_id" class="form-control custom-select @error('brand_id') is-invalid @enderror">
@@ -118,14 +116,14 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">RP.</span>
                     </div>
-                    <input type="text" id="inputPrice" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}">
+                    <input type="number" id="inputPrice" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}">
                     <div class="input-group-append">
                     <span class="input-group-text">.00</span>
                   </div>
-                </div>
                 @error('price')
                     <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
+                </div>
             </div>
             <div class="form-group">
                 <label for="inputDescription">Deskripsi</label>

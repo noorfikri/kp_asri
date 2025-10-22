@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Colour;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class ColourController extends Controller
 {
@@ -93,7 +94,10 @@ class ColourController extends Controller
         try{
             $colour->delete();
             return redirect()->route('colours.index')->with('status','Warna telah dihapus');
-        }catch(\Exception $e){
+        }catch(QueryException $e){
+            if ($e->getCode() == 23000) {
+                return redirect()->route('colours.index')->with('error', 'Maaf anda tidak dapat menghapus warna ' . $colour->name . ' karena telah digunakan di item');
+            }
             return redirect()->route('colours.index')->with('error','Warna tidak dapat dihapus, Pesan Error: '.$e->getMessage());
         }
     }

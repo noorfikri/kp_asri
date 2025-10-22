@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -146,7 +147,10 @@ class UserController extends Controller
         try {
             $user->delete();
             return redirect()->route('users.index')->with('status', 'Akun dengan nama: ' . $user->name . ' telah dihapus');
-        } catch (\Exception $e) {
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return redirect()->route('users.index')->with('error', 'Maaf anda tidak dapat menghapus akun ' . $user->name . ' karena telah digunakan di transaksi penjualan atau laporan');
+            }
             return redirect()->route('users.index')->with('error', 'Akun tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }
     }

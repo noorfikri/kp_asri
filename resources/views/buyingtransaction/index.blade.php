@@ -24,9 +24,23 @@ function showCreate(){
         success: function(data){
             $('#createmodal').html(data.msg);
 
+            $("#inputImageCreate").change(function(){
+                createPreviewImage(this);
+            });
+
             initializeCreateModal();
         }
     });
+}
+
+function createPreviewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#create-preview-image').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 
 function formatToIDR(amount) {
@@ -241,6 +255,13 @@ function initializeCreateModal() {
                     </tr>
                 </thead>
                 <tbody>
+                    @if ($data->isEmpty())
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            Tidak ada data yang tersedia dalam daftar transaksi pembelian.
+                        </td>
+                    </tr>
+                    @else
                     @foreach ($data as $d)
                     <tr id='tr{{$d->id}}'>
                         <td>{{$d->id}}</td>
@@ -297,6 +318,7 @@ function initializeCreateModal() {
                         </td>
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

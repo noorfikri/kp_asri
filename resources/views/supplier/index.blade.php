@@ -139,6 +139,13 @@ function editPreviewImage(input) {
                 </tr>
             </thead>
             <tbody>
+                @if ($data->isEmpty())
+                <tr>
+                    <td colspan="6" class="text-center">
+                        Tidak ada data yang tersedia dalam daftar supplier.
+                    </td>
+                </tr>
+                @else
                 @foreach ($data as $d)
                 <tr id='tr{{$d->id}}'>
                     <td>
@@ -219,6 +226,7 @@ function editPreviewImage(input) {
                     </td>
                 </tr>
                 @endforeach
+                @endif
             </tbody>
         </table>
       </div>

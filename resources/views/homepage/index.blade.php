@@ -14,7 +14,7 @@
         </div>
     </article>
     <article id = "address">
-        <div id = "address_storefront_img" class = "content_img">
+        <div id = "address_storefront_img" class = "content_img content_img_center">
             <img src="{{asset($storeInfo->storefront_image ?? 'assets/img/placeholder_exterior.jpg')}}" alt="Depan Toko Asri Busana Muslim">
         </div>
         <div id = "address_desc" class = "content_desc">
@@ -40,7 +40,7 @@
             <h1 class = "title">Ulasan</h1>
             <p>Beberapa ulasan yang dikirimkan oleh para pelanggan kami:</p>
             <div id="review_container" class = "card_container">
-                @foreach ($reviews as $review)
+                @forelse ($reviews as $review)
                 <div id = "review_card_1" class = "card_review">
                     <div class = "card_header">
                         <div class = "card_header_info">
@@ -52,7 +52,9 @@
                         <p class="username">-{{$review->name}}</p>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <p>Belum Ada Ulasan Tersedia</p>
+                @endforelse
             </div>
         </div>
     </article>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Size;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class SizeController extends Controller
 {
@@ -41,7 +42,7 @@ class SizeController extends Controller
         ]);
 
         $data = new Size();
-        $data->name = $validated;
+        $data->name = $validated['name'];
 
         $data->save();
 
@@ -99,7 +100,10 @@ class SizeController extends Controller
         try{
             $size->delete();
             return redirect()->route('sizes.index')->with('status','Kategori ukuran telah dihapus');
-        }catch(\Exception $e){
+        }catch(QueryException $e){
+            if ($e->getCode() == 23000) {
+                return redirect()->route('sizes.index')->with('error', 'Maaf anda tidak dapat menghapus ukuran ' . $size->name . ' karena telah digunakan di item');
+            }
             return redirect()->route('sizes.index')->with('error','Kategori ukuran tidak dapat dihapus, Pesan Error: '.$e->getMessage());
         }
     }

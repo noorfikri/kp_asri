@@ -6,6 +6,7 @@ use App\Models\Supplier;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\QueryException;
 
 class SupplierController extends Controller
 {
@@ -121,7 +122,10 @@ class SupplierController extends Controller
         try {
             $supplier->delete();
             return redirect()->route('suppliers.index')->with('status', 'Supplier telah dihapus');
-        } catch (\Exception $e) {
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return redirect()->route('suppliers.index')->with('error', 'Maaf anda tidak dapat menghapus supplier ' . $supplier->name . ' karena telah digunakan di transaksi pembelian');
+            }
             return redirect()->route('suppliers.index')->with('error', 'Supplier tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }
     }

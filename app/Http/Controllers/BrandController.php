@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
@@ -75,7 +76,12 @@ class BrandController extends Controller
             return redirect()
                 ->route('brands.index')
                 ->with('status', 'Brand telah dihapus');
-        } catch (\Exception $e) {
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return redirect()
+                    ->route('brands.index')
+                    ->with('error', 'Maaf anda tidak dapat menghapus brand ' . $brand->name . ' karena telah digunakan di item');
+            }
             Log::error('Brand deletion failed', ['error' => $e->getMessage()]);
             return redirect()
                 ->route('brands.index')

@@ -9,6 +9,7 @@ use App\Models\ItemStock;
 use App\Models\Supplier;
 use App\Services\FileUploadService;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 
 class BuyingTranscationController extends Controller
@@ -61,12 +62,11 @@ class BuyingTranscationController extends Controller
             $transaction->total_amount = $validated['total_amount'];
 
         if ($request->hasFile('reciept_image')) {
-            $validated['reciept_image'] = $fileUpload->uploadFile(
+            $transaction->reciept_image = $fileUpload->uploadFile(
                 $request->file('reciept_image'),
                 'buying_transaction_' . now()->format('YmdHis'),
                 'receipts'
             );
-            $transaction->reciept_image = $validated['reciept_image'];
         }
             $transaction->save();
 
@@ -178,8 +178,10 @@ class BuyingTranscationController extends Controller
             $buyingTransaction->delete();
 
             return redirect()->route('buyingtransactions.index')->with('status', 'Transaksi telah dihapus');
-        } catch (\Exception $e) {
-            Log::error('BuyingTransaction delete failed', ['error' => $e->getMessage()]);
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return redirect()->route('buyingtransactions.index')->with('error', 'Maaf anda tidak dapat menghapus transaksi pembelian ini karena telah digunakan di laporan');
+            }
             return redirect()->route('buyingtransactions.index')->with('error', 'Transaksi tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }
     }
@@ -198,8 +200,10 @@ class BuyingTranscationController extends Controller
             $buyingTransaction->delete();
 
             return redirect()->route('buyingtransactions.index')->with('status', 'Transaksi telah dihapus');
-        } catch (\Exception $e) {
-            Log::error('BuyingTransaction delete failed', ['error' => $e->getMessage()]);
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return redirect()->route('buyingtransactions.index')->with('error', 'Maaf anda tidak dapat menghapus transaksi pembelian ini karena telah digunakan di laporan');
+            }
             return redirect()->route('buyingtransactions.index')->with('error', 'Transaksi tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }
     }

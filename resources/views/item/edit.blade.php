@@ -47,9 +47,7 @@
                             <th>Ukuran</th>
                             <th>Warna</th>
                             <th>Stok</th>
-                            @can('updateStock', App\Models\Item::class)
                             <th>Opsi</th>
-                            @endcan
                         </tr>
                     </thead>
                     <tbody>
@@ -78,20 +76,17 @@
                                 @enderror
                             </td>
                             <td>
-                                <input type="number" name="stocks[{{ $idx }}][stock]" class="form-control @error('stocks.'.$idx.'.stock') is-invalid @enderror" min="0" value="{{ $stock->stock }}" required @cannot('updateStock', App\Models\Item::class) disabled @endcannot>
+                                <input type="number" name="stocks[{{ $idx }}][stock]" class="form-control @error('stocks.'.$idx.'.stock') is-invalid @enderror" min="0" value="{{ $stock->stock }}" required @cannot('updateStock', App\Models\Item::class) readonly @endcannot>
                                 @error('stocks.'.$idx.'.stock')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </td>
-                            @can('updateStock', App\Models\Item::class)
                             <td>
-                                <button type="button" class="btn btn-outline-danger remove-row rounded-pill"><i class="fas fa-trash"></i> Hapus</button>
+                                <button type="button" class="btn btn-outline-danger remove-row rounded-pill" @cannot('updateStock', App\Models\Item::class) disabled @endcannot><i class="fas fa-trash"></i> Hapus</button>
                             </td>
-                            @endcan
                         </tr>
                         @endforeach
                     </tbody>
-                    @can('updateStock', App\Models\Item::class)
                     <tfoot>
                         <tr>
                             <td></td>
@@ -100,7 +95,6 @@
                             <td><button type="button" class="btn btn-success rounded-pill" id="addRow"><i class="fas fa-plus"></i> Tambah </button></td>
                         </tr>
                     </tfoot>
-                    @endcan
                 </table>
                 @error('stocks')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -124,14 +118,14 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">RP.</span>
                     </div>
-                    <input type="text" id="inputPrice" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price', $item->price) }}">
+                    <input type="number" id="inputPrice" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price', $item->price) }}">
                     <div class="input-group-append">
                         <span class="input-group-text">.00</span>
                     </div>
+                    @error('price')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
-                @error('price')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
             </div>
             <div class="form-group">
                 <label for="inputDescription">Deskripsi</label>

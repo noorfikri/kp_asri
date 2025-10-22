@@ -8,7 +8,7 @@
         @if($buyingTransaction->reciept_image)
         <div class="mb-3 text-center">
             <strong>Bukti Pembelian:</strong><br>
-            <img src="{{ asset($buyingTransaction->reciept_image) }}" alt="Bukti Pembelian" class="img-fluid rounded shadow" style="max-width:300px;max-height:300px;">
+            <img src="{{ asset($buyingTransaction->reciept_image) }}" alt="Bukti Pembelian" class="img-fluid rounded shadow">
         </div>
         @endif
 

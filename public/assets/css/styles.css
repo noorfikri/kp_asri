@@ -151,6 +151,7 @@ main .content article .content_img {
     -o-border-radius: 50px 50px 200px 50px;
     display: flex;
     overflow: hidden;
+    justify-content: center;
 }
 
 main .content article .content_img img {

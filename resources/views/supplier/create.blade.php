@@ -12,7 +12,7 @@
             <label for="inputImageCreate">Gambar</label>
             <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" id="inputImageCreate" name="image" class="form-control @error('image') is-invalid @enderror" onchange="createPreviewImage(event)">
+                        <input type="file" id="inputImageCreate" name="picture" class="form-control @error('image') is-invalid @enderror" onchange="createPreviewImage(event)">
                         <label class="custom-file-label" for="inputImageCreate">Masukkan Gambar Atau Foto Supplier</label>
                 @error('image')
                     <span class="invalid-feedback">{{ $message }}</span>

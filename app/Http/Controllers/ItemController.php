@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\UpdateItemRequest;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class ItemController extends Controller
 {
@@ -72,10 +73,11 @@ class ItemController extends Controller
             'image' => 'nullable|image|max:2048',
         ];
 
+        $validationRules['stocks'] = 'sometimes|array|min:1';
+        $validationRules['stocks.*.size_id'] = 'required|exists:sizes,id';
+        $validationRules['stocks.*.colour_id'] = 'required|exists:colours,id';
+
         if (auth()->user()->can('updateStock', Item::class)) {
-            $validationRules['stocks'] = 'required|array|min:1';
-            $validationRules['stocks.*.size_id'] = 'required|exists:sizes,id';
-            $validationRules['stocks.*.colour_id'] = 'required|exists:colours,id';
             $validationRules['stocks.*.stock'] = 'required|integer|min:0';
         }
 
@@ -100,15 +102,14 @@ class ItemController extends Controller
 
             $item->save();
 
-            if (isset($validated['stocks'])) {
-                foreach ($validated['stocks'] as $stockCombo) {
-                    ItemStock::create([
-                        'item_id' => $item->id,
-                        'size_id' => $stockCombo['size_id'],
-                        'colour_id' => $stockCombo['colour_id'],
-                        'stock' => $stockCombo['stock'],
-                    ]);
+            if ($request->has('stocks')) {
+                $stocks = $request->input('stocks');
+                foreach ($stocks as &$stockCombo) { // Pass by reference
+                    if (auth()->user()->cannot('updateStock', Item::class)) {
+                        $stockCombo['stock'] = 0;
+                    }
                 }
+                $item->stocks()->createMany($stocks);
             }
 
             return redirect()->route('items.index')->with('status', 'Barang dengan nama: ' . $item->name . ' berhasil dibuat');
@@ -167,11 +168,16 @@ class ItemController extends Controller
             'image' => 'nullable|image|max:2048',
         ];
 
-        if (auth()->user()->can('updateStock', $item)) {
+if (auth()->user()->can('updateStock', $item)) {
             $validationRules['stocks'] = 'required|array|min:1';
             $validationRules['stocks.*.size_id'] = 'required|exists:sizes,id';
             $validationRules['stocks.*.colour_id'] = 'required|exists:colours,id';
             $validationRules['stocks.*.stock'] = 'required|integer|min:0';
+        } else {
+            // For staff, we don't validate the stock, but we need to handle the stocks array if it's present
+            $validationRules['stocks'] = 'sometimes|array';
+            $validationRules['stocks.*.size_id'] = 'sometimes|required|exists:sizes,id';
+            $validationRules['stocks.*.colour_id'] = 'sometimes|required|exists:colours,id';
         }
 
         $validated = $request->validate($validationRules);
@@ -194,15 +200,26 @@ class ItemController extends Controller
 
             $item->save();
 
-            if (isset($validated['stocks'])) {
-                $item->stocks()->delete();
-                foreach ($validated['stocks'] as $stockCombo) {
-                    ItemStock::create([
-                        'item_id' => $item->id,
-                        'size_id' => $stockCombo['size_id'],
-                        'colour_id' => $stockCombo['colour_id'],
-                        'stock' => $stockCombo['stock'],
-                    ]);
+            if ($request->has('stocks')) {
+                $stocks = $request->input('stocks');
+                if (auth()->user()->can('updateStock', $item)) {
+                    // Owner: can update, create, and delete stocks
+                    $item->stocks()->delete();
+                    $item->stocks()->createMany($stocks);
+                } else {
+                    // Staff: can only add new combinations with stock 0
+                    foreach ($stocks as $stockCombo) {
+                        if (isset($stockCombo['size_id']) && isset($stockCombo['colour_id'])) {
+                            ItemStock::updateOrCreate(
+                                [
+                                    'item_id' => $item->id,
+                                    'size_id' => $stockCombo['size_id'],
+                                    'colour_id' => $stockCombo['colour_id'],
+                                ],
+                                ['stock' => 0]
+                            );
+                        }
+                    }
                 }
             }
 
@@ -223,8 +240,18 @@ class ItemController extends Controller
             $item->stocks()->delete();
             $item->delete();
             return redirect()->route('items.index')->with('status', 'Barang telah dihapus');
-        } catch (\Exception $e) {
-            Log::error('Item delete failed', ['error' => $e->getMessage()]);
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                $relations = [];
+                if ($item->buyingTransactionItems()->exists()) {
+                    $relations[] = 'transaksi pembelian';
+                }
+                if ($item->sellingTransactionItems()->exists()) {
+                    $relations[] = 'transaksi penjualan';
+                }
+                $relationStr = implode(', ', $relations);
+                return redirect()->route('items.index')->with('error', 'Maaf anda tidak dapat menghapus ' . $item->name . ' karena telah digunakan di ' . $relationStr);
+            }
             return redirect()->route('items.index')->with('error', 'Barang tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }
     }

@@ -71,6 +71,13 @@ function showDetails(message_id){
                     </tr>
                 </thead>
                 <tbody>
+                    @if ($data->isEmpty())
+                    <tr>
+                        <td colspan="9" class="text-center">
+                            Tidak ada data yang tersedia dalam daftar pesan.
+                        </td>
+                    </tr>
+                    @else
                     @foreach ($data as $message)
                     <tr id="tr{{ $message->id }}">
                         <td>{{ $message->id }}</td>
@@ -131,6 +138,7 @@ function showDetails(message_id){
                         </td>
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

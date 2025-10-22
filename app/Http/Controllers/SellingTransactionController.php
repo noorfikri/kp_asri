@@ -8,6 +8,7 @@ use App\Models\SellingTransaction;
 use App\Models\SellingTransactionItem;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 
 class SellingTransactionController extends Controller
@@ -104,7 +105,10 @@ class SellingTransactionController extends Controller
             $sellingTransaction->itemsStocks()->detach();
             $sellingTransaction->delete();
             return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi telah dihapus');
-        } catch (\Exception $e) {
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return redirect()->route('sellingtransactions.index')->with('error', 'Maaf anda tidak dapat menghapus transaksi penjualan ini karena telah digunakan di laporan');
+            }
             return redirect()->route('sellingtransactions.index')->with('error', 'Transaksi tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }
     }
@@ -126,7 +130,10 @@ class SellingTransactionController extends Controller
             $sellingTransaction->delete();
 
             return redirect()->route('sellingtransactions.index')->with('status', 'Transaksi telah dihapus dan stok barang telah dikembalikan');
-        } catch (\Exception $e) {
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return redirect()->route('sellingtransactions.index')->with('error', 'Maaf anda tidak dapat menghapus transaksi penjualan ini karena telah digunakan di laporan');
+            }
             Log::error('SellingTransaction delete failed', ['error' => $e->getMessage()]);
             return redirect()->route('sellingtransactions.index')->with('error', 'Transaksi tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }

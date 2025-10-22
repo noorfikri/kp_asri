@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
@@ -77,7 +78,10 @@ class CategoryController extends Controller
         try {
             $category->delete();
             return redirect()->route('categories.index')->with('status', 'Kategori telah dihapus');
-        } catch (\Exception $e) {
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return redirect()->route('categories.index')->with('error', 'Maaf anda tidak dapat menghapus kategori ' . $category->name . ' karena telah digunakan di item');
+            }
             Log::error('Category delete failed', ['error' => $e->getMessage()]);
             return redirect()->route('categories.index')->with('error', 'Kategori tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }
