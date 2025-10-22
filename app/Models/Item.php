@@ -50,10 +50,32 @@ class Item extends Model
         return $this->belongsTo(\App\Models\Brand::class);
     }
 
+
     public function stocks()
     {
         return $this->hasMany(\App\Models\ItemStock::class, 'item_id');
     }
+
+    public function sizes()
+    {
+        return $this->belongsToMany(
+            \App\Models\Size::class,
+            'items_sizes',
+            'item_id',
+            'size_id'
+        );
+    }
+
+    public function colours()
+    {
+        return $this->belongsToMany(
+            \App\Models\Colour::class,
+            'items_colours',
+            'item_id',
+            'colour_id'
+        );
+    }
+
 
     public function buyingTransactions()
     {

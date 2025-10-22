@@ -236,22 +236,33 @@ if (auth()->user()->can('updateStock', $item)) {
     public function destroy(Item $item)
     {
         $this->authorize('delete', $item);
+        $relations = [];
+        $itemStocks = $item->stocks;
+        $usedInBuying = false;
+        $usedInSelling = false;
+        foreach ($itemStocks as $stock) {
+            if ($stock->buyingTransactionItems()->exists()) {
+                $usedInBuying = true;
+            }
+            if ($stock->sellingTransactionItems()->exists()) {
+                $usedInSelling = true;
+            }
+        }
+        if ($usedInBuying) {
+            $relations[] = 'transaksi pembelian';
+        }
+        if ($usedInSelling) {
+            $relations[] = 'transaksi penjualan';
+        }
+        if (count($relations) > 0) {
+            $relationStr = implode(', ', $relations);
+            return redirect()->route('items.index')->with('error', 'Maaf anda tidak dapat menghapus ' . $item->name . ' karena telah digunakan di ' . $relationStr);
+        }
         try {
             $item->stocks()->delete();
             $item->delete();
             return redirect()->route('items.index')->with('status', 'Barang telah dihapus');
         } catch (QueryException $e) {
-            if ($e->getCode() == 23000) {
-                $relations = [];
-                if ($item->buyingTransactionItems()->exists()) {
-                    $relations[] = 'transaksi pembelian';
-                }
-                if ($item->sellingTransactionItems()->exists()) {
-                    $relations[] = 'transaksi penjualan';
-                }
-                $relationStr = implode(', ', $relations);
-                return redirect()->route('items.index')->with('error', 'Maaf anda tidak dapat menghapus ' . $item->name . ' karena telah digunakan di ' . $relationStr);
-            }
             return redirect()->route('items.index')->with('error', 'Barang tidak dapat dihapus, Pesan Error: ' . $e->getMessage());
         }
     }
@@ -319,7 +330,7 @@ if (auth()->user()->can('updateStock', $item)) {
      */
     public function gallery()
     {
-        $items = Item::all();
+    $items = Item::with(['stocks.size', 'stocks.colour'])->get();
         return view('homepage.gallery', ['items' => $items]);
     }
 

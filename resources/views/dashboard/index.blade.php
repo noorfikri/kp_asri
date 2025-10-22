@@ -3,6 +3,56 @@
 @section('javascript')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    // --- Image Preview Handlers ---
+    function previewImage(input, imgId) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById(imgId).src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Banner preview
+    var bannerInput = document.getElementById('banner');
+    if (bannerInput) {
+        bannerInput.addEventListener('change', function() {
+            previewImage(this, 'banner_preview_small');
+        });
+    }
+
+    // Logo preview
+    var logoInput = document.getElementById('logo');
+    if (logoInput) {
+        logoInput.addEventListener('change', function() {
+            previewImage(this, 'logo_preview_small');
+        });
+    }
+
+    // Home image preview
+    var homeImageInput = document.getElementById('home_image');
+    if (homeImageInput) {
+        homeImageInput.addEventListener('change', function() {
+            previewImage(this, 'home_image_preview_small');
+        });
+    }
+
+    // Storefront image preview
+    var storefrontImageInput = document.getElementById('storefront_image');
+    if (storefrontImageInput) {
+        storefrontImageInput.addEventListener('change', function() {
+            previewImage(this, 'storefront_image_preview_small');
+        });
+    }
+
+    // Map image preview
+    var mapImageInput = document.getElementById('map_image');
+    if (mapImageInput) {
+        mapImageInput.addEventListener('change', function() {
+            previewImage(this, 'map_image_preview_small');
+        });
+    }
 
     // --- DOM Element References ---
     const elements = {
@@ -190,7 +240,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 </div>
                             </div>
                             @if(!empty($storeInfo->banner))
-                                <img src="{{ asset($storeInfo->banner) }}" alt="Banner" class="img-fluid mt-2" style="max-height:80px;">
+                                <img id="banner_preview_small" src="{{ asset($storeInfo->banner) }}" alt="Banner" class="img-fluid mt-2" style="max-height:80px;">
+                            @else
+                                <img id="banner_preview_small" src="{{ asset('assets/img/placeholder_banner.jpg') }}" alt="Banner" class="img-fluid mt-2" style="max-height:80px;">
                             @endif
                         </div>
                         <div class="form-group">
@@ -278,22 +330,15 @@ document.addEventListener('DOMContentLoaded', function () {
                             </div>
                             <div class="col-12">
                                 <div class="row p-3">
-                                    <div class="col-8">
                                         <h4 id="preview_title" style="color: {{ $storeInfo->text_secondary_color ?? '#000' }};">{{ $storeInfo->name }}</h4>
                                         <p id="preview_description" style="color: {{ $storeInfo->text_secondary_color ?? '#666' }}">{{ $storeInfo->description }}</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h6 id="preview_address_title" style="color: {{ $storeInfo->text_color ?? '#000' }};">Alamat</h6>
-                                                <div id="preview_address" style="font-size:13px; color: {{ $storeInfo->text_color ?? '#000' }};">{!! nl2br(e($storeInfo->address_description ?? $storeInfo->address)) !!}</div>
-                                                <div style="margin-top:8px; font-size:13px;">
-                                                    <h6><strong id="preview_phone">{{ $storeInfo->phone }}</strong></h6>
-                                                    <h6><strong id="preview_whatsapp">{{ $storeInfo->whatsapp }}</strong></h6>
-                                                </div>
-                                            </div>
+                                        <br>
+                                        <h5 id="preview_address_title" style="color: {{ $storeInfo->text_secondary_color ?? '#000' }};"><strong>Kontak</strong></h5>
+                                        <div id="preview_address" style="font-size:13px; color: {{ $storeInfo->text_color ?? '#000' }};">Anda dapat menghubungi kami di : </div>
+                                        <div style="margin-top:8px; font-size:13px;">
+                                            <h6><strong id="preview_phone">{{ $storeInfo->phone }}</strong></h6>
+                                            <h6><strong id="preview_whatsapp">{{ $storeInfo->whatsapp }}</strong></h6>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                             <div class="col-12">

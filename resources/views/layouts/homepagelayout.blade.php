@@ -35,6 +35,7 @@ $storeInfo = \App\Models\StoreInfo::first();
         footer{ background: var(--bottom-bar-color); color: var(--text-color); }
         body{ color: var(--text-color); }
         .content_desc p, .card_content, .title { color: var(--text-secondary-color); }
+        main .content #gallery .card .card_content p { color: var(--text-color); }
     </style>
 
 </head>
