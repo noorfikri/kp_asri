@@ -16,12 +16,25 @@ class TestLoginUserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('test'),
+            'name' => 'Admin Noorfikri',
+            'email' => 'noorfikri@admin.com',
+            'password' => bcrypt('35211235'),
             'category' => 'owner',
             'contact_number' => '1234567890',
-            'address' => '123 Test',
+            'address' => 'Jl. Admin No. 1234',
+            'remember_token' => Random::generate(10),
+            'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Admin User',
+            'email' => 'env('ADMIN_EMAIL')',
+            'password' => bcrypt(env('ADMIN_PASSWORD')),
+            'category' => 'owner',
+            'contact_number' => '1234567890',
+            'address' => 'Jl. Admin No. 1234',
             'remember_token' => Random::generate(10),
             'email_verified_at' => now(),
             'created_at' => now(),
