@@ -11,12 +11,15 @@ class BuyingTransactionPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can delete the model.
+     * Create a new policy instance.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\BuyingTransaction  $buyingTransaction
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return void
      */
+    public function __construct()
+    {
+        //
+    }
+
     public function delete(User $user, BuyingTransaction $buyingTransaction)
     {
         return $user->category === 'owner';

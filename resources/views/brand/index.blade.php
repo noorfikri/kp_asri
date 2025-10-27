@@ -71,8 +71,9 @@ function showEdit(brand_id){
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content" id="createmodal">
-                        <!-- put animated gif here -->
-                        <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
+                        <div class="overlay dark">
+                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -127,8 +128,9 @@ function showEdit(brand_id){
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="brandedit{{$d->id}}">
-                                    <!-- put animated gif here -->
-                                    <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
+                                    <div class="overlay dark">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>

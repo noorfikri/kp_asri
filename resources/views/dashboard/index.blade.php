@@ -3,7 +3,7 @@
 @section('javascript')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // --- Image Preview Handlers ---
+
     function previewImage(input, imgId) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Banner preview
     var bannerInput = document.getElementById('banner');
     if (bannerInput) {
         bannerInput.addEventListener('change', function() {
@@ -22,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Logo preview
     var logoInput = document.getElementById('logo');
     if (logoInput) {
         logoInput.addEventListener('change', function() {
@@ -30,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Home image preview
     var homeImageInput = document.getElementById('home_image');
     if (homeImageInput) {
         homeImageInput.addEventListener('change', function() {
@@ -38,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Storefront image preview
     var storefrontImageInput = document.getElementById('storefront_image');
     if (storefrontImageInput) {
         storefrontImageInput.addEventListener('change', function() {
@@ -46,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Map image preview
     var mapImageInput = document.getElementById('map_image');
     if (mapImageInput) {
         mapImageInput.addEventListener('change', function() {
@@ -54,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // --- DOM Element References ---
     const elements = {
         inputs: {
             name: document.getElementById('name'),
@@ -81,26 +75,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // --- Event Handlers ---
 
-    /**
-     * Updates the live preview based on form input values.
-     */
     function updatePreview() {
-        // Update text content
         updateText(elements.previews.heroTitle, elements.inputs.name.value);
         updateText(elements.previews.title, elements.inputs.name.value);
         updateText(elements.previews.description, elements.inputs.description.value);
         updateText(elements.previews.phone, elements.inputs.phone.value);
         updateText(elements.previews.whatsapp, elements.inputs.whatsapp.value);
 
-        // Update address, preferring the more detailed description
         const addressHtml = elements.inputs.addressDescription.value
             ? elements.inputs.addressDescription.value.replace(/\n/g, '<br>')
             : elements.inputs.address.value;
         updateHTML(elements.previews.address, addressHtml);
 
-        // Update colors
         updateStyle(elements.previews.navbar, 'backgroundColor', elements.inputs.navbarColor.value);
         updateStyle(elements.previews.footer, 'backgroundColor', elements.inputs.bottomBarColor.value);
 
@@ -113,49 +100,27 @@ document.addEventListener('DOMContentLoaded', function () {
         updateStyle(elements.previews.description, 'color', elements.inputs.textSecondaryColor.value);
         updateStyle(elements.previews.address, 'color', elements.inputs.textSecondaryColor.value);
 
-        // Ensure footer text is always white for better contrast
         updateStyle(elements.previews.footer, 'color', '#ffffff');
     }
 
-    // --- Helper Functions ---
-
-    /**
-     * Safely updates the text content of a DOM element.
-     * @param {HTMLElement} el The element to update.
-     * @param {string} value The new text content.
-     */
     function updateText(el, value) {
         if (el) {
             el.textContent = value || '';
         }
     }
 
-    /**
-     * Safely updates the HTML content of a DOM element.
-     * @param {HTMLElement} el The element to update.
-     * @param {string} value The new HTML content.
-     */
     function updateHTML(el, value) {
         if (el) {
             el.innerHTML = value || '';
         }
     }
 
-    /**
-     * Safely updates a CSS property of a DOM element.
-     * @param {HTMLElement} el The element to update.
-     * @param {string} property The CSS property to change.
-     * @param {string} value The new value for the property.
-     */
     function updateStyle(el, property, value) {
         if (el) {
             el.style[property] = value || '';
         }
     }
 
-    // --- Initialization ---
-
-    // Attach event listeners to all input fields
     for (const key in elements.inputs) {
         const inputElement = elements.inputs[key];
         if (inputElement) {
@@ -163,7 +128,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Trigger the initial preview update when the page loads
     updatePreview();
 });
 </script>

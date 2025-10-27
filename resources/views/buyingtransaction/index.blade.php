@@ -54,7 +54,6 @@ function parseIDRToInteger(value) {
 function initializeCreateModal() {
     let itemIndex = document.querySelectorAll('#itemTable tbody tr').length;
 
-    // Add new row
     document.getElementById('addItem').addEventListener('click', function () {
         const tableBody = document.querySelector('#itemTable tbody');
         const newRow = tableBody.rows[0].cloneNode(true);
@@ -77,7 +76,6 @@ function initializeCreateModal() {
         calculateTotals();
     });
 
-    // Remove row
     document.getElementById('itemTable').addEventListener('click', function (e) {
         if (e.target.classList.contains('remove-item')) {
             const rows = this.getElementsByTagName('tbody')[0].rows;
@@ -88,15 +86,12 @@ function initializeCreateModal() {
         }
     });
 
-    // Attach events to all rows
     document.querySelectorAll('#itemTable tbody tr').forEach(row => attachRowEvents(row));
 
-    // Discount/Other cost change
     document.getElementById('discount').addEventListener('input', calculateTotals);
     document.getElementById('other_cost').addEventListener('input', calculateTotals);
 
     function attachRowEvents(row) {
-        // When item is selected, update price
         row.querySelector('.item-select').addEventListener('change', function () {
             const selected = this.options[this.selectedIndex];
             const price = selected.dataset.price ? parseInt(selected.dataset.price) : 0;
@@ -106,7 +101,6 @@ function initializeCreateModal() {
             calculateTotals();
         });
 
-        // When quantity changes, update total
         row.querySelector('.item-quantity').addEventListener('input', function () {
             updateRowTotal(row);
             calculateTotals();
@@ -166,7 +160,6 @@ function initializeCreateModal() {
         calculateTotals();
     });
 
-    // On submit, convert all price fields to integer
     const form = document.querySelector('#createmodal form');
     if (form) {
         form.addEventListener('submit', function(e) {
@@ -236,7 +229,9 @@ function initializeCreateModal() {
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content" id="createmodal">
-                        <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
+                                    <div class="overlay dark">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
                     </div>
                 </div>
             </div>
@@ -285,7 +280,9 @@ function initializeCreateModal() {
                             <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content" id="transactiondetail{{$d->id}}">
-                                        <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
+                                    <div class="overlay dark">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
                                     </div>
                                 </div>
                             </div>

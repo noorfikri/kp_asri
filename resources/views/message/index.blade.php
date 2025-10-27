@@ -106,8 +106,9 @@ function showDetails(message_id){
                             <div class="modal fade" id="show{{$message->id}}" tabindex="-1" role="basic" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content" id="messagedetail{{$message->id}}">
-                                        <!-- put animated gif here -->
-                                        <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
+                                    <div class="overlay dark">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
                                     </div>
                                 </div>
                             </div>

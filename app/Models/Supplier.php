@@ -28,9 +28,6 @@ class Supplier extends Model
         'picture',
     ];
 
-    /**
-     * Get the buying transactions for the supplier.
-     */
     public function buyingTransactions()
     {
         return $this->hasMany(\App\Models\BuyingTransaction::class, 'supplier_id');

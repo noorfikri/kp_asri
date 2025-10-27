@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 class BrandController extends Controller
 {
     /**
-     * Display a listing of the brands.
+     * Display list brands
      */
     public function index()
     {
@@ -19,7 +19,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Show the form for creating a new brand.
+     * Show form create brand
      */
     public function create()
     {
@@ -27,7 +27,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Store a newly created brand in storage.
+     * Store new brand
      */
     public function store(Request $request)
     {
@@ -43,7 +43,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Show the form for editing the specified brand.
+     * Show form edit brand
      */
     public function edit(Brand $brand)
     {
@@ -51,7 +51,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Update the specified brand in storage.
+     * Update brand
      */
     public function update(Request $request, Brand $brand)
     {
@@ -67,7 +67,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Remove the specified brand from storage.
+     * Remove brand
      */
     public function destroy(Brand $brand)
     {

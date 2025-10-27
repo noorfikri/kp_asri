@@ -104,7 +104,7 @@ class ItemController extends Controller
 
             if ($request->has('stocks')) {
                 $stocks = $request->input('stocks');
-                foreach ($stocks as &$stockCombo) { // Pass by reference
+                foreach ($stocks as &$stockCombo) {
                     if (auth()->user()->cannot('updateStock', Item::class)) {
                         $stockCombo['stock'] = 0;
                     }
@@ -174,7 +174,6 @@ if (auth()->user()->can('updateStock', $item)) {
             $validationRules['stocks.*.colour_id'] = 'required|exists:colours,id';
             $validationRules['stocks.*.stock'] = 'required|integer|min:0';
         } else {
-            // For staff, we don't validate the stock, but we need to handle the stocks array if it's present
             $validationRules['stocks'] = 'sometimes|array';
             $validationRules['stocks.*.size_id'] = 'sometimes|required|exists:sizes,id';
             $validationRules['stocks.*.colour_id'] = 'sometimes|required|exists:colours,id';
@@ -203,11 +202,9 @@ if (auth()->user()->can('updateStock', $item)) {
             if ($request->has('stocks')) {
                 $stocks = $request->input('stocks');
                 if (auth()->user()->can('updateStock', $item)) {
-                    // Owner: can update, create, and delete stocks
                     $item->stocks()->delete();
                     $item->stocks()->createMany($stocks);
                 } else {
-                    // Staff: can only add new combinations with stock 0
                     foreach ($stocks as $stockCombo) {
                         if (isset($stockCombo['size_id']) && isset($stockCombo['colour_id'])) {
                             ItemStock::updateOrCreate(

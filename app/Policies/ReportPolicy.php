@@ -11,12 +11,15 @@ class ReportPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can delete the model.
+     * Create a new policy instance.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return void
      */
+    public function __construct()
+    {
+        //
+    }
+
     public function delete(User $user, Report $report)
     {
         return $user->category === 'owner';

@@ -44,7 +44,6 @@ public function store(Request $request)
     ]);
 
     try {
-        // Always use the authenticated user as creator for security
         $creatorId = auth()->id();
 
         $report = \App\Models\Report::create([
@@ -54,7 +53,6 @@ public function store(Request $request)
             'other_cost' => $validated['other_cost'] ?? 0,
         ]);
 
-        // Attach transactions before calculating totals
         if (!empty($validated['buying_transactions'])) {
             $report->buyingTransactions()->attach($validated['buying_transactions']);
         }
@@ -62,7 +60,6 @@ public function store(Request $request)
             $report->sellingTransactions()->attach($validated['selling_transactions']);
         }
 
-        // Calculate totals from attached transactions
         $totalBuying = $report->buyingTransactions()->sum('total_amount');
         $totalBoughtCount = $report->buyingTransactions()->sum('total_count');
         $totalSelling = $report->sellingTransactions()->sum('total_amount');

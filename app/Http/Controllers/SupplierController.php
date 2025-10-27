@@ -24,7 +24,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        // Not used, handled via AJAX modal
+
     }
 
     /**
@@ -72,7 +72,7 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
-        // Not used, handled via AJAX modal
+
     }
 
     /**

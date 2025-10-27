@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 class BuyingTranscationItemController extends Controller
 {
     /**
-     * Display a listing of the buying transaction items.
+     * Display list buying transaction items
      */
     public function index()
     {
@@ -20,7 +20,7 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Show the form for creating a new buying transaction item.
+     * Show the form create buying transaction item
      */
     public function create()
     {
@@ -30,7 +30,7 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Store a newly created buying transaction item in storage.
+     * Store new buying transaction item
      */
     public function store(Request $request)
     {
@@ -44,7 +44,6 @@ class BuyingTranscationItemController extends Controller
         try {
             $item = BuyingTransactionItem::create($validated);
 
-            // Optionally update item stock
             $itemModel = Item::find($validated['item_id']);
             if ($itemModel) {
                 $itemModel->stock += $validated['total_quantity'];
@@ -59,7 +58,7 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Display the specified buying transaction item.
+     * Display buying transaction item
      */
     public function show(BuyingTransactionItem $buyingTransactionItem)
     {
@@ -67,7 +66,7 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Show the form for editing the specified buying transaction item.
+     * Show form edit buying transaction item
      */
     public function edit(BuyingTransactionItem $buyingTransactionItem)
     {
@@ -77,7 +76,7 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Update the specified buying transaction item in storage.
+     * Update buying transaction item
      */
     public function update(Request $request, BuyingTransactionItem $buyingTransactionItem)
     {
@@ -89,7 +88,6 @@ class BuyingTranscationItemController extends Controller
         ]);
 
         try {
-            // Optionally update item stock
             $oldQuantity = $buyingTransactionItem->total_quantity;
             $itemModel = Item::find($validated['item_id']);
             if ($itemModel) {
@@ -108,12 +106,11 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Remove the specified buying transaction item from storage.
+     * Remove buying transaction item
      */
     public function destroy(BuyingTransactionItem $buyingTransactionItem)
     {
         try {
-            // Optionally update item stock
             $itemModel = Item::find($buyingTransactionItem->item_id);
             if ($itemModel) {
                 $itemModel->stock -= $buyingTransactionItem->total_quantity;

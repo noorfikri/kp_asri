@@ -27,7 +27,7 @@ class SellingTransactionController extends Controller
      */
     public function create()
     {
-        // Not used, handled via AJAX modal
+
     }
 
     /**

@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        // Not used, handled via AJAX modal
+
     }
 
     /**
@@ -83,7 +83,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        // Not used, handled via AJAX modal
+
     }
 
     /**

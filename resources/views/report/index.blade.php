@@ -58,7 +58,6 @@ function initializeCreateModal() {
     let sellingTransactions = {};
     let buyingTransactions = {};
 
-    // Add Selling Transaction
     document.getElementById('addSellingBtn').addEventListener('click', function() {
         const select = document.getElementById('sellingSelect');
         const id = select.value;
@@ -85,7 +84,6 @@ function initializeCreateModal() {
         updateRecap();
     });
 
-    // Remove Selling Transaction
     document.getElementById('sellingTable').addEventListener('click', function(e) {
         if (e.target.classList.contains('remove-selling')) {
             const id = e.target.dataset.id;
@@ -95,7 +93,6 @@ function initializeCreateModal() {
         }
     });
 
-    // Add Buying Transaction
     document.getElementById('addBuyingBtn').addEventListener('click', function() {
         const select = document.getElementById('buyingSelect');
         const id = select.value;
@@ -122,7 +119,6 @@ function initializeCreateModal() {
         updateRecap();
     });
 
-    // Remove Buying Transaction
     document.getElementById('buyingTable').addEventListener('click', function(e) {
         if (e.target.classList.contains('remove-buying')) {
             const id = e.target.dataset.id;
@@ -132,7 +128,6 @@ function initializeCreateModal() {
         }
     });
 
-        // Helper to parse date string (YYYY-MM-DD or YYYY-MM-DDTHH:MM)
     function parseDate(str) {
         if (!str) return null;
         const parts = str.split('T')[0].split('-');
@@ -148,13 +143,11 @@ function initializeCreateModal() {
         const dateObj = parseDate(dateStr);
         if (!type || !dateObj) return;
 
-        // Clear current selections
         sellingTransactions = {};
         buyingTransactions = {};
         document.querySelector('#sellingTable tbody').innerHTML = '';
         document.querySelector('#buyingTable tbody').innerHTML = '';
 
-        // Selling
         document.querySelectorAll('#sellingSelect option[value]').forEach(option => {
             const tDate = parseDate(option.dataset.date);
             if (!tDate) return;
@@ -186,7 +179,6 @@ function initializeCreateModal() {
             }
         });
 
-        // Buying
         document.querySelectorAll('#buyingSelect option[value]').forEach(option => {
             const tDate = parseDate(option.dataset.date);
             if (!tDate) return;
@@ -221,11 +213,9 @@ function initializeCreateModal() {
         updateRecap();
     }
 
-    // Attach event listeners for auto-select
     document.querySelector('select[name="type"]').addEventListener('change', autoSelectTransactions);
     document.querySelector('input[name="report_date"]').addEventListener('change', autoSelectTransactions);
 
-    // Currency formatting and calculation for other_cost
     document.getElementById('other_cost').addEventListener('blur', function(e) {
         const field = e.target;
         const rawValue = parseIDRToInteger(field.value);
@@ -235,21 +225,20 @@ function initializeCreateModal() {
     document.getElementById('other_cost').addEventListener('input', updateRecap);
 
     function updateRecap() {
-        // Selling
         let totalSoldCount = 0, totalSelling = 0;
         Object.values(sellingTransactions).forEach(st => {
             totalSoldCount += st.total_count;
             totalSelling += st.total_amount;
         });
-        // Buying
+
         let totalBoughtCount = 0, totalBuying = 0;
         Object.values(buyingTransactions).forEach(bt => {
             totalBoughtCount += bt.total_count;
             totalBuying += bt.total_amount;
         });
-        // Other cost
+
         const otherCost = parseIDRToInteger(document.getElementById('other_cost').value) || 0;
-        // Cash flow
+
         const cashFlow = totalSelling - totalBuying - otherCost;
 
         document.getElementById('totalSoldCount').innerText = totalSoldCount;
@@ -260,7 +249,6 @@ function initializeCreateModal() {
         document.getElementById('cashFlow').innerText = formatToIDR(cashFlow);
     }
 
-    // On submit, convert currency fields to integer
     document.getElementById('reportCreateForm').addEventListener('submit', function(e) {
         const otherCost = document.getElementById('other_cost');
         if (otherCost) otherCost.value = parseIDRToInteger(otherCost.value);
@@ -268,7 +256,6 @@ function initializeCreateModal() {
 }
 
 function printReportDetail(btn) {
-    // Find the closest modal and get the report content
     var modal = btn.closest('.modal-content') || document;
     var printContents = modal.querySelector('#report-detail-print').innerHTML;
     var win = window.open('', '', 'height=800,width=1000');
@@ -331,8 +318,9 @@ function printReportDetail(btn) {
             <div class="modal fade" id="showcreatemodal" tabindex="-1" role="basic" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content" id="createmodal">
-                        <!-- put animated gif here -->
-                        <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
+                                    <div class="overlay dark">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
                     </div>
                 </div>
             </div>
@@ -420,16 +408,18 @@ function printReportDetail(btn) {
                         <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content" id="reportdetail{{$d->id}}">
-                                    <!-- put animated gif here -->
-                                    <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
+                                    <div class="overlay dark">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal fade" id="edit{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content" id="reportedit{{$d->id}}">
-                                    <!-- put animated gif here -->
-                                    <img src="{{ asset('assets/img/ajax-modal-loading.gif')}}" alt="" class="loading">
+                                    <div class="overlay dark">
+                                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -66,17 +66,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * Get the selling transactions for the user.
-     */
     public function sellingTransactions()
     {
         return $this->hasMany(\App\Models\SellingTransaction::class, 'seller_id');
     }
 
-    /**
-     * Get the reports created by the user.
-     */
     public function reports()
     {
         return $this->hasMany(\App\Models\Report::class, 'creator_id');

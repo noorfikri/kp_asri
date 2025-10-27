@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the categories.
+     * Display list categories
      */
     public function index()
     {
@@ -19,15 +19,15 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for creating a new category.
+     * Show form create new category
      */
     public function create()
     {
-        // Not used, handled via AJAX modal
+
     }
 
     /**
-     * Store a newly created category in storage.
+     * Store new create category
      */
     public function store(Request $request)
     {
@@ -45,15 +45,15 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified category.
+     * Show edit category
      */
     public function edit(Category $category)
     {
-        // Not used, handled via AJAX modal
+
     }
 
     /**
-     * Update the specified category in storage.
+     * Update category
      */
     public function update(Request $request, Category $category)
     {
@@ -71,7 +71,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified category from storage.
+     * Remove category
      */
     public function destroy(Category $category)
     {

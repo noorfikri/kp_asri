@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 class BuyingTranscationController extends Controller
 {
     /**
-     * Display a listing of the buying transactions.
+     * Display list buying transactions
      */
     public function index()
     {
@@ -24,15 +24,15 @@ class BuyingTranscationController extends Controller
     }
 
     /**
-     * Show the form for creating a new buying transaction.
+     * Show form create buying transaction
      */
     public function create()
     {
-        // Not used, handled via AJAX modal
+
     }
 
     /**
-     * Store a newly created buying transaction in storage.
+     * Store new buying transaction
      */
     public function store(Request $request, FileUploadService $fileUpload)
     {
@@ -77,7 +77,7 @@ class BuyingTranscationController extends Controller
                     'total_quantity' => $item['quantity'],
                     'total_price' => $item['price'],
                 ]);
-                // Update items_stock
+
                 $stock = ItemStock::find($item['items_stock_id']);
                 $stock->stock += $item['quantity'];
                 $stock->save();
@@ -91,23 +91,22 @@ class BuyingTranscationController extends Controller
     }
 
     /**
-     * Display the specified buying transaction.
+     * Display buying transaction
      */
     public function show(BuyingTransaction $buyingTransaction)
     {
-        // Not used, handled via AJAX modal
     }
 
     /**
-     * Show the form for editing the specified buying transaction.
+     * Show form editing
      */
     public function edit(BuyingTransaction $buyingTransaction)
     {
-        // Not used, handled via AJAX modal
+
     }
 
     /**
-     * Update the specified buying transaction in storage.
+     * Update buying transaction
      */
     public function update(Request $request, BuyingTransaction $buyingTransaction)
     {
@@ -126,7 +125,6 @@ class BuyingTranscationController extends Controller
         ]);
 
         try {
-            // Restore stock before updating
             foreach ($buyingTransaction->itemsStocks as $itemStock) {
                 $pivot = $itemStock->pivot;
                 $itemStock->stock -= $pivot->total_quantity;
@@ -163,7 +161,7 @@ class BuyingTranscationController extends Controller
     }
 
     /**
-     * Remove the specified buying transaction from storage.
+     * Remove buying transaction
      */
     public function destroy(BuyingTransaction $buyingTransaction)
     {

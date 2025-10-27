@@ -9,14 +9,16 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class SellingTransactionPolicy
 {
     use HandlesAuthorization;
-
     /**
-     * Determine whether the user can delete the model.
+     * Create a new policy instance.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\SellingTransaction  $sellingTransaction
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return void
      */
+    public function __construct()
+    {
+        //
+    }
+
     public function delete(User $user, SellingTransaction $sellingTransaction)
     {
         return $user->category === 'owner';
