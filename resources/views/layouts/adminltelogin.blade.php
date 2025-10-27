@@ -3,8 +3,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Administrasi {{$storeInfo->name}} </title>
 
-        <!-- Favicon -->
-        <link rel="icon" type="image/x-icon" href="{{ $storeInfo && $storeInfo->store_logo ? asset($storeInfo->store_logo) : asset('assets/img/favicon.ico') }}">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset($storeInfo->logo) }}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
