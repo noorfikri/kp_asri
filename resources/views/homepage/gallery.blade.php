@@ -22,7 +22,7 @@
                             @endphp
                             @if($sizes->count())
                                 @foreach($sizes as $sizeName)
-                                    <span class="badge badge-info">{{ $sizeName }}</span>
+                                    <span class="badge" style="background-color: var(--bottom-bar-color); color: var(--text-color);">{{ $sizeName }}</span>
                                 @endforeach
                             @else
                                 <span class="text-muted">-</span>
@@ -35,7 +35,7 @@
                             @endphp
                             @if($colours->count())
                                 @foreach($colours as $colourName)
-                                    <span class="badge badge-secondary">{{ $colourName }}</span>
+                                    <span class="badge" style="background-color: var(--bottom-bar-color); color: var(--text-color);">{{ $colourName }}</span>
                                 @endforeach
                             @else
                                 <span class="text-muted">-</span>
