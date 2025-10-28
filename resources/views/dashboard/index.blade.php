@@ -158,6 +158,60 @@ document.addEventListener('DOMContentLoaded', function () {
     <form method="POST" action="{{ route('storeinfo.update') }}" enctype="multipart/form-data">
     @csrf
     @method('POST')
+        <div class="alert alert-primary">
+            <h5 class="color"><strong><i class="fa-solid fa-circle-info"></i> Bantuan</strong></h5>
+            Halaman ini adalah halaman <strong>Informasi Toko</strong>. Anda dapat <strong>Mengubah Informasi Toko</strong> seperti <strong>Nama Toko, Kontak, Logo dan Gambar Toko</strong> sesuai dengan informasi toko yang anda miliki.<br>
+            <br> <strong>Cara penggunaan Sistem :</strong>
+            <ul>
+                <li>
+                    <p class="my-0 py-0">
+                        <i class="nav-icon fa-solid fa-house"></i> <strong>Informasi Toko</strong> (Halaman Ini) : Untuk mengubah <strong>Informasi Toko</strong> yang ditampilkan di halaman depan.
+                    </p>
+                </li>
+                <li>
+                    <p class="my-0 py-0">
+                        <i class="nav-icon fa-solid fa-boxes-stacked"></i> <strong>Barang</strong> : Untuk merubah <strong>Daftar Barang</strong> dan informasi seputar barang seperti <strong>Kategori, Warna, Ukuran dan Merek</strong> barang.
+                    </p>
+                </li>
+                <li>
+                    <p class="my-0 py-0">
+                        <i class="nav-icon fa-solid fa-cart-flatbed"></i> <strong>Penjualan</strong> : Untuk merubah dan menambah informasi terkait dengan <strong>transaksi penjualan</strong>.
+                    </p>
+                </li>
+                <li>
+                    <p class="my-0 py-0">
+                        <i class="nav-icon fa-solid fa-cart-arrow-down"></i> <strong>Pembelian</strong> : Untuk merubah dan menambah informasi terkait dengan <strong>Transaksi Pembelian</strong> atau <strong>Restock</strong>.
+                    </p>
+                </li>
+                <li>
+                    <p class="my-0 py-0">
+                        <i class="nav-icon fa-solid fa-truck"></i> <strong>Supplier</strong> : Untuk merubah informasi terkait dengan <strong>Supplier</strong>.
+                    </p>
+                </li>
+                <li>
+                    <p class="my-0 py-0">
+                        <i class="nav-icon fa-solid fa-clipboard-list"></i> <strong>Laporan</strong> : Untuk melihat informasi terkait dengan <strong>Laporan Keuangan</strong>.
+                    </p>
+                </li>
+                <li>
+                    <p class="my-0 py-0">
+                        <i class="nav-icon fa-solid fa-envelope"></i> <strong>Pesan</strong> : Untuk memanajemen <strong>Pesan</strong> yang dikirimkan oleh pengunjung website.
+                    </p>
+                </li>
+                @can('user-management-access',Auth::user())
+                <li>
+                    <p class="my-0 py-0">
+                        <i class="nav-icon fa-solid fa-user"></i> <strong>Manajemen Akun</strong> : Untuk melakukan <strong>Manajemen Akun</strong> terhadap akun yang terdaftar didalam sistem.
+                    </p>
+                </li>
+                @endcan
+                <li>
+                    <p class="my-0 py-0">
+                        <i class="nav-icon fa-solid fa-user"></i> <strong>Akun</strong> : Untuk merubah dan mengganti informasi <strong>Akun</strong> anda sendiri.
+                    </p>
+                </li>
+            </ul>
+        </div>
         <div class="row">
             <div class="col-md-7">
                 <div class="card card-outline card-primary p-0">

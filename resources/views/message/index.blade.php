@@ -48,6 +48,23 @@ function showDetails(message_id){
 
 <!-- Main content -->
 <section class="content">
+    <div class="alert alert-primary">
+        <h5 class="color"><strong><i class="fa-solid fa-circle-info"></i> Bantuan</strong></h5>
+        Halaman ini adalah halaman <strong>Pesan</strong>. Anda dapat memanajemen <strong>Daftar Pesan</strong> yang dikirim oleh pengunjung.<br>
+        <br> <strong>Cara penggunaan :</strong>
+        <ul>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-folder"></i> <strong>Lihat</strong> : Untuk melihat <strong>Rincian Pesan</strong> yang terdapat didalam sistem.
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-trash"></i> <strong> Hapus </strong>: Untuk melakukan <strong>Penghapusan Data Pesan</strong> yang terdapat didalam sistem.
+                </p>
+            </li>
+        </ul>
+    </div>
     <!-- Default box -->
     <div class="card">
         <div class="card-header">

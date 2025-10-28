@@ -30,8 +30,8 @@ class TestLoginUserSeeder extends Seeder
 
         DB::table('users')->insert([
             'name' => 'Admin User',
-            'email' => env('ADMIN_EMAIL'),
-            'password' => bcrypt(env('ADMIN_PASSWORD')),
+            'email' => env('ADMIN_EMAIL','admin_local@mail.com'),
+            'password' => bcrypt(env('ADMIN_PASSWORD','35211235')),
             'category' => 'owner',
             'contact_number' => '1234567890',
             'address' => 'Jl. Admin No. 1234',

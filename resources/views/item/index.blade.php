@@ -178,6 +178,33 @@ function editPreviewImage(input) {
 
   <!-- Main content -->
   <section class="content">
+    <div class="alert alert-primary">
+        <h5 class="color"><strong><i class="fa-solid fa-circle-info"></i> Bantuan</strong></h5>
+        Halaman ini adalah halaman <strong>Barang</strong>. Anda dapat mendaftarkan dan memanajemen <strong>Daftar Barang</strong> yang terdapat didalam sistem.<br>
+        <br> <strong>Cara penggunaan :</strong>
+        <ul>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-plus"></i> <strong>Tambah Barang Baru</strong> : Untuk menambah informasi <strong>Barang Baru</strong> kedalam sistem. <strong>Untuk menambah stok barang, silahkan menambahkan kombinasi warna dan ukuran barang lalu masukkan transaksi pembelian baru.</strong>
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-folder"></i> <strong>Lihat</strong> : Untuk melihat <strong>Rincian Barang</strong> yang terdapat didalam sistem.
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-pencil-alt"></i> <strong>Ubah</strong> : Untuk melakukan <strong>Perubahan Informasi Barang</strong> yang terdapat didalam sistem. <strong>Silahkan tambah kombinasi warna dan ukuran baru untuk stok barang.</strong>
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-trash"></i> <strong> Hapus </strong>: Untuk melakukan <strong>Penghapusan Data Barang</strong> yang terdapat didalam sistem. <strong>Pastikan tidak ada data atau informasi yang menggunakan Barang yang akan dihapus.</strong>
+                </p>
+            </li>
+        </ul>
+    </div>
 
     <!-- Default box -->
     <div class="card">

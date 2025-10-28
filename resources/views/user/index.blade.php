@@ -99,6 +99,33 @@ function editPreviewImage(input) {
 </section>
 
 <section class="content">
+    <div class="alert alert-primary">
+        <h5 class="color"><strong><i class="fa-solid fa-circle-info"></i> Bantuan</strong></h5>
+        Halaman ini adalah halaman <strong>Manajemen Akun</strong>. Anda dapat mendaftarkan dan memanajemen <strong>Daftar Akun</strong> yang terdapat didalam sistem.<br>
+        <br> <strong>Cara penggunaan :</strong>
+        <ul>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-plus"></i> <strong>Buat Akun Baru</strong> : Untuk menambah dan memasukkan informasi <strong>Akun Baru</strong> kedalam sistem.
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-folder"></i> <strong>Lihat</strong> : Untuk melihat <strong>Rincian Akun</strong> yang terdapat didalam sistem.
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-pencil-alt"></i> <strong>Ubah</strong> : Untuk melakukan <strong>Perubahan Informasi Akun</strong> yang terdapat didalam sistem.
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-trash"></i> <strong> Hapus </strong>: Untuk melakukan <strong>Penghapusan Data Akun</strong> yang terdapat didalam sistem. <strong>Pastikan tidak ada data atau informasi yang menggunakan Akun yang akan dihapus.</strong>
+                </p>
+            </li>
+        </ul>
+    </div>
     <div class="card">
         <div class="card-header">
             <div class="card-tools input-group">

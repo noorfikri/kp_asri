@@ -304,6 +304,28 @@ function printReportDetail(btn) {
 
   <!-- Main content -->
   <section class="content">
+    <div class="alert alert-primary">
+        <h5 class="color"><strong><i class="fa-solid fa-circle-info"></i> Bantuan</strong></h5>
+        Halaman ini adalah halaman <strong>Laporan</strong>. Anda dapat membuat dan memanajemen <strong>Daftar Laporan</strong> yang terdapat didalam sistem.<br>
+        <br> <strong>Cara penggunaan :</strong>
+        <ul>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-plus"></i> <strong>Buat Laporan Baru</strong> : Untuk membuat <strong>Laporan Baru</strong> kedalam sistem. <strong>Pilihlah tipe laporan atau tanggal laporan untuk memasukkan transaksi secara otomatis pada jangka waktu yang dipilih</strong>
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-folder"></i> <strong>Lihat</strong> : Untuk melihat <strong>Rincian Laporan</strong> yang terdapat didalam sistem. Anda dapat <strong>Mencetak Laporan</strong> melalui tombol <strong>Print</strong> pada bagian ini.
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-trash"></i> <strong> Hapus </strong>: Untuk melakukan <strong>Penghapusan Data Laporan</strong> yang terdapat didalam sistem.
+                </p>
+            </li>
+        </ul>
+    </div>
 
     <!-- Default box -->
     <div class="card">

@@ -55,8 +55,29 @@ function showEdit(category_id){
       </div>
   </section>
 
-  <!-- Main content -->
   <section class="content">
+    <div class="alert alert-primary">
+        <h5 class="color"><strong><i class="fa-solid fa-circle-info"></i> Bantuan</strong></h5>
+        Halaman ini adalah halaman <strong>Kategori</strong>. Anda dapat mendaftarkan dan memanajemen <strong>Daftar Kategori</strong> yang terdapat didalam sistem.<br>
+        <br> <strong>Cara penggunaan :</strong>
+        <ul>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-plus"></i> <strong>Tambah Kategori Baru</strong> : Untuk menambah dan memasukkan informasi <strong>Kategori Baru</strong> kedalam sistem.
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-pencil-alt"></i> <strong>Ubah</strong> : Untuk melakukan <strong>Perubahan Informasi Kategori</strong> yang terdapat didalam sistem.
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-trash"></i> <strong> Hapus </strong>: Untuk melakukan <strong>Penghapusan Data Kategori</strong> yang terdapat didalam sistem. <strong>Pastikan tidak ada data atau informasi yang menggunakan Kategori yang akan dihapus.</strong>
+                </p>
+            </li>
+        </ul>
+    </div>
 
     <!-- Default box -->
     <div class="card">

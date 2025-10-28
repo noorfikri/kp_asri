@@ -188,6 +188,28 @@ function initializeCreateModal() {
 </section>
 
 <section class="content">
+    <div class="alert alert-primary">
+        <h5 class="color"><strong><i class="fa-solid fa-circle-info"></i> Bantuan</strong></h5>
+        Halaman ini adalah halaman <strong>Transaksi Penjualan</strong>. Anda dapat mendaftarkan dan memanajemen <strong>Daftar Transaksi Penjualan</strong> yang terdapat didalam sistem.<br>
+        <br> <strong>Cara penggunaan :</strong>
+        <ul>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-plus"></i> <strong>Buat Transaksi Baru</strong> : Untuk menambah dan memasukkan informasi <strong>Transaksi Penjualan Baru</strong> kedalam sistem. <strong>Pastikan stok barang memenuhi untuk melakukan transaksi penjualan</strong>
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-folder"></i> <strong>Lihat</strong> : Untuk melakukan <strong>Melihat Rincian Transaksi Penjualan</strong> yang terdapat didalam sistem.
+                </p>
+            </li>
+            <li>
+                <p class="my-0 py-0">
+                    <i class="fas fa-trash"></i> <strong> Hapus </strong>: Untuk melakukan <strong>Penghapusan Data Transaksi Penjualan</strong> yang terdapat disistem. <strong>Pastikan tidak ada data atau informasi yang menggunakan Transaksi Penjualan yang akan dihapus.</strong>
+                </p>
+            </li>
+        </ul>
+    </div>
     <div class="card">
         <div class="card-header">
             <div class="card-tools input-group">
