@@ -6,7 +6,7 @@
         <div class="content_desc">
             <h1 class="title">Hubungi Kami</h1>
             <p>Untuk kritik, saran, pertanyaan dan pesan maupun pesanan Anda dapat dilakukan pada form ini</p>
-            <form id="contact-form" method="POST" action="{{ route('messages.store') }}" class="form styled-form" autocomplete="off">
+            <form id="contact-form" method="POST" action="{{ route('messages.sendMessages') }}" class="form styled-form" autocomplete="off">
                 @csrf
 
                 <div class="form-group">

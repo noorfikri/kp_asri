@@ -37,6 +37,8 @@ Route::get('/',[MessageController::class,'review'])->name('home');
 Route::get('/gallery',[ItemController::class,'gallery'])->name('gallery');
 Route::view('/contact','homepage/contact')->name('contact');
 
+Route::post('/admin/messages/sendMessages', [MessageController::class, 'sendMessages'])->name('messages.sendMessages');
+
 Route::middleware(['auth'])->group(function(){
     Route::view('/admin','dashboard/index')->name('dashboard');
 Route::post('/admin/store-info', [StoreInfoController::class, 'update'])->name('storeinfo.update');

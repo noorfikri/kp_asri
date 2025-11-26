@@ -113,4 +113,31 @@ class MessageController extends Controller
             'msg' => view('message.show', compact('data'))->render()
         ], 200);
     }
+
+    public function sendMessages(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'contact' => 'nullable|string|max:255',
+            'subject' => 'nullable|string|max:255',
+            'category' => 'required|in:review,order,question,other',
+            'message' => 'required|string',
+        ]);
+
+        try {
+            $message = new Message();
+            $message->name = $validated['name'];
+            $message->contact = $validated['contact'] ?? '';
+            $message->subject = $validated['subject'] ?? '';
+            $message->category = $validated['category'];
+            $message->message = $validated['message'];
+            $message->post_time = now();
+            $message->save();
+
+            return redirect('/contact')->with('status', 'Message has been sent');
+        } catch (\Exception $e) {
+            Log::error('Message store failed', ['error' => $e->getMessage()]);
+            return redirect('/contact')->with('error', 'Failed to send message: ' . $e->getMessage());
+        }
+    }
 }
