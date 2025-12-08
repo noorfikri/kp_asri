@@ -162,6 +162,25 @@ function initializeCreateModal() {
         });
     }
 }
+
+function printTransactionDetail(btn) {
+    var modal = btn.closest('.modal-content') || document;
+    var printContents = modal.querySelector('#transaction-detail-print').innerHTML;
+    var win = window.open('', '', 'height=800,width=1000');
+    win.document.write('<html><head><title>Cetak Transaksi Penjualan</title>');
+    win.document.write('<link rel="stylesheet" href="{{ asset("assets/plugins/fontawesome-free/css/all.min.css") }}">');
+    win.document.write('<link rel="stylesheet" href="{{ asset("assets/css/adminlte.min.css") }}">');
+    win.document.write('</head><body>');
+    win.document.write('<h1><strong>{{$storeInfo->name}}</strong></h1>')
+    win.document.write(printContents);
+    win.document.write('</body></html>');
+    win.document.close();
+    win.focus();
+    setTimeout(function() {
+        win.print();
+        win.close();
+    }, 500);
+}
 </script>
 @endsection
 @section('content')
@@ -258,7 +277,7 @@ function initializeCreateModal() {
                         <td>@toIDR($d->total_amount)</td>
                         <td>{{$d->total_count}}</td>
                         <td class="project-actions text-right">
-                            <a class="btn btn-outline-info rounded-pill" href="{{url('admin/sellingtransactions/'.$d->id)}}"
+                            <a class="btn btn-outline-primary rounded-pill" href="{{url('admin/sellingtransactions/'.$d->id)}}"
                                 data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                                 <i class="fas fa-folder"></i> Lihat
                             </a>

@@ -68,6 +68,7 @@ class BuyingTranscationController extends Controller
                 'receipts'
             );
         }
+
             $transaction->save();
 
             foreach ($validated['items'] as $item) {

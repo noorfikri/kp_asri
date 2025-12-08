@@ -287,7 +287,7 @@ function initializeCreateModal() {
                         <td>@toIDR($d->total_amount)</td>
                         <td>{{$d->total_count}}</td>
                         <td class="project-actions text-right">
-                            <a class="btn btn-outline-info rounded-pill" href="{{url('admin/buyingtransactions/'.$d->id)}}"
+                            <a class="btn btn-outline-primary rounded-pill" href="{{url('admin/buyingtransactions/'.$d->id)}}"
                                 data-target="#show{{$d->id}}" data-toggle='modal' onclick="showDetails({{$d->id}})">
                                 <i class="fas fa-folder"></i> Lihat
                             </a>

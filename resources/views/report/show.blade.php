@@ -5,9 +5,8 @@
         </div>
     </div>
     <div class="card-body" id="report-detail-print">
-        {{-- Info Section --}}
         <h5 class="mb-3"><strong>Informasi Laporan</strong></h5>
-        <table class="table table-bordered mb-4">
+        <table class="table table-borderless mb-4">
             <tbody>
                 <tr>
                     <th style="width: 30%;">Tanggal Laporan</th>
@@ -24,7 +23,6 @@
             </tbody>
         </table>
 
-        {{-- Transactions Section --}}
         <h5 class="mt-3 mb-2"><strong>Rekapitulasi Transaksi</strong></h5>
         <table class="table table-bordered table-sm mb-4">
             <thead>
@@ -111,9 +109,8 @@
             </tbody>
         </table>
 
-        {{-- Other Costs and Cash Flow Section --}}
         <h5 class="mt-3 mb-2"><strong>Rekapitulasi & Arus Kas</strong></h5>
-        <table class="table table-bordered table-sm">
+        <table class="table table-borderless table-sm">
             <tbody>
                 <tr>
                     <th style="width: 40%;">Total Barang Terjual</th>
@@ -143,7 +140,7 @@
         </table>
     </div>
     <div class="card-footer">
-        <button type="button" class="btn btn-info rounded-pill float-left mr-2" onclick="printReportDetail(this)">
+        <button type="button" class="btn btn-primary rounded-pill float-left mr-2" onclick="printReportDetail(this)">
             <i class="fas fa-print"></i> Cetak Laporan
         </button>
         <button type="button" class="btn btn-outline-danger rounded-pill float-right" data-dismiss="modal" aria-label="Close">

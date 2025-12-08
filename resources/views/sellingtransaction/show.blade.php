@@ -1,11 +1,11 @@
-<div class="card card-outline card-info shadow-lg p-0">
+<div class="card card-outline card-primary shadow-lg p-0">
     <div class="card-header d-flex justify-content-between align-items-center my-0 py-0 border-0">
-        <div class="bg-info py-2 px-3 my-0 rounded-bottom rounded-3">
-        <h3 class="card-title"><i class="fas fa-info"> </i> Detail Transaksi Penjualan || {{ $sellingTransaction->date }} </h3>
+        <div class="bg-primary py-2 px-3 my-0 rounded-bottom rounded-3">
+        <h3 class="card-title"><i class="fas fa-primary"> </i> Detail Transaksi Penjualan || {{ $sellingTransaction->date }} </h3>
         </div>
     </div>
-    <div class="card-body">
-        <h3><strong>Detail Transaksi Penjualan Barang</strong></h3>
+    <div class="card-body" id="transaction-detail-print">
+        <h3><strong>Detail Transaksi Penjualan</strong></h3>
         <p><strong>Penjual:</strong> {{ $sellingTransaction->seller->name }}</p>
         <p><strong>Waktu dan Tanggal:</strong> {{ $sellingTransaction->date }}</p>
 
@@ -38,7 +38,7 @@
                     <td>@toIDR($sellingTransaction->sub_total)</td>
                 </tr>
                 <tr>
-                    <td colspan="4">Discount :</td>
+                    <td colspan="4">Diskon :</td>
                     <td></td>
                     <td>@toIDR($sellingTransaction->discount_amount)</td>
                 </tr>
@@ -52,10 +52,15 @@
         <br>
         <h6><strong>Jumlah Barang:</strong> {{ $sellingTransaction->total_count }}</h6>
         <h6><strong>Sub Total:</strong> @toIDR($sellingTransaction->sub_total)</h6>
-        <h6><strong>Discount:</strong> @toIDR($sellingTransaction->discount_amount)</h6>
+        <h6><strong>Diskon:</strong> @toIDR($sellingTransaction->discount_amount)</h6>
         <h5><strong>Total Pendapatan : </strong> @toIDR($sellingTransaction->total_amount)</h5>
-        <div class="pt-3 mt-3 pr-1 mr-1">
-            <a href="#" class="btn btn-outline-danger rounded-pill float-right" data-target="#show{{$sellingTransaction->id}}" data-dismiss="modal"> <i class="fa-solid fa-xmark"></i> Tutup</a>
-        </div>
+    </div>
+        <div class="card-footer">
+        <button type="button" class="btn btn-primary rounded-pill float-left mr-2" onclick="printTransactionDetail(this)">
+            <i class="fas fa-print"></i> Cetak Transaksi
+        </button>
+        <button type="button" class="btn btn-outline-danger rounded-pill float-right" data-target="#show{{$sellingTransaction->id}}" data-dismiss="modal" aria-label="Close">
+            <i class="fas fa-times"></i> Tutup
+        </button>
     </div>
 </div>

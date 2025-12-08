@@ -9,7 +9,7 @@
         <div class="text-center mb-3">
             <img class="img-fluid img-circle rounded shadow-sm" src="{{ asset($data->profile_picture) }}" alt="Photo">
         </div>
-        <table class="table table-bordered table-hover">
+        <table class="table table-borderless">
             <tbody>
                 <tr>
                     <th>Nama</th>
@@ -28,7 +28,7 @@
                     <td>{{$data->address}}</td>
                 </tr>
                 <tr>
-                    <th>Role</th>
+                    <th>Peran</th>
                     <td>{{$data->category}}</td>
                 </tr>
                 <tr>

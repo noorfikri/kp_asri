@@ -1,7 +1,7 @@
-<div class="card card-outline card-info shadow-lg p-0">
+<div class="card card-outline card-primary shadow-lg p-0">
     <div class="card-header d-flex justify-content-between align-items-center my-0 py-0 border-0">
-        <div class="bg-info py-2 px-3 my-0 rounded-bottom rounded-3">
-        <h3 class="card-title"><i class="fas fa-info"> </i> Detail Transaksi Pembelian || {{ $buyingTransaction->date }} </h3>
+        <div class="bg-primary py-2 px-3 my-0 rounded-bottom rounded-3">
+        <h3 class="card-title"><i class="fas fa-primary"> </i> Detail Transaksi Pembelian || {{ $buyingTransaction->date }} </h3>
         </div>
     </div>
     <div class="card-body">
@@ -12,7 +12,7 @@
         </div>
         @endif
 
-        <h3><strong>Detail Transaksi Pembelian Barang</strong></h3>
+        <h3><strong>Detail Transaksi Pembelian</strong></h3>
         <h5><strong>Supplier:</strong> {{ $buyingTransaction->supplier->name }}</h5>
         <h5><strong>Waktu dan Tanggal:</strong> {{ $buyingTransaction->date }}</h5>
 
@@ -45,7 +45,7 @@
                     <td>@toIDR($buyingTransaction->sub_total)</td>
                 </tr>
                 <tr>
-                    <td colspan="4">Discount :</td>
+                    <td colspan="4">Diskon :</td>
                     <td></td>
                     <td>@toIDR($buyingTransaction->discount_amount)</td>
                 </tr>
@@ -64,7 +64,7 @@
         <br>
         <h6><strong>Jumlah Barang:</strong> {{ $buyingTransaction->total_count }}</h6>
         <h6><strong>Sub Total:</strong> @toIDR($buyingTransaction->sub_total)</h6>
-        <h6><strong>Discount:</strong> @toIDR($buyingTransaction->discount_amount)</h6>
+        <h6><strong>Diskon:</strong> @toIDR($buyingTransaction->discount_amount)</h6>
         <h6><strong>Biaya Lainnya:</strong> @toIDR($buyingTransaction->other_cost)</h6>
         <h5><strong>Total Pengeluaran : </strong> @toIDR($buyingTransaction->total_amount)</h5>
         <div class="pt-3 mt-3 pr-1 mr-1">

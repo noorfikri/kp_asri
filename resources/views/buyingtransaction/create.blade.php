@@ -50,7 +50,7 @@
                         <th>Harga Satuan</th>
                         <th>Jumlah</th>
                         <th>Harga Total</th>
-                        <th>Aksi</th>
+                        <th>Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -96,13 +96,6 @@
                     </tr>
                 </tfoot>
             </table>
-<div class="form-group">
-    <label for="reciept_image">Upload Bukti Pembelian (Struk/Nota)</label>
-    <input type="file" name="reciept_image" id="reciept_image" class="form-control @error('reciept_image') is-invalid @enderror" accept="image/*">
-    @error('reciept_image')
-        <span class="invalid-feedback">{{ $message }}</span>
-    @enderror
-</div>
             <div class="mt-4">
                 <div class="form-group">
                     <label for="subtotal">Sub Total</label>

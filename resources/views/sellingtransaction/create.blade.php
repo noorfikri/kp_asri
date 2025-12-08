@@ -37,7 +37,7 @@
                         <th>Harga Satuan</th>
                         <th>Jumlah</th>
                         <th>Harga Total</th>
-                        <th>Aksi</th>
+                        <th>Opsi</th>
                     </tr>
                 </thead>
                 <tbody>

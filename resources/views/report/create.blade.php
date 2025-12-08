@@ -47,7 +47,7 @@
                             <th>Tanggal</th>
                             <th>Jumlah Barang Terjual</th>
                             <th>Total</th>
-                            <th>Aksi</th>
+                            <th>Opsi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,7 +84,7 @@
                             <th>Tanggal</th>
                             <th>Jumlah Barang Dibeli</th>
                             <th>Total</th>
-                            <th>Aksi</th>
+                            <th>Opsi</th>
                         </tr>
                     </thead>
                     <tbody>

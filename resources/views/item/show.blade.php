@@ -9,7 +9,7 @@
             <div class="text-center mb-3">
                 <img class="img-fluid rounded shadow-sm" src="{{ asset($data->image) }}" alt="Photo">
             </div>
-            <table class="table table-bordered table-hover">
+            <table class="table table-borderless">
                 <tbody>
                     <tr>
                         <th>Nama</th>

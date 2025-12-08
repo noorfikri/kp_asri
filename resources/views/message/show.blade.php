@@ -6,7 +6,7 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-        <table class="table table-bordered table-hover">
+        <table class="table table-borderless">
             <tbody>
                 <tr>
                     <th>Nama</th>
