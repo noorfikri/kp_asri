@@ -93,18 +93,12 @@ class MessageController extends Controller
         }
     }
 
-    /**
-     * Show only review messages for homepage.
-     */
     public function review()
     {
         $reviews = Message::where('category', 'review')->get();
         return view('homepage.index', ['reviews' => $reviews]);
     }
 
-    /**
-     * Show the detail modal via AJAX.
-     */
     public function showDetail(Request $request)
     {
         $data = Message::find($request->input('id'));

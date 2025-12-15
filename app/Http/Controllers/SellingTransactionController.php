@@ -94,9 +94,6 @@ class SellingTransactionController extends Controller
 
     }
 
-    /**
-     * Remove the specified selling transaction from storage.
-     */
     public function destroy(Request $request, $id)
     {
         $sellingTransaction = SellingTransaction::findOrFail($id);
@@ -113,9 +110,6 @@ class SellingTransactionController extends Controller
         }
     }
 
-    /**
-     * Remove the specified selling transaction and restore item stock.
-     */
     public function deleteAddStock($id)
     {
         $sellingTransaction = SellingTransaction::findOrFail($id);
@@ -139,9 +133,6 @@ class SellingTransactionController extends Controller
         }
     }
 
-    /**
-     * Show the detail modal via AJAX.
-     */
     public function showDetail(Request $request)
     {
         $sellingTransaction = SellingTransaction::with(['seller', 'itemsStocks'])->find($request->id);
@@ -151,9 +142,6 @@ class SellingTransactionController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the create modal via AJAX.
-     */
     public function showCreate(Request $request)
     {
         $users = User::all();
@@ -165,9 +153,6 @@ class SellingTransactionController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the edit modal via AJAX.
-     */
     public function showEdit(Request $request)
     {
         $sellingTransaction = SellingTransaction::with(['seller', 'itemsStocks'])->find($request->id);

@@ -150,9 +150,6 @@ public function store(Request $request)
         }
     }
 
-    /**
-     * Show the detail modal via AJAX.
-     */
     public function showDetail(Request $request)
     {
         $report = Report::with(['creator', 'buyingTransactions', 'sellingTransactions'])->find($request->input('id'));
@@ -162,9 +159,6 @@ public function store(Request $request)
         ], 200);
     }
 
-    /**
-     * Show the create modal via AJAX.
-     */
     public function showCreate(Request $request)
     {
     $users = \App\Models\User::all();
@@ -177,9 +171,6 @@ public function store(Request $request)
     ], 200);
     }
 
-    /**
-     * Show the edit modal via AJAX.
-     */
     public function showEdit(Request $request)
     {
         $report = Report::find($request->input('id'));

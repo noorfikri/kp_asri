@@ -130,9 +130,6 @@ class SupplierController extends Controller
         }
     }
 
-    /**
-     * Show the detail modal via AJAX.
-     */
     public function showDetail()
     {
         $data = Supplier::find(request('id'));
@@ -142,9 +139,6 @@ class SupplierController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the create modal via AJAX.
-     */
     public function showCreate()
     {
         return response()->json([
@@ -153,9 +147,6 @@ class SupplierController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the edit modal via AJAX.
-     */
     public function showEdit()
     {
         $supplier = Supplier::find(request('id'));

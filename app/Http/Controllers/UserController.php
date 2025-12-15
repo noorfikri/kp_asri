@@ -12,7 +12,9 @@ use Illuminate\Support\Str;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the users.
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -22,7 +24,9 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new user.
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -30,7 +34,10 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created user in storage.
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function store()
     {
@@ -87,7 +94,11 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified user in storage.
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
      */
     public function update(User $user)
     {
@@ -136,7 +147,10 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified user from storage.
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
     {
@@ -155,9 +169,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Show the detail modal via AJAX.
-     */
     public function showDetail()
     {
         $data = User::find(request('id'));
@@ -167,9 +178,6 @@ class UserController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the create modal via AJAX.
-     */
     public function showCreate()
     {
         return response()->json([
@@ -178,9 +186,6 @@ class UserController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the edit modal via AJAX.
-     */
     public function showEdit()
     {
         $user = User::find(request('id'));
@@ -190,9 +195,6 @@ class UserController extends Controller
         ], 200);
     }
 
-    /**
-     * Update the profile for the authenticated user.
-     */
     public function updateProfile(User $user)
     {
         $validator = Validator::make(request()->all(), [

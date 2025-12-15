@@ -264,9 +264,6 @@ if (auth()->user()->can('updateStock', $item)) {
         }
     }
 
-    /**
-     * Show the detail modal via AJAX.
-     */
     public function showDetail(Request $request)
     {
         $item = Item::find($request->input('id'));
@@ -276,9 +273,6 @@ if (auth()->user()->can('updateStock', $item)) {
         ], 200);
     }
 
-    /**
-     * Show the create modal via AJAX.
-     */
     public function showCreate(Request $request)
     {
         $this->authorize('create', Item::class);
@@ -298,9 +292,6 @@ if (auth()->user()->can('updateStock', $item)) {
         ], 200);
     }
 
-    /**
-     * Show the edit modal via AJAX.
-     */
     public function showEdit(Request $request)
     {
         $item = Item::find($request->input('id'));
@@ -322,37 +313,9 @@ if (auth()->user()->can('updateStock', $item)) {
         ], 200);
     }
 
-    /**
-     * Show the gallery page.
-     */
     public function gallery()
     {
-    $items = Item::with(['stocks.size', 'stocks.colour'])->get();
+        $items = Item::with(['stocks.size', 'stocks.colour'])->get();
         return view('homepage.gallery', ['items' => $items]);
-    }
-
-    /**
-     * Search items.
-     */
-    public function search(Request $request)
-    {
-        $query = $request->get('query');
-        $items = Item::where('name', 'LIKE', "%{$query}%")
-            ->orWhere('note', 'LIKE', "%{$query}%")
-            ->orWhereHas('category', function ($q) use ($query) {
-                $q->where('name', 'LIKE', "%{$query}%");
-            })
-            ->orWhereHas('size', function ($q) use ($query) {
-                $q->where('name', 'LIKE', "%{$query}%");
-            })
-            ->orWhereHas('colour', function ($q) use ($query) {
-                $q->where('name', 'LIKE', "%{$query}%");
-            })
-            ->orWhereHas('brand', function ($q) use ($query) {
-                $q->where('name', 'LIKE', "%{$query}%");
-            })
-            ->get();
-
-        return view('item.search', ['items' => $items, 'query' => $query]);
     }
 }
