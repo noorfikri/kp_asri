@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 class CategoryController extends Controller
 {
     /**
-     * Display list categories
+     * Display list resources
      */
     public function index()
     {
@@ -19,7 +19,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show form create new category
+     * Show form create new resources
      */
     public function create()
     {
@@ -27,7 +27,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store new create category
+     * Store new create resources
      */
     public function store(Request $request)
     {
@@ -45,7 +45,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show edit category
+     * Show edit resources
      */
     public function edit(Category $category)
     {
@@ -53,7 +53,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update category
+     * Update resources
      */
     public function update(Request $request, Category $category)
     {
@@ -71,7 +71,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove category
+     * Remove resources
      */
     public function destroy(Category $category)
     {
@@ -87,9 +87,6 @@ class CategoryController extends Controller
         }
     }
 
-    /**
-     * Show the create modal via AJAX.
-     */
     public function showCreate(Request $request)
     {
         return response()->json([
@@ -98,9 +95,6 @@ class CategoryController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the edit modal via AJAX.
-     */
     public function showEdit(Request $request)
     {
         $category = Category::findOrFail($request->input('id'));

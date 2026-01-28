@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 class BuyingTranscationController extends Controller
 {
     /**
-     * Display list buying transactions
+     * Display list resources
      */
     public function index()
     {
@@ -24,7 +24,7 @@ class BuyingTranscationController extends Controller
     }
 
     /**
-     * Show form create buying transaction
+     * Show form create resources
      */
     public function create()
     {
@@ -32,7 +32,7 @@ class BuyingTranscationController extends Controller
     }
 
     /**
-     * Store new buying transaction
+     * Store new resources
      */
     public function store(Request $request, FileUploadService $fileUpload)
     {
@@ -92,14 +92,14 @@ class BuyingTranscationController extends Controller
     }
 
     /**
-     * Display buying transaction
+     * Display resources
      */
     public function show(BuyingTransaction $buyingTransaction)
     {
     }
 
     /**
-     * Show form editing
+     * Show resources
      */
     public function edit(BuyingTransaction $buyingTransaction)
     {
@@ -107,7 +107,7 @@ class BuyingTranscationController extends Controller
     }
 
     /**
-     * Update buying transaction
+     * Update resources
      */
     public function update(Request $request, BuyingTransaction $buyingTransaction)
     {
@@ -162,7 +162,7 @@ class BuyingTranscationController extends Controller
     }
 
     /**
-     * Remove buying transaction
+     * Remove resources
      */
     public function destroy(BuyingTransaction $buyingTransaction)
     {
@@ -207,9 +207,6 @@ class BuyingTranscationController extends Controller
         }
     }
 
-    /**
-     * Show the detail modal via AJAX.
-     */
     public function showDetail(Request $request)
     {
         $buyingTransaction = BuyingTransaction::with(['supplier', 'itemsStocks'])->find($request->id);
@@ -219,9 +216,6 @@ class BuyingTranscationController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the create modal via AJAX.
-     */
     public function showCreate(Request $request)
     {
         $suppliers = Supplier::all();

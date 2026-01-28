@@ -11,7 +11,7 @@ use Illuminate\Database\QueryException;
 class SupplierController extends Controller
 {
     /**
-     * Display a listing of the suppliers.
+     * Display a listing of the resources.
      */
     public function index()
     {
@@ -20,7 +20,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Show the form for creating a new supplier.
+     * Show the form for creating a new resources.
      */
     public function create()
     {
@@ -28,7 +28,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Store a newly created supplier in storage.
+     * Store a newly created resources in storage.
      */
     public function store()
     {
@@ -68,7 +68,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Show the form for editing the specified supplier.
+     * Show the form for editing the specified resources.
      */
     public function edit(Supplier $supplier)
     {
@@ -76,7 +76,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Update the specified supplier in storage.
+     * Update the specified resources in storage.
      */
     public function update(Supplier $supplier)
     {
@@ -115,7 +115,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Remove the specified supplier from storage.
+     * Remove the specified resources from storage.
      */
     public function destroy(Supplier $supplier)
     {

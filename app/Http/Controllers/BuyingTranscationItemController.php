@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 class BuyingTranscationItemController extends Controller
 {
     /**
-     * Display list buying transaction items
+     * Display list resources
      */
     public function index()
     {
@@ -20,7 +20,7 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Show the form create buying transaction item
+     * Show the form create resources
      */
     public function create()
     {
@@ -30,7 +30,7 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Store new buying transaction item
+     * Store new resources
      */
     public function store(Request $request)
     {
@@ -58,7 +58,7 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Display buying transaction item
+     * Display resources
      */
     public function show(BuyingTransactionItem $buyingTransactionItem)
     {
@@ -66,7 +66,7 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Show form edit buying transaction item
+     * Show form edit resources
      */
     public function edit(BuyingTransactionItem $buyingTransactionItem)
     {
@@ -76,7 +76,7 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Update buying transaction item
+     * Update resources
      */
     public function update(Request $request, BuyingTransactionItem $buyingTransactionItem)
     {
@@ -106,7 +106,7 @@ class BuyingTranscationItemController extends Controller
     }
 
     /**
-     * Remove buying transaction item
+     * Remove resources
      */
     public function destroy(BuyingTransactionItem $buyingTransactionItem)
     {

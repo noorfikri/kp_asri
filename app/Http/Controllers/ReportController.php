@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 class ReportController extends Controller
 {
     /**
-     * Display a listing of the reports.
+     * Display a listing of resources.
      */
     public function index()
     {
@@ -19,7 +19,7 @@ class ReportController extends Controller
     }
 
     /**
-     * Show the form for creating a new report.
+     * Show the form for creating a new resources.
      */
     public function create()
     {
@@ -28,7 +28,7 @@ class ReportController extends Controller
     }
 
     /**
-     * Store a newly created report in storage.
+     * Store a newly created resources in storage.
      */
 public function store(Request $request)
 {
@@ -83,7 +83,7 @@ public function store(Request $request)
 }
 
     /**
-     * Display the specified report.
+     * Display the specified resources.
      */
     public function show(Report $report)
     {
@@ -92,7 +92,7 @@ public function store(Request $request)
     }
 
     /**
-     * Show the form for editing the specified report.
+     * Show the form for editing the specified resources.
      */
     public function edit(Report $report)
     {
@@ -101,7 +101,7 @@ public function store(Request $request)
     }
 
     /**
-     * Update the specified report in storage.
+     * Update the specified resources in storage.
      */
     public function update(Request $request, Report $report)
     {
@@ -133,7 +133,7 @@ public function store(Request $request)
     }
 
     /**
-     * Remove the specified report from storage.
+     * Remove the specified resources from storage.
      */
     public function destroy(Report $report)
     {

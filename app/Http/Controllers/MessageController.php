@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 class MessageController extends Controller
 {
     /**
-     * Display a listing of the messages.
+     * Display a listing of resources.
      */
     public function index()
     {
@@ -18,15 +18,15 @@ class MessageController extends Controller
     }
 
     /**
-     * Show the form for creating a new message.
+     * Show the form for creating resources.
      */
     public function create()
     {
-        // Not used, handled via contact page or AJAX modal
+
     }
 
     /**
-     * Store a newly created message in storage.
+     * Store a newly created resources in storage.
      */
     public function store(Request $request)
     {
@@ -56,7 +56,7 @@ class MessageController extends Controller
     }
 
     /**
-     * Display the specified message.
+     * Display the specified resources.
      */
     public function show(Message $message)
     {
@@ -64,23 +64,22 @@ class MessageController extends Controller
     }
 
     /**
-     * Show the form for editing the specified message.
+     * Show the form for editing the specified resources.
      */
     public function edit(Message $message)
     {
-        // Not used, messages are not edited
     }
 
     /**
-     * Update the specified message in storage.
+     * Update the specified resources in storage.
      */
     public function update(Request $request, Message $message)
     {
-        // Not used, messages are not updated
+
     }
 
     /**
-     * Remove the specified message from storage.
+     * Remove the specified resources from storage.
      */
     public function destroy(Message $message)
     {

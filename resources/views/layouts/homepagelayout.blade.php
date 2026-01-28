@@ -8,9 +8,9 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/styles.css')}}">
-@php
-$storeInfo = \App\Models\StoreInfo::first();
-@endphp
+    @php
+    $storeInfo = \App\Models\StoreInfo::first();
+    @endphp
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset($storeInfo->logo) }}">
 
@@ -95,7 +95,7 @@ $storeInfo = \App\Models\StoreInfo::first();
         <p><b>Website {{$storeInfo->name}} &#169; 2024,</b> Wildan Achmad Noorfikri</p>
     </div>
 </footer>
-    <!-- Scripts (loaded at end so page scripts run after DOM) -->
+    <!-- Scripts -->
     <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('public/js/app.js') }}"></script>

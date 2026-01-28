@@ -18,7 +18,7 @@ use Illuminate\Database\QueryException;
 class ItemController extends Controller
 {
     /**
-     * Display a listing of the items.
+     * Display a listing of resources.
      */
     public function index()
     {
@@ -38,7 +38,7 @@ class ItemController extends Controller
     }
 
     /**
-     * Show the form for creating a new item.
+     * Show the form for creating a new resources.
      */
     public function create()
     {
@@ -57,7 +57,7 @@ class ItemController extends Controller
     }
 
     /**
-     * Store a newly created item in storage.
+     * Store a newly created resources.
      */
     public function store(Request $request, FileUploadService $fileUpload)
     {
@@ -120,7 +120,7 @@ class ItemController extends Controller
     }
 
     /**
-     * Display the specified item.
+     * Display the specified resources.
      */
     public function show(Item $item)
     {
@@ -128,7 +128,7 @@ class ItemController extends Controller
     }
 
     /**
-     * Show the form for editing the specified item (AJAX modal).
+     * Show the form for editing the specified resources.
      */
     public function edit(Request $request)
     {
@@ -152,7 +152,7 @@ class ItemController extends Controller
     }
 
     /**
-     * Update the specified item in storage.
+     * Update the specified resources.
      */
     public function update(Request $request, Item $item, FileUploadService $fileUpload)
     {
@@ -228,7 +228,7 @@ if (auth()->user()->can('updateStock', $item)) {
     }
 
     /**
-     * Remove the specified item from storage.
+     * Remove the specified resources.
      */
     public function destroy(Item $item)
     {

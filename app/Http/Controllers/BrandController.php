@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 class BrandController extends Controller
 {
     /**
-     * Display list brands
+     * Display list resources
      */
     public function index()
     {
@@ -19,7 +19,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Show form create brand
+     * Show form create resources
      */
     public function create()
     {
@@ -27,7 +27,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Store new brand
+     * Store new resources
      */
     public function store(Request $request)
     {
@@ -43,7 +43,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Show form edit brand
+     * Show form edit resources
      */
     public function edit(Brand $brand)
     {
@@ -51,7 +51,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Update brand
+     * Update resources
      */
     public function update(Request $request, Brand $brand)
     {
@@ -67,7 +67,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Remove brand
+     * Remove resources
      */
     public function destroy(Brand $brand)
     {
@@ -89,9 +89,6 @@ class BrandController extends Controller
         }
     }
 
-    /**
-     * Show the create modal via AJAX.
-     */
     public function showCreate(Request $request)
     {
         return response()->json([
@@ -100,9 +97,6 @@ class BrandController extends Controller
         ]);
     }
 
-    /**
-     * Show the edit modal via AJAX.
-     */
     public function showEdit(Request $request)
     {
         $brand = Brand::findOrFail($request->input('id'));

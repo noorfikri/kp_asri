@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 class SellingTransactionController extends Controller
 {
     /**
-     * Display a listing of the selling transactions.
+     * Display a listing of the resources.
      */
     public function index()
     {
@@ -23,7 +23,7 @@ class SellingTransactionController extends Controller
     }
 
     /**
-     * Show the form for creating a new selling transaction.
+     * Show the form for creating a new resources.
      */
     public function create()
     {
@@ -31,7 +31,7 @@ class SellingTransactionController extends Controller
     }
 
     /**
-     * Store a newly created selling transaction in storage.
+     * Store a newly created resources in storage.
      */
     public function store(Request $request)
     {
@@ -87,7 +87,7 @@ class SellingTransactionController extends Controller
     }
 
     /**
-     * Update the specified selling transaction in storage.
+     * Update the specified resources in storage.
      */
     public function update(Request $request, SellingTransaction $sellingTransaction)
     {
